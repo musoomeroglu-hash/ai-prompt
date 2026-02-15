@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>AI Prompt App</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Prompt Generator</h1>
+    <div id="auth-check" class="hidden">
+      <p>Please configure the extension in options.</p>
+      <button id="open-options">Open Options</button>
+    </div>
+    <div id="main-ui">
+      <div class="form-group">
+        <label for="category">Category</label>
+        <select id="category">
+          <option value="marketing">Marketing</option>
+          <option value="content">Content</option>
+          <option value="coding">Coding</option>
+          <option value="sales">Sales</option>
+          <option value="academic">Academic</option>
+          <option value="prompt_improve">Start Improve</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="tone">Tone</label>
+        <input type="text" id="tone" placeholder="e.g. Professional, Friendly">
+      </div>
+      <div class="form-group">
+        <label for="request">Request</label>
+        <textarea id="request" rows="4" placeholder="Describe what you need..."></textarea>
+      </div>
+      <div class="actions">
+        <button id="get-selected">Get Selected Text</button>
+        <button id="generate" class="primary">Generate</button>
+      </div>
+      <div id="results" class="results-container"></div>
+    </div>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>
