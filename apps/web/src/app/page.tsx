@@ -53,21 +53,34 @@ export default function Home() {
   const [generationTime, setGenerationTime] = useState(0)
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }: any) => {
-      setSession(session)
+    const handleSession = (sessionData: any) => {
+      let activeSession = sessionData;
+
+      // Defensive check: if session is a string (can happen in some SSR/edge cases), try parsing it
+      if (typeof activeSession === 'string') {
+        try {
+          activeSession = JSON.parse(activeSession);
+        } catch (e) {
+          console.error('Failed to parse session string:', e);
+          activeSession = null;
+        }
+      }
+
+      setSession(activeSession)
       setLoading(false)
-      if (session) {
-        fetchHistory(session.user.id)
+
+      if (activeSession?.user?.id) {
+        fetchHistory(activeSession.user.id)
         fetchSubscription()
       }
+    }
+
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      handleSession(session)
     })
 
-    const { data: { subscription: authSub } } = supabase.auth.onAuthStateChange((_event: any, session: any) => {
-      setSession(session)
-      if (session) {
-        fetchHistory(session.user.id)
-        fetchSubscription()
-      }
+    const { data: { subscription: authSub } } = supabase.auth.onAuthStateChange((_event, session) => {
+      handleSession(session)
     })
 
     return () => authSub.unsubscribe()
@@ -121,7 +134,7 @@ export default function Home() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          userId: session.user.id,
+          userId: session?.user?.id,
           category,
           userRequest,
           targetModel: targetAI,
@@ -144,7 +157,7 @@ export default function Home() {
       setResult(data.result)
       setGenerationTime((Date.now() - startTime) / 1000)
       if (data.subscription) setSubscription(data.subscription)
-      fetchHistory(session.user.id)
+      if (session?.user?.id) fetchHistory(session.user.id)
     } catch (err: any) {
       alert(err.message)
     } finally {
