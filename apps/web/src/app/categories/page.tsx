@@ -1,7 +1,6 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import {
 import { CATEGORIES } from "@/lib/categories";
 import RadialOrbitalTimeline, { TimelineItem } from "@/components/radial-orbital-timeline";
 
