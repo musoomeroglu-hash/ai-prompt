@@ -257,7 +257,7 @@ function LoginForm() {
 
 const LoginPage = () => {
     return (
-        <div className="min-h-screen relative w-full flex flex-col items-center justify-center overflow-hidden p-4 bg-black/90">
+        <div className="min-h-screen relative w-full flex flex-col items-center justify-center overflow-hidden p-4 bg-transparent">
             <ShaderBackground />
 
             <div className="absolute top-4 right-4 z-30">

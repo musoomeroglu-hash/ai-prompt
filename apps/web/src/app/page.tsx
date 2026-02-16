@@ -243,7 +243,7 @@ export default function Home() {
   const isPaid = subscription && subscription.plan !== 'free'
 
   return (
-    <div className="min-h-screen relative w-full flex overflow-hidden text-text-primary bg-black/90">
+    <div className="min-h-screen relative w-full flex overflow-hidden text-text-primary bg-transparent">
       <ShaderBackground />
 
       {/* ═══ Top-Right Corner: Quota + Upgrade + Language ═══ */}
