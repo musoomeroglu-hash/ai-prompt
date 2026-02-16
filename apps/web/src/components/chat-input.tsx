@@ -6,11 +6,6 @@ import { GradientButton } from "@/components/ui/gradient-button";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/lib/i18n";
 import {
-    Megaphone,
-    Code2,
-    Palette,
-    GraduationCap,
-    Sparkles,
     ArrowUpIcon,
     ChevronDown,
 } from "lucide-react";
@@ -38,13 +33,13 @@ function useAutoResizeTextarea({ minHeight, maxHeight }: UseAutoResizeTextareaPr
     return { textareaRef, adjustHeight };
 }
 
-const categories = [
-    { id: "marketing", label: "Marketing", icon: Megaphone },
-    { id: "coding", label: "Coding", icon: Code2 },
-    { id: "content", label: "Creative Writing", icon: Palette },
-    { id: "academic", label: "Academic", icon: GraduationCap },
-    { id: "prompt_improve", label: "Improve Prompt", icon: Sparkles },
-];
+import { CATEGORIES } from "@/lib/categories";
+
+const categories = CATEGORIES.map(cat => ({
+    id: cat.id,
+    label: cat.title,
+    icon: cat.icon
+}));
 
 // Official SVG logos for each AI platform
 const aiLogos: Record<string, React.ReactNode> = {
