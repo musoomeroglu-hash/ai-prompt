@@ -204,7 +204,6 @@ export default function Home() {
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.5 }}
           >
-          >
             <InteractiveLogin
               onLoginSuccess={() => window.location.reload()}
               onGoogleSignIn={async () => {
