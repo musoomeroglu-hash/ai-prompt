@@ -9,7 +9,7 @@ import { Eye, EyeOff, Mail, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { EyeBall, Pupil } from "@/components/ui/eye-components";
 
-export function InteractiveLogin({ onLoginSuccess }: { onLoginSuccess: () => void }) {
+export function InteractiveLogin({ onLoginSuccess, onGoogleSignIn, onSignUp }: { onLoginSuccess: () => void; onGoogleSignIn?: () => void; onSignUp?: () => void }) {
     const [showPassword, setShowPassword] = useState(false);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -26,6 +26,8 @@ export function InteractiveLogin({ onLoginSuccess }: { onLoginSuccess: () => voi
     const blackRef = useRef<HTMLDivElement>(null);
     const yellowRef = useRef<HTMLDivElement>(null);
     const orangeRef = useRef<HTMLDivElement>(null);
+
+    // ... (keep existing effects) ...
 
     useEffect(() => {
         const handleMouseMove = (e: MouseEvent) => {
@@ -137,11 +139,11 @@ export function InteractiveLogin({ onLoginSuccess }: { onLoginSuccess: () => voi
         setError("");
         setIsLoading(true);
 
-        // TODO: Implement actual Supabase auth integration here
-        // For now, simulating success for demo purposes or handling via props
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        // Simulate login delay
+        await new Promise(resolve => setTimeout(resolve, 800));
 
-        // In a real scenario, check Supabase auth
+        // Call the success callback passed from parent
+        // In a real app with Supabase, you'd handle auth here or in the parent
         onLoginSuccess();
 
         setIsLoading(false);
@@ -428,6 +430,7 @@ export function InteractiveLogin({ onLoginSuccess }: { onLoginSuccess: () => voi
                             variant="outline"
                             className="w-full h-12 bg-transparent border-neutral-800 hover:bg-neutral-900 text-white hover:text-white"
                             type="button"
+                            onClick={onGoogleSignIn}
                         >
                             <Mail className="mr-2 size-5" />
                             Log in with Google
@@ -436,9 +439,9 @@ export function InteractiveLogin({ onLoginSuccess }: { onLoginSuccess: () => voi
 
                     <div className="text-center text-sm text-neutral-500 mt-8">
                         Don't have an account?{" "}
-                        <a href="#" className="text-white font-medium hover:underline">
+                        <button onClick={onSignUp} className="text-white font-medium hover:underline focus:outline-none">
                             Sign Up
-                        </a>
+                        </button>
                     </div>
                 </div>
             </div>

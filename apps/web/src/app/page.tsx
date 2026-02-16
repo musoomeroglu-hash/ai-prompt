@@ -204,7 +204,29 @@ export default function Home() {
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.5 }}
           >
-            <InteractiveLogin onLoginSuccess={() => window.location.reload()} />
+          >
+            <InteractiveLogin
+              onLoginSuccess={() => window.location.reload()}
+              onGoogleSignIn={async () => {
+                try {
+                  const { error } = await supabase.auth.signInWithOAuth({
+                    provider: 'google',
+                    options: {
+                      redirectTo: `${window.location.origin}/auth/callback`,
+                    },
+                  })
+                  if (error) alert(error.message)
+                } catch (err: any) {
+                  alert(err.message)
+                }
+              }}
+              onSignUp={() => {
+                // For now, redirect to sign up page or handle it
+                // Since this is a single page demo for now, maybe just alert or toggle
+                // But normally: router.push('/signup')
+                alert("Sign up feature coming soon!")
+              }}
+            />
           </motion.div>
         )}
       </AnimatePresence>
