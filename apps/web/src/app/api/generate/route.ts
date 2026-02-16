@@ -221,6 +221,6 @@ export async function POST(req: Request) {
 
     } catch (error: any) {
         console.error('[API] Generate Error:', error.message)
-        return NextResponse.json({ error: 'AI processing failed', details: isDev ? error.message : undefined }, { status: 500 })
+        return NextResponse.json({ error: 'AI processing failed', details: error.message }, { status: 500 })
     }
 }
