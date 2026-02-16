@@ -212,9 +212,9 @@ export default function Home() {
             <div className="lg:grid lg:grid-cols-2 lg:gap-16 lg:items-center py-12 lg:py-0">
 
               {/* ═══ Left Column: Content ═══ */}
-              <div className="flex flex-col justify-center lg:pr-8 mb-16 lg:mb-0 text-center lg:text-left">
+              <div className="flex flex-col justify-center lg:pr-8 mb-16 lg:mb-0 text-center">
                 {/* Logo */}
-                <div className="mb-8 flex justify-center lg:justify-start">
+                <div className="mb-8 flex justify-center">
                   <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-yellow-500 rounded-2xl flex items-center justify-center shadow-lg shadow-orange-500/20">
                     <Zap className="w-8 h-8 text-black" />
                   </div>
@@ -229,13 +229,13 @@ export default function Home() {
                 </h1>
 
                 {/* Subtitle */}
-                <p className="text-xl text-neutral-400 mb-8 max-w-xl mx-auto lg:mx-0 leading-relaxed">
+                <p className="text-xl text-neutral-400 mb-8 max-w-xl mx-auto leading-relaxed">
                   Create, refine, and organize your prompts with advanced AI tools.
                   Join thousands of creators building better with AI.
                 </p>
 
                 {/* Features */}
-                <div className="flex flex-wrap justify-center lg:justify-start gap-6 text-sm text-neutral-500 font-medium">
+                <div className="flex flex-wrap justify-center gap-6 text-sm text-neutral-500 font-medium">
                   <div className="flex items-center gap-2 bg-white/5 px-4 py-2 rounded-full border border-white/5">
                     <Crown className="w-4 h-4 text-orange-400" />
                     <span>Premium Features</span>
