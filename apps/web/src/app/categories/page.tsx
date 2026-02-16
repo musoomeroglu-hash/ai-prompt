@@ -1,6 +1,5 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import {
     Code,
@@ -10,59 +9,81 @@ import {
     ChartBar,
     Sparkles
 } from "lucide-react";
-import { CategoryCard } from "@/components/ui/category-card";
+import RadialOrbitalTimeline, { TimelineItem } from "@/components/radial-orbital-timeline";
 
-const categories = [
+const timelineData: TimelineItem[] = [
     {
         id: "coding",
         title: "Coding",
         icon: Code,
-        description: "Generate code snippets, debug help, and architecture advice",
-        gradient: "from-blue-500 to-cyan-500",
+        content: "Generate code snippets, debug help, and architecture advice. Perfect for developers of all levels.",
+        category: "Development",
+        date: "2024",
+        relatedIds: ["analysis", "prompt-engineering"],
+        status: "completed",
+        energy: 95,
     },
     {
         id: "writing",
         title: "Writing",
         icon: FileText,
-        description: "Content creation, editing, and creative storytelling",
-        gradient: "from-purple-500 to-pink-500",
+        content: "Content creation, editing, and creative storytelling. Enhance your narratives and blog posts.",
+        category: "Creative",
+        date: "2024",
+        relatedIds: ["marketing", "education"],
+        status: "completed",
+        energy: 88,
     },
     {
         id: "marketing",
         title: "Marketing",
         icon: Megaphone,
-        description: "Campaigns, copywriting, and social media strategies",
-        gradient: "from-pink-500 to-rose-500",
+        content: "Campaigns, copywriting, and social media strategies. Boost your brand's reach and engagement.",
+        category: "Business",
+        date: "2024",
+        relatedIds: ["writing", "analysis"],
+        status: "completed",
+        energy: 92,
     },
     {
         id: "education",
         title: "Education",
         icon: GraduationCap,
-        description: "Lesson plans, explanations, and study guides",
-        gradient: "from-green-500 to-emerald-500",
+        content: "Lesson plans, explanations, and study guides. Simplify complex topics for students.",
+        category: "Academic",
+        date: "2024",
+        relatedIds: ["writing", "analysis"],
+        status: "in-progress",
+        energy: 75,
     },
     {
         id: "analysis",
         title: "Analysis",
         icon: ChartBar,
-        description: "Data interpretation, research, and insights",
-        gradient: "from-orange-500 to-yellow-500",
+        content: "Data interpretation, research, and insights. Turn raw data into actionable intelligence.",
+        category: "Business",
+        date: "2024",
+        relatedIds: ["coding", "marketing"],
+        status: "in-progress",
+        energy: 82,
     },
     {
         id: "prompt-engineering",
         title: "Prompt Engineering",
         icon: Sparkles,
-        description: "Optimize and refine your existing prompts",
-        gradient: "from-indigo-500 to-violet-500",
+        content: "Optimize and refine your existing prompts. Get the best possible results from AI models.",
+        category: "Technical",
+        date: "2024",
+        relatedIds: ["coding", "writing"],
+        status: "completed",
+        energy: 98,
     },
 ];
 
 export default function CategoriesPage() {
     const router = useRouter();
-    const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
     const handleCategorySelect = (categoryId: string) => {
-        setSelectedCategory(categoryId);
         // Save to localStorage
         if (typeof window !== "undefined") {
             localStorage.setItem("selectedCategory", categoryId);
@@ -70,50 +91,21 @@ export default function CategoriesPage() {
         // Redirect to dashboard
         setTimeout(() => {
             router.push("/");
-        }, 400);
+        }, 800);
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-background-primary via-background-secondary to-black flex items-center justify-center p-8 relative overflow-hidden">
-            {/* Background Ambience */}
-            <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
-                <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-accent-primary/10 rounded-full blur-[100px]" />
-                <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-accent-secondary/10 rounded-full blur-[100px]" />
+        <div className="min-h-screen bg-black flex items-center justify-center relative overflow-hidden">
+            {/* Background Ambience similar to dashboard */}
+            <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0 opacity-50">
+                <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-accent-primary/20 rounded-full blur-[100px]" />
+                <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-accent-secondary/20 rounded-full blur-[100px]" />
             </div>
 
-            <div className="relative z-10 max-w-7xl w-full">
-                {/* Header */}
-                <div className="text-center mb-16 space-y-4">
-                    <h1 className="text-5xl md:text-6xl font-bold tracking-tight text-white">
-                        What do you{" "}
-                        <span className="bg-gradient-to-r from-accent-primary to-accent-secondary bg-clip-text text-transparent">
-                            need?
-                        </span>
-                    </h1>
-                    <p className="text-text-secondary text-xl max-w-2xl mx-auto font-light">
-                        Choose a category to get started with AI-powered prompts tailored to your specific goals.
-                    </p>
-                </div>
-
-                {/* Categories Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-fr">
-                    {categories.map((category) => (
-                        <CategoryCard
-                            key={category.id}
-                            {...category}
-                            isSelected={selectedCategory === category.id}
-                            onClick={() => handleCategorySelect(category.id)}
-                        />
-                    ))}
-                </div>
-
-                {/* Footer */}
-                <div className="text-center mt-12">
-                    <p className="text-text-muted text-sm">
-                        You can change this anytime from the main dashboard settings.
-                    </p>
-                </div>
-            </div>
+            <RadialOrbitalTimeline
+                timelineData={timelineData}
+                onSelectCategory={handleCategorySelect}
+            />
         </div>
     );
 }
