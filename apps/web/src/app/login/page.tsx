@@ -5,7 +5,7 @@ import { useState, useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import ShaderBackground from '@/components/ui/shader-background'
 import { ThemeToggle } from '@/components/ui/theme-toggle'
-import KineticDotsLoader from '@/components/ui/kinetic-dots-loader'
+import Loader from '@/components/ui/loader'
 import { cn } from '@/lib/utils'
 import Link from 'next/link'
 import { Mail, Lock, ArrowRight, Github, Chrome, AlertCircle, CheckCircle2, Zap } from 'lucide-react'
@@ -229,7 +229,7 @@ function LoginForm() {
                         className="group relative w-full flex items-center justify-center gap-2 py-3 bg-gradient-to-r from-accent-primary to-accent-secondary text-white font-semibold rounded-xl hover:shadow-lg hover:shadow-accent-primary/20 hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                     >
                         {loading ? (
-                            <KineticDotsLoader size="sm" />
+                            <Loader size="sm" />
                         ) : (
                             <>
                                 {activeTab === 'login' && 'Sign In'}
@@ -264,7 +264,7 @@ const LoginPage = () => {
                 <ThemeToggle />
             </div>
 
-            <Suspense fallback={<KineticDotsLoader size="lg" />}>
+            <Suspense fallback={<Loader size="lg" />}>
                 <LoginForm />
             </Suspense>
 

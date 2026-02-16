@@ -18,7 +18,7 @@ const planIcons: Record<string, any> = {
 const planGlow: Record<string, string> = {
     free: '',
     starter: 'hover:shadow-emerald-500/10',
-    pro: 'hover:shadow-orange-500/15',
+    pro: 'hover:shadow-purple-500/15',
     unlimited: 'hover:shadow-purple-500/10',
     dev_starter: 'hover:shadow-cyan-500/10',
     dev_pro: 'hover:shadow-cyan-500/15',
@@ -28,7 +28,7 @@ const planGlow: Record<string, string> = {
 const planBorder: Record<string, string> = {
     free: 'border-neutral-700/30',
     starter: 'border-emerald-500/20',
-    pro: 'border-orange-500/30',
+    pro: 'border-purple-500/30',
     unlimited: 'border-purple-500/20',
     dev_starter: 'border-cyan-500/20',
     dev_pro: 'border-cyan-500/30',
@@ -64,13 +64,13 @@ function PlanCard({ plan, cycle, highlight, locale, onUpgrade, loading }: {
             highlight ? `border-2 ${planBorder[plan.id]} ${planGlow[plan.id]}` : `${planBorder[plan.id]} ${planGlow[plan.id]}`,
         )}>
             {plan.popular && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-gradient-to-r from-orange-500 to-yellow-500 text-black text-[10px] font-bold uppercase rounded-full tracking-wider whitespace-nowrap shadow-lg shadow-orange-500/20">
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-gradient-to-r from-purple-500 to-fuchsia-500 text-white text-[10px] font-bold uppercase rounded-full tracking-wider whitespace-nowrap shadow-lg shadow-purple-500/20">
                     {t.pricing.mostPopular}
                 </div>
             )}
             <div className="flex items-center gap-2 mb-4">
-                <div className={cn('p-1.5 rounded-lg', plan.popular ? 'bg-orange-500/10' : 'bg-white/5')}>
-                    <Icon className={cn('w-4 h-4', plan.popular ? 'text-orange-400' : 'text-neutral-400')} />
+                <div className={cn('p-1.5 rounded-lg', plan.popular ? 'bg-purple-500/10' : 'bg-white/5')}>
+                    <Icon className={cn('w-4 h-4', plan.popular ? 'text-purple-400' : 'text-neutral-400')} />
                 </div>
                 <h3 className="text-lg font-semibold text-white">{planName}</h3>
             </div>
@@ -116,7 +116,7 @@ function PlanCard({ plan, cycle, highlight, locale, onUpgrade, loading }: {
                 className={cn(
                     'group relative w-full py-3 rounded-xl font-medium transition-all text-sm overflow-hidden disabled:opacity-50 disabled:cursor-not-allowed',
                     plan.popular
-                        ? 'bg-gradient-to-r from-orange-500 to-yellow-500 text-black hover:shadow-lg hover:shadow-orange-500/20 hover:scale-[1.02]'
+                        ? 'bg-gradient-to-r from-purple-500 to-fuchsia-500 text-white hover:shadow-lg hover:shadow-purple-500/20 hover:scale-[1.02]'
                         : isEnterprise
                             ? 'bg-amber-500/10 border border-amber-500/20 text-amber-400 hover:bg-amber-500/20'
                             : 'bg-white/5 border border-white/10 text-white hover:bg-white/10'
@@ -163,7 +163,7 @@ export default function PricingPage() {
                 <Link href="/" className="flex items-center gap-2 text-neutral-400 hover:text-white transition-colors text-sm">
                     <ArrowLeft className="w-4 h-4" /> {t.pricing.goBack}
                 </Link>
-                <h1 className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-300 via-yellow-400 to-amber-300">
+                <h1 className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-300 via-fuchsia-400 to-indigo-300">
                     AI Prompt App
                 </h1>
                 <ThemeToggle />
@@ -172,10 +172,10 @@ export default function PricingPage() {
             <main className="relative z-20 flex-1 flex flex-col items-center px-4 py-14">
                 {/* Header */}
                 <div className="text-center mb-10">
-                    <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-orange-500/10 border border-orange-500/20 text-orange-400 text-xs font-medium mb-4">
+                    <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-400 text-xs font-medium mb-4">
                         <Crown className="w-3.5 h-3.5" /> {t.pricing.badge}
                     </div>
-                    <h2 className="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-b from-orange-200 via-yellow-300 to-amber-400 mb-4">
+                    <h2 className="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-b from-purple-200 via-fuchsia-300 to-indigo-400 mb-4">
                         {t.pricing.title}
                     </h2>
                     <p className="text-neutral-500 max-w-lg mx-auto text-sm">
@@ -187,12 +187,12 @@ export default function PricingPage() {
                 <div className="flex items-center gap-1 mb-10 bg-neutral-900/50 border border-neutral-800 rounded-full p-1">
                     <button onClick={() => setCycle('monthly')}
                         className={cn('px-5 py-2 rounded-full text-sm font-medium transition-all',
-                            cycle === 'monthly' ? 'bg-gradient-to-r from-orange-500/20 to-yellow-500/20 text-orange-300 border border-orange-500/20' : 'text-neutral-500 hover:text-neutral-300')}>
+                            cycle === 'monthly' ? 'bg-gradient-to-r from-purple-500/20 to-fuchsia-500/20 text-purple-300 border border-purple-500/20' : 'text-neutral-500 hover:text-neutral-300')}>
                         {t.pricing.monthly}
                     </button>
                     <button onClick={() => setCycle('yearly')}
                         className={cn('px-5 py-2 rounded-full text-sm font-medium transition-all flex items-center gap-2',
-                            cycle === 'yearly' ? 'bg-gradient-to-r from-orange-500/20 to-yellow-500/20 text-orange-300 border border-orange-500/20' : 'text-neutral-500 hover:text-neutral-300')}>
+                            cycle === 'yearly' ? 'bg-gradient-to-r from-purple-500/20 to-fuchsia-500/20 text-purple-300 border border-purple-500/20' : 'text-neutral-500 hover:text-neutral-300')}>
                         {t.pricing.yearly}
                         <span className="text-[10px] px-2 py-0.5 bg-emerald-500/20 text-emerald-400 rounded-full border border-emerald-500/30">
                             {t.pricing.yearlySave}
@@ -204,7 +204,7 @@ export default function PricingPage() {
                 <div className="flex items-center gap-2 mb-8">
                     <button onClick={() => setTab('normal')}
                         className={cn('px-4 py-2 rounded-lg text-xs font-medium transition-all border',
-                            tab === 'normal' ? 'bg-orange-500/10 border-orange-500/20 text-orange-300' : 'bg-transparent border-neutral-800 text-neutral-500 hover:text-white')}>
+                            tab === 'normal' ? 'bg-purple-500/10 border-purple-500/20 text-purple-300' : 'bg-transparent border-neutral-800 text-neutral-500 hover:text-white')}>
                         {t.pricing.normalUser}
                     </button>
                     <button onClick={() => setTab('developer')}
@@ -239,7 +239,7 @@ export default function PricingPage() {
                             style={{ gridTemplateColumns: `200px repeat(${allPlans.length}, 1fr)` }}>
                             <span className="text-xs text-neutral-400 font-medium">{t.pricing.feature}</span>
                             {allPlans.map(p => (
-                                <span key={p.id} className={cn('text-xs text-center font-medium', p.popular ? 'text-orange-400' : 'text-neutral-400')}>
+                                <span key={p.id} className={cn('text-xs text-center font-medium', p.popular ? 'text-purple-400' : 'text-neutral-400')}>
                                     {isTR ? p.nameTr : p.name} {p.popular ? '⭐' : ''}
                                 </span>
                             ))}

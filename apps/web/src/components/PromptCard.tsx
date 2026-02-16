@@ -22,14 +22,14 @@ export function PromptCard({ prompt, onClick }: PromptCardProps) {
     const animatedDescription = useAnimatedText(prompt.description, " ")
 
     const Content = (
-        <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-5 transition-all hover:border-orange-500/50 hover:bg-zinc-900/80 hover:shadow-lg hover:shadow-orange-500/10 h-full">
+        <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-5 transition-all hover:border-purple-500/50 hover:bg-zinc-900/80 hover:shadow-lg hover:shadow-purple-500/10 h-full">
             <div className="flex justify-between items-start mb-3">
-                <span className="text-xs font-medium px-2 py-1 rounded-full bg-orange-500/10 text-orange-400 border border-orange-500/20">
+                <span className="text-xs font-medium px-2 py-1 rounded-full bg-purple-500/10 text-purple-400 border border-purple-500/20">
                     {prompt.categories?.name || 'Genel'}
                 </span>
             </div>
 
-            <h3 className="text-lg font-semibold text-white mb-2 group-hover:text-orange-400 transition-colors h-[28px]">
+            <h3 className="text-lg font-semibold text-white mb-2 group-hover:text-purple-400 transition-colors h-[28px]">
                 {animatedTitle}
             </h3>
 

@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation'
 import ShaderBackground from '@/components/ui/shader-background'
 import { TextShimmer } from '@/components/ui/text-shimmer'
 import { ThemeToggle } from '@/components/ui/theme-toggle'
-import KineticDotsLoader from '@/components/ui/kinetic-dots-loader'
+import Loader from '@/components/ui/loader'
 import { GradientSpinner } from '@/components/ui/gradient-spinner'
 import { ChatInput } from '@/components/chat-input'
 import { ResultsPanel } from '@/components/results-panel'
@@ -182,7 +182,7 @@ export default function Home() {
     <div className="min-h-screen bg-background-primary flex items-center justify-center relative overflow-hidden">
       <ShaderBackground />
       <div className="relative z-10">
-        <KineticDotsLoader size="lg" />
+        <Loader size="lg" />
       </div>
     </div>
   )

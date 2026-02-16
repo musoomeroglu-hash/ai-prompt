@@ -28,7 +28,7 @@ interface ResultsPanelProps {
 
 /* ────────────────────── Tab Config ─────────────────────── */
 const TAB_CONFIG = [
-    { key: 'short', label: 'Quick', icon: Zap, gradient: 'from-orange-500 to-amber-500', glow: 'shadow-orange-500/20', border: 'border-orange-500/30', bg: 'bg-orange-500/10', text: 'text-orange-300' },
+    { key: 'short', label: 'Quick', icon: Zap, gradient: 'from-purple-500 to-fuchsia-500', glow: 'shadow-purple-500/20', border: 'border-purple-500/30', bg: 'bg-purple-500/10', text: 'text-purple-300' },
     { key: 'detailed', label: 'Detailed', icon: FileText, gradient: 'from-amber-500 to-yellow-500', glow: 'shadow-amber-500/20', border: 'border-amber-500/30', bg: 'bg-amber-500/10', text: 'text-amber-300' },
     { key: 'creative', label: 'Creative', icon: Sparkles, gradient: 'from-cyan-500 to-teal-500', glow: 'shadow-cyan-500/20', border: 'border-cyan-500/30', bg: 'bg-cyan-500/10', text: 'text-cyan-300' },
     { key: 'professional', label: 'Professional', icon: Briefcase, gradient: 'from-emerald-500 to-green-500', glow: 'shadow-emerald-500/20', border: 'border-emerald-500/30', bg: 'bg-emerald-500/10', text: 'text-emerald-300' },
@@ -106,7 +106,7 @@ export function ResultsPanel({ result, category, targetAI, generationTime, onReg
                 <div className="flex flex-wrap items-center gap-2 sm:gap-3">
                     {/* Category Badge */}
                     {category && (
-                        <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider px-3 py-1.5 rounded-full bg-orange-500/15 text-orange-300 border border-orange-500/20">
+                        <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider px-3 py-1.5 rounded-full bg-purple-500/15 text-purple-300 border border-purple-500/20">
                             <Layers className="w-3 h-3" />
                             {category}
                         </span>
@@ -140,7 +140,7 @@ export function ResultsPanel({ result, category, targetAI, generationTime, onReg
                 {/* TL;DR */}
                 {result.short && (
                     <div className="mt-3 flex items-start gap-2">
-                        <span className="shrink-0 mt-0.5 text-[10px] font-bold uppercase tracking-widest text-orange-400/60">{t.tldr}</span>
+                        <span className="shrink-0 mt-0.5 text-[10px] font-bold uppercase tracking-widest text-purple-400/60">{t.tldr}</span>
                         <p className="text-xs text-neutral-400 leading-relaxed line-clamp-2">
                             {truncate(result.short, 180)}
                         </p>
@@ -200,7 +200,7 @@ export function ResultsPanel({ result, category, targetAI, generationTime, onReg
                 <div className="px-4 sm:px-5 pb-4 sm:pb-5 pt-2">
                     <div className="relative bg-black/30 rounded-xl p-5 border border-white/[0.04]">
                         <p className={cn(
-                            'text-sm text-neutral-200 whitespace-pre-wrap leading-[1.8] selection:bg-orange-500/30 transition-all duration-500',
+                            'text-sm text-neutral-200 whitespace-pre-wrap leading-[1.8] selection:bg-purple-500/30 transition-all duration-500',
                             isCollapsible && !isExpanded && 'max-h-[120px] overflow-hidden'
                         )}>
                             {activeContent}
@@ -278,7 +278,7 @@ export function ResultsPanel({ result, category, targetAI, generationTime, onReg
                 {onRegenerate && (
                     <button
                         onClick={onRegenerate}
-                        className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold bg-gradient-to-r from-orange-500/10 to-amber-500/10 border border-orange-500/20 text-orange-300 hover:from-orange-500/20 hover:to-amber-500/20 hover:border-orange-500/30 transition-all duration-200"
+                        className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold bg-gradient-to-r from-purple-500/10 to-fuchsia-500/10 border border-purple-500/20 text-purple-300 hover:from-purple-500/20 hover:to-fuchsia-500/20 hover:border-purple-500/30 transition-all duration-200"
                     >
                         <RefreshCw className="w-3.5 h-3.5" />
                         {t.regenerate}

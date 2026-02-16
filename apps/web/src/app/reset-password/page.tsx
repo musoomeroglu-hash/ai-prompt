@@ -5,7 +5,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import ShaderBackground from '@/components/ui/shader-background'
 import { ThemeToggle } from '@/components/ui/theme-toggle'
-import KineticDotsLoader from '@/components/ui/kinetic-dots-loader'
+import Loader from '@/components/ui/loader'
 import { cn } from '@/lib/utils'
 import Link from 'next/link'
 import { Lock, ArrowRight, AlertCircle, CheckCircle2 } from 'lucide-react'
@@ -104,7 +104,7 @@ export default function ResetPasswordPage() {
                             className="group relative w-full flex items-center justify-center gap-2 py-3 bg-gradient-to-r from-orange-500 to-amber-500 text-black font-semibold rounded-xl hover:shadow-lg hover:shadow-orange-500/20 hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                         >
                             {loading ? (
-                                <KineticDotsLoader size="sm" />
+                                <Loader size="sm" />
                             ) : (
                                 <>
                                     Update Password

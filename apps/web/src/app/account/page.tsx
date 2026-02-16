@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { createClient } from '@/lib/supabaseClient'
 import ShaderBackground from '@/components/ui/shader-background'
 import { ThemeToggle } from '@/components/ui/theme-toggle'
-import KineticDotsLoader from '@/components/ui/kinetic-dots-loader'
+import Loader from '@/components/ui/loader'
 import { cn } from '@/lib/utils'
 import { ArrowLeft, Crown, Zap, Star, Sparkles, BarChart3, CreditCard, Clock, User, ArrowRight } from 'lucide-react'
 import Link from 'next/link'
@@ -66,7 +66,7 @@ export default function AccountPage() {
         <div className="min-h-screen bg-black flex items-center justify-center relative overflow-hidden">
             <ShaderBackground opacity={0.4} />
             <div className="relative z-10">
-                <KineticDotsLoader size="lg" />
+                <Loader size="lg" />
             </div>
         </div>
     )
