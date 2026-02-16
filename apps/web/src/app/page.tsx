@@ -228,12 +228,6 @@ export default function Home() {
                   alert(err.message)
                 }
               }}
-              onSignUp={() => {
-                // For now, redirect to sign up page or handle it
-                // Since this is a single page demo for now, maybe just alert or toggle
-                // But normally: router.push('/signup')
-                alert("Sign up feature coming soon!")
-              }}
             />
           </motion.div>
         )}

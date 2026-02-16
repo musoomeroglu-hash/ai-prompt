@@ -9,9 +9,11 @@ import { cn } from '@/lib/utils'
 interface EmailAuthFormProps {
     onSuccess?: () => void
     onGoogleSignIn?: () => void
+    onInteractionStart?: () => void
+    onInteractionEnd?: () => void
 }
 
-export function EmailAuthForm({ onSuccess, onGoogleSignIn }: EmailAuthFormProps) {
+export function EmailAuthForm({ onSuccess, onGoogleSignIn, onInteractionStart, onInteractionEnd }: EmailAuthFormProps) {
     const [mode, setMode] = useState<'signin' | 'signup' | 'forgot'>('signin')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -126,6 +128,8 @@ export function EmailAuthForm({ onSuccess, onGoogleSignIn }: EmailAuthFormProps)
                         type="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
+                        onFocus={() => onInteractionStart?.()}
+                        onBlur={() => onInteractionEnd?.()}
                         placeholder="ornek@email.com"
                         className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder:text-neutral-600 focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500/20 transition-all text-sm sm:text-base"
                         required
@@ -152,6 +156,8 @@ export function EmailAuthForm({ onSuccess, onGoogleSignIn }: EmailAuthFormProps)
                                 type={showPassword ? "text" : "password"}
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
+                                onFocus={() => onInteractionStart?.()}
+                                onBlur={() => onInteractionEnd?.()}
                                 placeholder="••••••••"
                                 className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder:text-neutral-600 focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500/20 transition-all text-sm sm:text-base pr-10"
                                 required
