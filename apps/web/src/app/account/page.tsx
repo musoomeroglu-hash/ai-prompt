@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { createClient } from '@/lib/supabaseClient'
-import { ShaderBackground } from '@/components/ui/shader-background'
+import ShaderBackground from '@/components/ui/shader-background'
 import { ThemeToggle } from '@/components/ui/theme-toggle'
 import KineticDotsLoader from '@/components/ui/kinetic-dots-loader'
 import { cn } from '@/lib/utils'

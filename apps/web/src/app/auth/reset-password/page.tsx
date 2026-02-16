@@ -5,7 +5,7 @@ import { createClient } from '@/lib/supabaseClient'
 import { useRouter } from 'next/navigation'
 import { validatePassword, getAuthErrorMessage } from '@/lib/auth-helpers'
 import { Lock, Eye, EyeOff, Loader2, ArrowRight, CheckCircle2 } from 'lucide-react'
-import { ShaderBackground } from '@/components/ui/shader-background'
+import ShaderBackground from '@/components/ui/shader-background'
 
 export default function ResetPasswordPage() {
     const [password, setPassword] = useState('')

@@ -3,7 +3,7 @@
 import { createClient } from '@/lib/supabaseClient'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { ShaderBackground } from '@/components/ui/shader-background'
+import ShaderBackground from '@/components/ui/shader-background'
 import { ThemeToggle } from '@/components/ui/theme-toggle'
 import KineticDotsLoader from '@/components/ui/kinetic-dots-loader'
 import { cn } from '@/lib/utils'

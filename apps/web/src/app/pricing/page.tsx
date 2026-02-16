@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { ShaderBackground } from '@/components/ui/shader-background'
+import ShaderBackground from '@/components/ui/shader-background'
 import { ThemeToggle } from '@/components/ui/theme-toggle'
 import { cn } from '@/lib/utils'
 import { useLanguage } from '@/lib/i18n'
