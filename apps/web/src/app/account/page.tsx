@@ -13,7 +13,7 @@ import { useRouter } from 'next/navigation'
 const planLabels: Record<string, { name: string; icon: any; color: string }> = {
     free: { name: 'Ücretsiz', icon: Zap, color: 'text-neutral-400' },
     starter: { name: 'Başlangıç', icon: Star, color: 'text-emerald-400' },
-    pro: { name: 'Profesyonel', icon: Crown, color: 'text-orange-400' },
+    pro: { name: 'Profesyonel', icon: Crown, color: 'text-purple-400' },
     unlimited: { name: 'Sınırsız', icon: Sparkles, color: 'text-purple-400' },
     dev_starter: { name: 'Dev Starter', icon: Zap, color: 'text-cyan-400' },
     dev_pro: { name: 'Dev Pro', icon: Crown, color: 'text-cyan-400' },
@@ -76,13 +76,13 @@ export default function AccountPage() {
 
     return (
         <div className="min-h-screen relative w-full bg-black flex flex-col overflow-hidden text-neutral-200">
-            <ShaderBackground opacity={0.35} />
+            <ShaderBackground opacity={0.5} />
 
             <header className="relative z-20 flex items-center justify-between px-6 py-4 border-b border-white/5 backdrop-blur-sm bg-black/20">
                 <Link href="/" className="flex items-center gap-2 text-neutral-400 hover:text-white transition-colors text-sm">
                     <ArrowLeft className="w-4 h-4" /> Geri Dön
                 </Link>
-                <h1 className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-300 via-yellow-400 to-amber-300">
+                <h1 className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-300 via-fuchsia-400 to-indigo-300">
                     Hesap Yönetimi
                 </h1>
                 <ThemeToggle />
@@ -110,7 +110,7 @@ export default function AccountPage() {
                         </div>
                         <div className="flex gap-2">
                             <Link href="/pricing"
-                                className="group flex items-center gap-2 px-4 py-2 text-xs font-medium rounded-xl bg-gradient-to-r from-orange-500/10 to-yellow-500/10 border border-orange-500/20 text-orange-400 hover:from-orange-500/20 hover:to-yellow-500/20 transition-all">
+                                className="group flex items-center gap-2 px-4 py-2 text-xs font-medium rounded-xl bg-gradient-to-r from-purple-500/10 to-fuchsia-500/10 border border-purple-500/20 text-purple-400 hover:from-purple-500/20 hover:to-fuchsia-500/20 transition-all">
                                 Plan Değiştir <ArrowRight className="w-3 h-3 transition-transform group-hover:translate-x-0.5" />
                             </Link>
                             {sub?.isSubscriptionActive && (
@@ -139,7 +139,7 @@ export default function AccountPage() {
                             <div className="w-full bg-neutral-800 rounded-full h-2">
                                 <div className={cn('h-2 rounded-full transition-all',
                                     (sub?.monthlyUsagePercent || 0) >= 90 ? 'bg-red-500' :
-                                        (sub?.monthlyUsagePercent || 0) >= 80 ? 'bg-amber-500' : 'bg-orange-500'
+                                        (sub?.monthlyUsagePercent || 0) >= 80 ? 'bg-amber-500' : 'bg-purple-500'
                                 )} style={{ width: `${Math.min(100, sub?.monthlyUsagePercent || 0)}%` }} />
                             </div>
                         </div>
