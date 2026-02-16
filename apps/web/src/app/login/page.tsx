@@ -255,3 +255,25 @@ function LoginForm() {
     )
 }
 
+export default function LoginPage() {
+    return (
+        <div className="min-h-screen relative w-full bg-background-primary flex flex-col items-center justify-center overflow-hidden p-4">
+            <ShaderBackground opacity={0.5} />
+
+            <div className="absolute top-4 right-4 z-30">
+                <ThemeToggle />
+            </div>
+
+            <Suspense fallback={<KineticDotsLoader size="lg" />}>
+                <LoginForm />
+            </Suspense>
+
+            <div className="relative z-20 mt-8 text-center">
+                <p className="text-xs text-text-muted">
+                    By continuing, you agree to our Terms of Service and Privacy Policy.
+                </p>
+            </div>
+        </div>
+    )
+}
+
