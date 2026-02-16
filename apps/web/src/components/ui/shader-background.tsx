@@ -10,6 +10,7 @@ interface ShaderBackgroundProps {
 
 const ShaderBackground = ({ opacity, className }: ShaderBackgroundProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [isSupported, setIsSupported] = React.useState(true);
 
   // Vertex shader source code
   const vsSource = `
@@ -161,6 +162,7 @@ const ShaderBackground = ({ opacity, className }: ShaderBackgroundProps) => {
     const gl = canvas.getContext('webgl');
     if (!gl) {
       console.warn('WebGL not supported.');
+      setIsSupported(false);
       return;
     }
 
@@ -235,6 +237,10 @@ const ShaderBackground = ({ opacity, className }: ShaderBackgroundProps) => {
       cancelAnimationFrame(animationFrameId);
     };
   }, []);
+
+  if (!isSupported) {
+    return <div className={cn("fixed top-0 left-0 w-full h-full -z-10 bg-gradient-to-br from-purple-900 to-blue-900", className)} style={{ opacity }} />;
+  }
 
   return (
     <canvas

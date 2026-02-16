@@ -257,7 +257,7 @@ function LoginForm() {
 
 export default function LoginPage() {
     return (
-        <div className="min-h-screen relative w-full bg-background-primary flex flex-col items-center justify-center overflow-hidden p-4">
+        <div className="min-h-screen relative w-full flex flex-col items-center justify-center overflow-hidden p-4 bg-black/90">
             <ShaderBackground />
 
             <div className="absolute top-4 right-4 z-30">
