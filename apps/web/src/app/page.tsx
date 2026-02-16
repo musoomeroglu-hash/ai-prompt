@@ -3,7 +3,7 @@
 import { createClient } from '@/lib/supabaseClient'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { ShaderBackground } from '@/components/ui/shader-background'
+import { ShadowOverlay } from '@/components/ui/shadow-overlay'
 import { TextShimmer } from '@/components/ui/text-shimmer'
 import { ThemeToggle } from '@/components/ui/theme-toggle'
 import KineticDotsLoader from '@/components/ui/kinetic-dots-loader'
@@ -244,7 +244,12 @@ export default function Home() {
 
   return (
     <div className="min-h-screen relative w-full bg-background-primary flex overflow-hidden text-text-primary">
-      <ShaderBackground opacity={0.6} />
+      <ShadowOverlay
+        color="#1e1b4b" /* indigo-950 base */
+        animation={{ scale: 50, speed: 20 }}
+        noise={{ opacity: 0.2, scale: 1 }}
+        style={{ opacity: 0.6 }}
+      />
 
       {/* ═══ Top-Right Corner: Quota + Upgrade + Language ═══ */}
       <div className="fixed top-4 right-4 z-50 flex items-center gap-3">

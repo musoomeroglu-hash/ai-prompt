@@ -3,7 +3,7 @@
 import { createClient } from '@/lib/supabaseClient'
 import { useState, useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { ShaderBackground } from '@/components/ui/shader-background'
+import { ShadowOverlay } from '@/components/ui/shadow-overlay'
 import { ThemeToggle } from '@/components/ui/theme-toggle'
 import KineticDotsLoader from '@/components/ui/kinetic-dots-loader'
 import { cn } from '@/lib/utils'
@@ -258,7 +258,11 @@ function LoginForm() {
 export default function LoginPage() {
     return (
         <div className="min-h-screen relative w-full bg-background-primary flex flex-col items-center justify-center overflow-hidden p-4">
-            <ShaderBackground opacity={0.5} />
+            <ShadowOverlay
+                color="#0a0a0f"
+                animation={{ scale: 40, speed: 30 }}
+                style={{ opacity: 0.5 }}
+            />
 
             <div className="absolute top-4 right-4 z-30">
                 <ThemeToggle />
