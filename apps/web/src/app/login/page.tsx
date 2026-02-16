@@ -259,9 +259,9 @@ export default function LoginPage() {
     return (
         <div className="min-h-screen relative w-full bg-background-primary flex flex-col items-center justify-center overflow-hidden p-4">
             <ShadowOverlay
-                color="#0a0a0f"
-                animation={{ scale: 40, speed: 30 }}
-                style={{ opacity: 0.5 }}
+                color="rgba(180, 180, 180, 1)"
+                animation={{ scale: 50, speed: 50 }}
+                style={{ opacity: 0.8, zIndex: 0 }}
             />
 
             <div className="absolute top-4 right-4 z-30">

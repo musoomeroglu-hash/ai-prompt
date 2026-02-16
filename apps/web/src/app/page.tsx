@@ -180,9 +180,9 @@ export default function Home() {
   if (loading) return (
     <div className="min-h-screen bg-background-primary flex items-center justify-center relative overflow-hidden">
       <ShadowOverlay
-        color="#0a0a0f"
+        color="rgba(180, 180, 180, 1)"
         animation={{ scale: 30, speed: 40 }}
-        style={{ opacity: 0.4 }}
+        style={{ opacity: 0.5, zIndex: 0 }}
       />
       <div className="relative z-10">
         <KineticDotsLoader size="lg" />
@@ -249,10 +249,10 @@ export default function Home() {
   return (
     <div className="min-h-screen relative w-full bg-background-primary flex overflow-hidden text-text-primary">
       <ShadowOverlay
-        color="#1e1b4b" /* indigo-950 base */
-        animation={{ scale: 50, speed: 20 }}
+        color="rgba(180, 180, 180, 1)"
+        animation={{ scale: 50, speed: 50 }}
         noise={{ opacity: 0.2, scale: 1 }}
-        style={{ opacity: 0.6 }}
+        style={{ opacity: 0.8, zIndex: 0 }}
       />
 
       {/* ═══ Top-Right Corner: Quota + Upgrade + Language ═══ */}
