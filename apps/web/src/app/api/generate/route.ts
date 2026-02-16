@@ -142,55 +142,28 @@ export async function POST(req: Request) {
 
         let responseText = '';
 
-        // Check for API Key
-        if (!process.env.GEMINI_API_KEY) {
-            console.warn('⚠️ [API] GEMINI_API_KEY missing. Using mock response.');
-            await new Promise(resolve => setTimeout(resolve, 1500)); // Simulate delay
+        const prompt = subscription.planConfig.aiModelTier !== 'basic'
+            ? buildAdvancedPrompt(userRequest, category, targetAI)
+            : buildBasicPrompt(userRequest, category, targetAI)
 
-            const mockResponse = {
-                short: `[MOCK] Optimized ${category} prompt for ${targetAI}.`,
-                detailed: `[MOCK] This is a detailed prompt optimized for ${targetAI} in the ${category} category. Please configure GEMINI_API_KEY to generate real AI responses.`,
-                creative: `[MOCK] Imagine a creative prompt here! (API Key required for real magic)`
-            };
-            responseText = JSON.stringify(mockResponse);
-        } else {
-        } else {
-            const prompt = subscription.planConfig.aiModelTier !== 'basic'
-                ? buildAdvancedPrompt(userRequest, category, targetAI)
-                : buildBasicPrompt(userRequest, category, targetAI)
+        // 5. AI Execution with Retry
+        const maxAttempts = 3;
 
-            // 5. AI Execution with Retry
-            const maxAttempts = 3;
-            let success = false;
-
-            for (let attempt = 1; attempt <= maxAttempts; attempt++) {
-                try {
-                    console.log(`[AI] Generating content with model... Attempt ${attempt}`);
-                    const resultGen = await model.generateContent(prompt)
-                    const text = resultGen.response.text();
-                    if (text) {
-                        responseText = text;
-                        success = true;
-                        break;
-                    }
-                } catch (error: any) {
-                    console.error(`[AI] Attempt ${attempt} failed:`, error.message);
-                    if (attempt === maxAttempts) {
-                        console.warn('[AI] All attempts failed. Falling back to mock response.');
-                    }
-                    const delay = Math.pow(2, attempt - 1) * 1000;
-                    await new Promise(resolve => setTimeout(resolve, delay));
+        for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+            try {
+                console.log(`[AI] Generating content with model... Attempt ${attempt}`);
+                const resultGen = await model.generateContent(prompt);
+                const text = resultGen.response.text();
+                if (text) {
+                    responseText = text;
+                    break;
                 }
-            }
-
-            if (!success) {
-                // Fallback to mock if API fails even with key
-                const mockResponse = {
-                    short: `[SIMULATION] Optimized ${category} prompt for ${targetAI}.`,
-                    detailed: `[SIMULATION] The AI service is currently unavailable or the API key is invalid. This is a simulated response to demonstrate the UI flow. optimization for ${targetAI} in ${category}.`,
-                    creative: `[SIMULATION] Creative angle for ${userRequest} (System in fallback mode).`
-                };
-                responseText = JSON.stringify(mockResponse);
+            } catch (error: any) {
+                console.error(`[AI] Attempt ${attempt} failed:`, error.message);
+                if (attempt === maxAttempts) throw error;
+                const delay = Math.pow(2, attempt - 1) * 1000;
+                console.log(`[AI] Retrying in ${delay}ms...`);
+                await new Promise(resolve => setTimeout(resolve, delay));
             }
         }
 
