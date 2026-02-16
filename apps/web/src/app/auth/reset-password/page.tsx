@@ -63,7 +63,7 @@ export default function ResetPasswordPage() {
 
             <div className="relative z-10 max-w-md w-full bg-neutral-900/80 backdrop-blur-xl border border-white/10 rounded-2xl p-8 shadow-2xl">
                 <div className="text-center mb-8">
-                    <div className="w-16 h-16 bg-gradient-to-br from-purple-600 to-fuchsia-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-purple-500/20">>
+                    <div className="w-16 h-16 bg-gradient-to-br from-purple-600 to-fuchsia-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-purple-500/20">
                         <Lock className="w-8 h-8 text-white" />
                     </div>
                     <h1 className="text-3xl font-bold text-white mb-2">Yeni Şifre Belirle</h1>
