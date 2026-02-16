@@ -111,7 +111,7 @@ export function ShadowOverlay({
             className={className}
             style={{
                 overflow: "hidden",
-                position: "absolute",
+                position: "absolute", // Keep absolute for background usage
                 inset: 0,
                 width: "100%",
                 height: "100%",
@@ -143,7 +143,6 @@ export function ShadowOverlay({
                                     values="180"
                                 />
                                 <feColorMatrix
-                                    in="dist"
                                     result="circulation"
                                     type="matrix"
                                     values="4 0 0 0 1  4 0 0 0 1  4 0 0 0 1  1 0 0 0 0"
