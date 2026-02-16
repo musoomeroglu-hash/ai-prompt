@@ -181,10 +181,6 @@ export async function POST(req: Request) {
             }
         }
 
-        if (isDev) console.log('[AI] Raw Response:', responseText);
-
-        const result = extractJSON(responseText);
-
         // 6. DB Logging
         try {
             await supabase.from('profiles').upsert({ id: userId, email: user?.email || '' }, { onConflict: 'id', ignoreDuplicates: true });
