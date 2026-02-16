@@ -155,8 +155,8 @@ export default function PricingPage() {
     }
 
     return (
-        <div className="min-h-screen relative w-full bg-black flex flex-col overflow-hidden text-neutral-200">
-            <ShaderBackground opacity={0.4} />
+        <div className="min-h-screen relative w-full bg-transparent flex flex-col overflow-hidden text-neutral-200">
+            <ShaderBackground />
 
             {/* Nav */}
             <header className="relative z-20 flex items-center justify-between px-6 py-4 border-b border-white/5 backdrop-blur-sm bg-black/20">

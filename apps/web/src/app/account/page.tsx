@@ -75,8 +75,8 @@ export default function AccountPage() {
     const PlanIcon = planInfo.icon
 
     return (
-        <div className="min-h-screen relative w-full bg-black flex flex-col overflow-hidden text-neutral-200">
-            <ShaderBackground opacity={0.5} />
+        <div className="min-h-screen relative w-full bg-transparent flex flex-col overflow-hidden text-neutral-200">
+            <ShaderBackground />
 
             <header className="relative z-20 flex items-center justify-between px-6 py-4 border-b border-white/5 backdrop-blur-sm bg-black/20">
                 <Link href="/" className="flex items-center gap-2 text-neutral-400 hover:text-white transition-colors text-sm">
