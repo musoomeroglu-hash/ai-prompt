@@ -4,20 +4,18 @@ import { createClient } from '@/lib/supabaseClient'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import ShaderBackground from '@/components/ui/shader-background'
-import { TextShimmer } from '@/components/ui/text-shimmer'
 import { ThemeToggle } from '@/components/ui/theme-toggle'
 import Loader from '@/components/ui/loader'
 import { GradientSpinner } from '@/components/ui/gradient-spinner'
 import { ChatInput } from '@/components/chat-input'
 import { ResultsPanel } from '@/components/results-panel'
-import { LibraryView } from '@/components/library-view'
 import { InteractiveLogin } from '@/components/auth/interactive-login'
 import { HeroGeometric } from '@/components/ui/hero-geometric'
 import { cn } from '@/lib/utils'
 import { useLanguage } from '@/lib/i18n'
-import { Clock, LogOut, Puzzle, Crown, Zap, User, ArrowRight, BookOpen, MessageSquare, Save, Sparkles } from 'lucide-react'
+import { Clock, LogOut, Puzzle, Crown, Zap, User, ArrowRight, MessageSquare, Sparkles } from 'lucide-react'
 import Link from 'next/link'
-import { Sidebar, SidebarBody, SidebarLink, useSidebar } from '@/components/ui/sidebar'
+import { Sidebar, SidebarBody, SidebarLink } from '@/components/ui/sidebar'
 import { motion, AnimatePresence } from 'framer-motion'
 
 interface SubscriptionStatus {
@@ -40,7 +38,6 @@ export default function Home() {
   const [session, setSession] = useState<any>(null)
   const [loading, setLoading] = useState(true)
   const [sidebarOpen, setSidebarOpen] = useState(false)
-  const [currentView, setCurrentView] = useState<'chat' | 'library' | 'favorites'>('chat')
   const [showLogin, setShowLogin] = useState(false) // State to toggle between Hero and Login
 
   const supabase = createClient()
@@ -289,7 +286,7 @@ export default function Home() {
         <SidebarBody className="relative z-30 justify-between gap-6 bg-background-secondary border-r border-white/5">
           {/* Top */}
           <div className="flex flex-col gap-2 overflow-y-auto overflow-x-hidden flex-1">
-            <SidebarLogo open={sidebarOpen} onReset={() => setCurrentView('chat')} />
+            <SidebarLogo open={sidebarOpen} />
 
             <div className="h-px bg-white/5 my-1" />
 
@@ -300,40 +297,13 @@ export default function Home() {
                 href: "#",
                 icon: <MessageSquare className="w-5 h-5 text-text-muted flex-shrink-0" />,
               }}
-              className={cn("text-text-secondary hover:text-white transition-colors", currentView === 'chat' && "text-white bg-white/5 rounded-lg")}
+              className={cn("text-text-secondary hover:text-white transition-colors text-white bg-white/5 rounded-lg")}
               onClick={(e) => {
                 e.preventDefault()
-                setCurrentView('chat')
                 if (window.innerWidth < 768) setSidebarOpen(false)
               }}
             />
 
-            <SidebarLink
-              link={{
-                label: "Kütüphane",
-                href: "#",
-                icon: <BookOpen className="w-5 h-5 text-text-muted flex-shrink-0" />,
-              }}
-              className={cn("text-text-secondary hover:text-white transition-colors", currentView === 'library' && "text-white bg-white/5 rounded-lg")}
-              onClick={(e) => {
-                e.preventDefault()
-                setCurrentView('library')
-                if (window.innerWidth < 768) setSidebarOpen(false)
-              }}
-            />
-            <SidebarLink
-              link={{
-                label: "Favorilerim",
-                href: "#",
-                icon: <Save className="w-5 h-5 text-text-muted flex-shrink-0" />,
-              }}
-              className={cn("text-text-secondary hover:text-white transition-colors", currentView === 'favorites' && "text-white bg-white/5 rounded-lg")}
-              onClick={(e) => {
-                e.preventDefault()
-                setCurrentView('favorites')
-                if (window.innerWidth < 768) setSidebarOpen(false)
-              }}
-            />
             <SidebarLink
               link={{
                 label: t.account,
@@ -343,8 +313,6 @@ export default function Home() {
               className="text-text-secondary hover:text-white transition-colors"
             />
 
-
-
             <SidebarLink
               link={{
                 label: "Extension",
@@ -353,8 +321,6 @@ export default function Home() {
               }}
               className="text-text-secondary hover:text-white transition-colors"
             />
-
-
 
             {/* History section inside sidebar */}
             {sidebarOpen && (
@@ -417,64 +383,56 @@ export default function Home() {
         {/* Scrollable Area */}
         <main className={cn(
           "flex-1 overflow-y-auto px-4 pb-4 scroll-smooth custom-scrollbar",
-          (currentView === 'chat' && !result && !generating) ? "flex flex-col items-center justify-center" : ""
+          (!result && !generating) ? "flex flex-col items-center justify-center" : ""
         )}>
-          {currentView === 'chat' ? (
-            <div className={cn(
-              "w-full max-w-4xl mx-auto",
-              (!result && !generating) ? "text-center" : "py-10"
-            )}>
-              {!result && !generating && (
-                <div className="mb-8">
-                  <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-accent-primary via-accent-secondary to-accent-pink bg-clip-text text-transparent mb-3">
-                    {t.heroTitle}
-                  </h2>
-                  <p className="text-text-muted text-sm max-w-md mx-auto">
-                    {t.heroSubtitle}
-                  </p>
-                </div>
-              )}
+          <div className={cn(
+            "w-full max-w-4xl mx-auto",
+            (!result && !generating) ? "text-center" : "py-10"
+          )}>
+            {!result && !generating && (
+              <div className="mb-8">
+                <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-accent-primary via-accent-secondary to-accent-pink bg-clip-text text-transparent mb-3">
+                  {t.heroTitle}
+                </h2>
+                <p className="text-text-muted text-sm max-w-md mx-auto">
+                  {t.heroSubtitle}
+                </p>
+              </div>
+            )}
 
-              {result && (
-                <ResultsPanel
-                  result={result}
-                  category={lastCategory}
-                  targetAI={lastTargetAI}
-                  generationTime={generationTime}
-                  onRegenerate={handleRegenerate}
-                />
-              )}
+            {result && (
+              <ResultsPanel
+                result={result}
+                category={lastCategory}
+                targetAI={lastTargetAI}
+                generationTime={generationTime}
+                onRegenerate={handleRegenerate}
+              />
+            )}
 
-              {generating && (
-                <div className="mt-10 flex flex-col items-center gap-2">
-                  <GradientSpinner size={120} text="GENERATING" />
-                </div>
-              )}
-            </div>
-          ) : currentView === 'favorites' ? (
-            <LibraryView showFavorites={true} />
-          ) : (
-            <LibraryView />
-          )}
+            {generating && (
+              <div className="mt-10 flex flex-col items-center gap-2">
+                <GradientSpinner size={120} text="GENERATING" />
+              </div>
+            )}
+          </div>
         </main>
 
-        {/* Fixed Bottom Input Area - Only for Chat View */}
-        {currentView === 'chat' && (
-          <div className="w-full p-2 sm:p-4 z-40 shrink-0 bg-gradient-to-t from-background-primary via-background-primary/90 to-transparent pb-safe-area-inset-bottom">
-            <div className="max-w-3xl mx-auto">
-              <ChatInput onSubmit={handleGenerate} isGenerating={generating} defaultCategory={lastCategory} />
-            </div>
+        {/* Fixed Bottom Input Area - Always Visible for Chat */}
+        <div className="w-full p-2 sm:p-4 z-40 shrink-0 bg-gradient-to-t from-background-primary via-background-primary/90 to-transparent pb-safe-area-inset-bottom">
+          <div className="max-w-3xl mx-auto">
+            <ChatInput onSubmit={handleGenerate} isGenerating={generating} defaultCategory={lastCategory} />
           </div>
-        )}
+        </div>
 
       </div>
     </div>
   )
 }
 
-function SidebarLogo({ open, onReset }: { open: boolean; onReset: () => void }) {
+function SidebarLogo({ open }: { open: boolean }) {
   return (
-    <div className="flex items-center gap-2 py-2 cursor-pointer" onClick={onReset}>
+    <div className="flex items-center gap-2 py-2 cursor-pointer">
       <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-accent-primary to-accent-secondary flex items-center justify-center flex-shrink-0">
         <Sparkles className="w-4 h-4 text-white" />
       </div>
