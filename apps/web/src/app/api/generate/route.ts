@@ -4,13 +4,38 @@ import { checkSubscription, incrementUsage } from '@/lib/subscription'
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
 
+export const dynamic = 'force-dynamic'
+
+// --- Validation Schemas ---
 const GenerateSchema = z.object({
     userRequest: z.string().min(1).max(2000),
     category: z.string().min(1).max(100),
     targetModel: z.enum(['chatgpt', 'gemini', 'claude', 'copilot', 'perplexity', 'midjourney', 'dalle', 'stable_diffusion', 'llama', 'mistral']).optional()
 })
 
-export const dynamic = 'force-dynamic'
+// --- Helper: Robust JSON Extraction ---
+function extractJSON(text: string): any {
+    try {
+        return JSON.parse(text);
+    } catch {
+        // pattern: code blocks
+        const codeBlock = text.match(/```(?:json)?\s*([\s\S]*?)\s*```/);
+        if (codeBlock && codeBlock[1]) {
+            try { return JSON.parse(codeBlock[1]); } catch { }
+        }
+        // pattern: find first { and last }
+        const firstBrace = text.indexOf('{');
+        const lastBrace = text.lastIndexOf('}');
+        if (firstBrace !== -1 && lastBrace !== -1 && lastBrace > firstBrace) {
+            try { return JSON.parse(text.slice(firstBrace, lastBrace + 1)); } catch { }
+        }
+        throw new Error('AI response format error: Could not extract valid JSON');
+    }
+}
+
+// --- Helper: Development Mock ---
+const isDev = process.env.NODE_ENV === 'development';
+const isLocal = process.env.NEXT_PUBLIC_APP_URL?.includes('localhost');
 
 // AI-specific optimization hints
 const aiOptimizations: Record<string, string> = {
@@ -76,123 +101,73 @@ export async function POST(req: Request) {
     try {
         const supabase = await createClient()
         const { data: { user } } = await supabase.auth.getUser()
+
+        // 1. Input Validation
         const body = await req.json()
         const parseResult = GenerateSchema.safeParse(body)
-
         if (!parseResult.success) {
             return NextResponse.json({ error: 'Invalid input', details: parseResult.error.format() }, { status: 400 })
         }
-
         const { category, userRequest, targetModel } = parseResult.data
 
+        // 2. Authentication & Dev Bypass
         let userId = user?.id
-
-        // DEV MODE: Mock user if missing - HARDENED CHECK
-        if (!userId && process.env.NODE_ENV === 'development' && process.env.NEXT_PUBLIC_APP_URL?.includes('localhost')) {
+        if (!userId && isDev && isLocal) {
             userId = 'dev-user-id'
-            console.warn('⚠️ USING MOCK USER ID (DEV ONLY)')
+            console.warn('⚠️ [DEV] Using mock user ID')
         }
+        if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
-        if (!userId) {
-            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-        }
-
-        // Check subscription & quotas
+        // 3. Subscription Check
         let subscription = await checkSubscription(supabase, userId)
 
-        // DEV MODE: Override subscription for mock user
-        if (userId === 'dev-user-id' && process.env.NODE_ENV === 'development') {
+        // [Refactor] Mock Subscription Logic centralized
+        if (userId === 'dev-user-id' && isDev) {
             const { PLANS } = await import('@/lib/plans')
             subscription = {
-                plan: 'unlimited',
-                planConfig: PLANS.unlimited,
-                status: 'active',
-                isTrialActive: false,
-                trialDaysRemaining: 0,
-                isSubscriptionActive: true,
-                subscriptionEnd: null,
-                billingCycle: 'monthly',
-                isAdmin: true,
-                monthlyPromptsUsed: 0,
-                monthlyPromptLimit: -1,
-                dailyPromptsUsed: 0,
-                dailyPromptLimit: -1,
-                apiCallsUsed: 0,
-                apiCallsLimit: -1,
-                monthlyUsagePercent: 0,
-                quotaWarning: 'none',
+                ...subscription,
                 canGenerate: true,
+                planConfig: PLANS.unlimited,
+                plan: 'unlimited',
+                status: 'active'
             }
         }
 
         if (!subscription.canGenerate) {
-            return NextResponse.json({
-                error: subscription.reason || 'Limit aşıldı',
-                subscription: {
-                    plan: subscription.plan,
-                    status: subscription.status,
-                    monthlyPromptsUsed: subscription.monthlyPromptsUsed,
-                    monthlyPromptLimit: subscription.monthlyPromptLimit,
-                    dailyPromptsUsed: subscription.dailyPromptsUsed,
-                    dailyPromptLimit: subscription.dailyPromptLimit,
-                    quotaWarning: subscription.quotaWarning,
-                    isTrialActive: subscription.isTrialActive,
-                    trialDaysRemaining: subscription.trialDaysRemaining,
-                }
-            }, { status: 403 })
+            return NextResponse.json({ error: subscription.reason || 'Limit aşıldı', subscription }, { status: 403 })
         }
 
-        // Build prompt based on plan tier
+        // 4. Prompt Generation
         const targetAI = targetModel || 'chatgpt'
-        const useAdvanced = subscription.planConfig.aiModelTier !== 'basic'
-        const prompt = useAdvanced
+        const prompt = subscription.planConfig.aiModelTier !== 'basic'
             ? buildAdvancedPrompt(userRequest, category, targetAI)
             : buildBasicPrompt(userRequest, category, targetAI)
 
-        // Retry logic for 503 errors
-        let resultGen;
-        let responseText;
-        let attempts = 0;
+        // 5. AI Execution with Retry
+        let responseText = '';
         const maxAttempts = 3;
 
-        while (attempts < maxAttempts) {
+        for (let attempt = 1; attempt <= maxAttempts; attempt++) {
             try {
-                resultGen = await model.generateContent(prompt)
+                const resultGen = await model.generateContent(prompt)
                 responseText = resultGen.response.text()
-                break; // Success
+                break;
             } catch (error: any) {
-                attempts++;
-                console.warn(`Gemini generation attempt ${attempts} failed:`, error.message);
-
-                if (attempts >= maxAttempts) throw error; // Rethrow if max attempts reached
-
-                // Wait before retrying (exponential backoff: 1s, 2s, 4s)
-                const delay = Math.pow(2, attempts - 1) * 1000;
+                console.warn(`[AI] Attempt ${attempt} failed:`, error.message);
+                if (attempt === maxAttempts) throw error;
+                const delay = Math.pow(2, attempt - 1) * 1000;
                 await new Promise(resolve => setTimeout(resolve, delay));
             }
         }
-        console.log('Gemini Raw Response:', responseText);
 
-        // Parse response
-        let result;
+        if (isDev) console.log('[AI] Raw Response:', responseText);
+
+        const result = extractJSON(responseText);
+
+        // 6. DB Logging
         try {
-            result = extractJSON(responseText);
-        } catch (e) {
-            console.error('JSON Parse Error. Raw text:', responseText);
-            throw new Error('AI response format error');
-        }
-
-        // Ensure user profile exists (fixes FK constraint for generations)
-        const { error: profileError } = await supabase.from('profiles').upsert(
-            { id: userId, email: user?.email || '' },
-            { onConflict: 'id', ignoreDuplicates: true }
-        )
-        if (profileError) console.error('Profile upsert error:', profileError.message)
-
-        // Record in generations (non-blocking - don't fail the response)
-        let updatedSub = subscription;
-        try {
-            const { error: genError } = await supabase.from('generations').insert({
+            await supabase.from('profiles').upsert({ id: userId, email: user?.email || '' }, { onConflict: 'id', ignoreDuplicates: true });
+            await supabase.from('generations').insert({
                 user_id: userId,
                 category,
                 user_request: userRequest,
@@ -200,33 +175,14 @@ export async function POST(req: Request) {
                 target_model: targetAI,
                 result_json: result,
                 tokens_used: 0
-            })
-            if (genError) console.error('Generations insert error:', genError.message)
-
-            // Update daily usage
-            const today = new Date().toISOString().split('T')[0]
-            const { data: usage } = await supabase
-                .from('daily_usage')
-                .select('count')
-                .eq('user_id', userId)
-                .eq('date', today)
-                .single()
-
-            const currentCount = usage?.count || 0
-            await supabase.from('daily_usage').upsert({
-                user_id: userId,
-                date: today,
-                count: currentCount + 1
-            })
-
-            // Update monthly usage tracking
-            await incrementUsage(supabase, userId, 'prompt')
-
-            // Re-check subscription to get updated counts for response
-            updatedSub = await checkSubscription(supabase, userId)
-        } catch (dbError: any) {
-            console.error('DB operations error (non-fatal):', dbError.message)
+            });
+            await incrementUsage(supabase, userId!, 'prompt');
+        } catch (err: any) {
+            console.error('[DB] Logging error:', err.message);
         }
+
+        // Re-fetch sub status for UI update
+        const updatedSub = await checkSubscription(supabase, userId)
 
         return NextResponse.json({
             ok: true,
@@ -247,25 +203,7 @@ export async function POST(req: Request) {
         })
 
     } catch (error: any) {
-        console.error('Generate Error:', error)
-        return NextResponse.json({ error: error.message || 'Internal Error' }, { status: 500 })
-    }
-}
-
-function extractJSON(text: string): any {
-    try {
-        // Try parsing directly
-        return JSON.parse(text);
-    } catch {
-        // Try extracting from code blocks
-        const match = text.match(/```(?:json)?\s*([\s\S]*?)\s*```/);
-        if (match && match[1]) {
-            try {
-                return JSON.parse(match[1]);
-            } catch {
-                // connection to context
-            }
-        }
-        throw new Error('Could not parse JSON response from AI');
+        console.error('[API] Generate Error:', error.message)
+        return NextResponse.json({ error: 'AI processing failed', details: isDev ? error.message : undefined }, { status: 500 })
     }
 }
