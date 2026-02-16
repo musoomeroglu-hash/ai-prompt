@@ -68,7 +68,7 @@ export function PromptDetailView({ promptId, onBack }: PromptDetailViewProps) {
 
     if (loading) return (
         <div className="flex items-center justify-center p-12 text-white">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500"></div>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-500"></div>
         </div>
     )
 
@@ -82,7 +82,7 @@ export function PromptDetailView({ promptId, onBack }: PromptDetailViewProps) {
     if (!prompt) return (
         <div className="flex flex-col items-center justify-center p-12 text-zinc-400 gap-4">
             <p>Prompt bulunamadı</p>
-            <button onClick={onBack} className="text-orange-400 hover:text-orange-300">Geri Dön</button>
+            <button onClick={onBack} className="text-purple-400 hover:text-purple-300">Geri Dön</button>
         </div>
     )
 
@@ -149,7 +149,7 @@ export function PromptDetailView({ promptId, onBack }: PromptDetailViewProps) {
                 <div className="lg:col-span-2 space-y-6">
                     <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-8">
                         <div className="flex items-center gap-3 mb-4">
-                            <span className="bg-orange-500/10 text-orange-400 px-3 py-1 rounded-full text-xs font-medium border border-orange-500/20">
+                            <span className="bg-purple-500/10 text-purple-400 px-3 py-1 rounded-full text-xs font-medium border border-purple-500/20">
                                 {prompt.categories?.name}
                             </span>
                             <span className="text-zinc-500 text-xs flex items-center gap-1">
@@ -216,7 +216,7 @@ export function PromptDetailView({ promptId, onBack }: PromptDetailViewProps) {
                             onClick={handleFavorite}
                             disabled={favoriting}
                             className={`w-full py-3 rounded-xl transition-colors mb-3 flex items-center justify-center gap-2 border ${isFavorite
-                                ? 'bg-orange-500 text-white border-orange-600 hover:bg-orange-600'
+                                ? 'bg-purple-500 text-white border-purple-600 hover:bg-purple-600'
                                 : 'bg-zinc-800 text-white border-zinc-700 hover:bg-zinc-700'}`}
                         >
                             <Save className={`w-4 h-4 ${isFavorite ? 'fill-current' : ''}`} />

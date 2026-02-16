@@ -274,7 +274,7 @@ export function InteractiveLogin({ onLoginSuccess, onGoogleSignIn, onSignUp }: {
                                 width: '240px',
                                 height: '200px',
                                 zIndex: 3,
-                                backgroundColor: '#FF9B6B',
+                                backgroundColor: '#d946ef', // fuchsia-500
                                 borderRadius: '120px 120px 0 0',
                                 transform: (password.length > 0 && showPassword) ? `skewX(0deg)` : `skewX(${orangePos.bodySkew || 0}deg)`,
                                 transformOrigin: 'bottom center',

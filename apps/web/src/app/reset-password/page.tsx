@@ -50,7 +50,7 @@ export default function ResetPasswordPage() {
             <div className="relative z-20 w-full max-w-md bg-black/40 backdrop-blur-xl border border-white/10 rounded-3xl shadow-2xl overflow-hidden">
                 <div className="p-8 pb-0 text-center">
                     <Link href="/" className="inline-block mb-6">
-                        <h1 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-300 via-yellow-400 to-amber-300">
+                        <h1 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-fuchsia-400 to-pink-400">
                             Antigravity
                         </h1>
                     </Link>
@@ -64,26 +64,26 @@ export default function ResetPasswordPage() {
                     <form onSubmit={handleResetPassword} className="space-y-4">
                         <div className="space-y-4">
                             <div className="relative group">
-                                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-500 group-focus-within:text-orange-400 transition-colors" />
+                                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-500 group-focus-within:text-purple-400 transition-colors" />
                                 <input
                                     type="password"
                                     name="password"
                                     placeholder="New Password"
                                     required
                                     minLength={6}
-                                    className="w-full pl-10 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder:text-neutral-600 focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500/50 transition-all"
+                                    className="w-full pl-10 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder:text-neutral-600 focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-purple-500/50 transition-all"
                                 />
                             </div>
 
                             <div className="relative group">
-                                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-500 group-focus-within:text-orange-400 transition-colors" />
+                                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-500 group-focus-within:text-purple-400 transition-colors" />
                                 <input
                                     type="password"
                                     name="confirmPassword"
                                     placeholder="Confirm New Password"
                                     required
                                     minLength={6}
-                                    className="w-full pl-10 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder:text-neutral-600 focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500/50 transition-all"
+                                    className="w-full pl-10 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder:text-neutral-600 focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-purple-500/50 transition-all"
                                 />
                             </div>
                         </div>
@@ -101,7 +101,7 @@ export default function ResetPasswordPage() {
                         <button
                             type="submit"
                             disabled={loading}
-                            className="group relative w-full flex items-center justify-center gap-2 py-3 bg-gradient-to-r from-orange-500 to-amber-500 text-black font-semibold rounded-xl hover:shadow-lg hover:shadow-orange-500/20 hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                            className="group relative w-full flex items-center justify-center gap-2 py-3 bg-gradient-to-r from-purple-500 to-fuchsia-500 text-white font-semibold rounded-xl hover:shadow-lg hover:shadow-purple-500/20 hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                         >
                             {loading ? (
                                 <Loader size="sm" />

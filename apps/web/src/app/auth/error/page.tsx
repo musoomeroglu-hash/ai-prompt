@@ -23,7 +23,7 @@ function ErrorContent() {
 
                 <Link
                     href="/"
-                    className="inline-block w-full bg-gradient-to-r from-orange-500 to-yellow-500 text-black font-semibold py-3 px-6 rounded-lg hover:from-orange-600 hover:to-yellow-600 transition-all duration-200"
+                    className="inline-block w-full bg-gradient-to-r from-purple-500 to-fuchsia-500 text-white font-semibold py-3 px-6 rounded-lg hover:from-purple-600 hover:to-fuchsia-600 transition-all duration-200"
                 >
                     Return to Home
                 </Link>

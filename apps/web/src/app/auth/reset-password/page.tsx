@@ -63,7 +63,7 @@ export default function ResetPasswordPage() {
 
             <div className="relative z-10 max-w-md w-full bg-neutral-900/80 backdrop-blur-xl border border-white/10 rounded-2xl p-8 shadow-2xl">
                 <div className="text-center mb-8">
-                    <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-yellow-500 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-orange-500/20">
+                    <div className="w-16 h-16 bg-gradient-to-br from-purple-600 to-fuchsia-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-purple-500/20">>
                         <Lock className="w-8 h-8 text-white" />
                     </div>
                     <h1 className="text-3xl font-bold text-white mb-2">Yeni Şifre Belirle</h1>
@@ -74,13 +74,13 @@ export default function ResetPasswordPage() {
                     <div className="space-y-2">
                         <label className="text-sm font-medium text-neutral-300 ml-1">Yeni Şifre</label>
                         <div className="relative group">
-                            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-500 group-focus-within:text-orange-400 transition-colors" />
+                            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-500 group-focus-within:text-purple-400 transition-colors" />
                             <input
                                 type={showPassword ? "text" : "password"}
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 placeholder="En az 8 karakter"
-                                className="w-full bg-black/50 border border-white/10 rounded-xl py-3 pl-10 pr-10 text-white placeholder:text-neutral-600 focus:outline-none focus:border-orange-500/50 focus:ring-1 focus:ring-orange-500/50 transition-all"
+                                className="w-full bg-black/50 border border-white/10 rounded-xl py-3 pl-10 pr-10 text-white placeholder:text-neutral-600 focus:outline-none focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/50 transition-all"
                                 required
                             />
                             <button
@@ -103,7 +103,7 @@ export default function ResetPasswordPage() {
                     <button
                         type="submit"
                         disabled={loading}
-                        className="w-full bg-gradient-to-r from-orange-500 to-yellow-500 text-black font-bold py-3.5 px-4 rounded-xl hover:from-orange-600 hover:to-yellow-600 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-lg shadow-orange-500/10 hover:shadow-orange-500/20"
+                        className="w-full bg-gradient-to-r from-purple-600 to-fuchsia-600 text-white font-bold py-3.5 px-4 rounded-xl hover:from-purple-700 hover:to-fuchsia-700 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-lg shadow-purple-500/10 hover:shadow-purple-500/20"
                     >
                         {loading ? (
                             <Loader2 className="w-5 h-5 animate-spin" />

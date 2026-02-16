@@ -88,7 +88,7 @@ function CreatePromptContent() {
                                 value={title}
                                 onChange={e => setTitle(e.target.value)}
                                 placeholder="Örn: Profesyonel Blog Yazısı Oluşturucu"
-                                className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-3 text-white focus:border-orange-500 focus:outline-none"
+                                className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-3 text-white focus:border-purple-500 focus:outline-none"
                             />
                         </div>
 
@@ -98,7 +98,7 @@ function CreatePromptContent() {
                                 <select
                                     name="category_id"
                                     required
-                                    className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-3 text-white focus:border-orange-500 focus:outline-none appearance-none"
+                                    className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-3 text-white focus:border-purple-500 focus:outline-none appearance-none"
                                 >
                                     <option value="">Seçiniz...</option>
                                     {categories.map(cat => (
@@ -114,7 +114,7 @@ function CreatePromptContent() {
                                     required
                                     value={targetAI}
                                     onChange={e => setTargetAI(e.target.value)}
-                                    className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-3 text-white focus:border-orange-500 focus:outline-none appearance-none"
+                                    className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-3 text-white focus:border-purple-500 focus:outline-none appearance-none"
                                 >
                                     <option value="chatgpt">ChatGPT</option>
                                     <option value="claude">Claude</option>
@@ -162,7 +162,7 @@ function CreatePromptContent() {
                                     onChange={e => setDescription(e.target.value)}
                                     placeholder="Bu prompt ne işe yarar? Hangi durumlarda kullanılır?"
                                     rows={3}
-                                    className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-3 text-white focus:border-orange-500 focus:outline-none"
+                                    className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-3 text-white focus:border-purple-500 focus:outline-none"
                                 />
                             </div>
 
@@ -177,7 +177,7 @@ function CreatePromptContent() {
                                     onChange={e => setContent(e.target.value)}
                                     placeholder="Prompt metnini buraya yapıştırın..."
                                     rows={8}
-                                    className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-3 text-white font-mono text-sm focus:border-orange-500 focus:outline-none"
+                                    className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-3 text-white font-mono text-sm focus:border-purple-500 focus:outline-none"
                                 />
                             </div>
                         </div>
@@ -192,7 +192,7 @@ function CreatePromptContent() {
                             <button
                                 type="submit"
                                 disabled={loading}
-                                className="bg-gradient-to-r from-orange-500 to-amber-600 hover:from-orange-600 hover:to-amber-700 text-black px-8 py-2 rounded-lg font-bold transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center shadow-lg shadow-orange-500/20"
+                                className="bg-gradient-to-r from-purple-500 to-fuchsia-600 hover:from-purple-600 hover:to-fuchsia-700 text-white px-8 py-2 rounded-lg font-bold transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center shadow-lg shadow-purple-500/20"
                             >
                                 {loading && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
                                 Yayınla
@@ -209,7 +209,7 @@ export default function CreatePromptPage() {
     return (
         <Suspense fallback={
             <div className="min-h-screen bg-black flex items-center justify-center">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500"></div>
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-500"></div>
             </div>
         }>
             <CreatePromptContent />

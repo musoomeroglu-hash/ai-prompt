@@ -85,7 +85,7 @@ export function EmailAuthForm({ onSuccess, onGoogleSignIn }: EmailAuthFormProps)
                         className={cn(
                             "flex-1 py-2 sm:py-2.5 rounded-md text-xs sm:text-sm font-semibold transition-all duration-200",
                             mode === 'signin'
-                                ? "bg-gradient-to-r from-orange-500 to-yellow-500 text-black shadow-lg shadow-orange-500/20"
+                                ? "bg-gradient-to-r from-purple-500 to-fuchsia-500 text-white shadow-lg shadow-purple-500/20"
                                 : "text-neutral-400 hover:text-white hover:bg-white/5"
                         )}
                     >
@@ -96,7 +96,7 @@ export function EmailAuthForm({ onSuccess, onGoogleSignIn }: EmailAuthFormProps)
                         className={cn(
                             "flex-1 py-2 sm:py-2.5 rounded-md text-xs sm:text-sm font-semibold transition-all duration-200",
                             mode === 'signup'
-                                ? "bg-gradient-to-r from-orange-500 to-yellow-500 text-black shadow-lg shadow-orange-500/20"
+                                ? "bg-gradient-to-r from-purple-500 to-fuchsia-500 text-white shadow-lg shadow-purple-500/20"
                                 : "text-neutral-400 hover:text-white hover:bg-white/5"
                         )}
                     >
@@ -127,7 +127,7 @@ export function EmailAuthForm({ onSuccess, onGoogleSignIn }: EmailAuthFormProps)
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder="ornek@email.com"
-                        className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder:text-neutral-600 focus:border-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-500/20 transition-all text-sm sm:text-base"
+                        className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder:text-neutral-600 focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500/20 transition-all text-sm sm:text-base"
                         required
                     />
                 </div>
@@ -141,7 +141,7 @@ export function EmailAuthForm({ onSuccess, onGoogleSignIn }: EmailAuthFormProps)
                                 <button
                                     type="button"
                                     onClick={() => setMode('forgot')}
-                                    className="text-xs sm:text-sm text-orange-500 hover:text-orange-400 transition-colors"
+                                    className="text-xs sm:text-sm text-purple-500 hover:text-purple-400 transition-colors"
                                 >
                                     Şifremi Unuttum?
                                 </button>
@@ -153,7 +153,7 @@ export function EmailAuthForm({ onSuccess, onGoogleSignIn }: EmailAuthFormProps)
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 placeholder="••••••••"
-                                className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder:text-neutral-600 focus:border-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-500/20 transition-all text-sm sm:text-base pr-10"
+                                className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder:text-neutral-600 focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500/20 transition-all text-sm sm:text-base pr-10"
                                 required
                             />
                             <button
@@ -189,7 +189,7 @@ export function EmailAuthForm({ onSuccess, onGoogleSignIn }: EmailAuthFormProps)
                 <button
                     type="submit"
                     disabled={loading}
-                    className="w-full py-2.5 sm:py-3 bg-gradient-to-r from-orange-500 to-yellow-500 text-black font-bold rounded-lg hover:from-orange-600 hover:to-yellow-600 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 group shadow-lg shadow-orange-500/10 active:scale-[0.98] text-sm sm:text-base"
+                    className="w-full py-2.5 sm:py-3 bg-gradient-to-r from-purple-500 to-fuchsia-500 text-white font-bold rounded-lg hover:from-purple-600 hover:to-fuchsia-600 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 group shadow-lg shadow-purple-500/10 active:scale-[0.98] text-sm sm:text-base"
                 >
                     {loading ? (
                         <Loader2 className="w-5 h-5 animate-spin" />

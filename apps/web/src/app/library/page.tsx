@@ -73,14 +73,14 @@ function LibraryContent() {
                 {/* Header */}
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
                     <div>
-                        <h1 className="text-3xl font-bold bg-gradient-to-r from-orange-400 to-amber-500 bg-clip-text text-transparent">
+                        <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-400 to-fuchsia-500 bg-clip-text text-transparent">
                             Prompt Kütüphanesi
                         </h1>
                         <p className="text-zinc-400 mt-2">
                             Topluluk tarafından oluşturulan en iyi yapay zeka promptlarını keşfedin.
                         </p>
                     </div>
-                    <Link href="/library/create" className="flex items-center gap-2 bg-gradient-to-r from-orange-500 to-amber-600 hover:from-orange-600 hover:to-amber-700 text-black font-semibold px-4 py-2 rounded-lg transition-all shadow-lg shadow-orange-500/20">
+                    <Link href="/library/create" className="flex items-center gap-2 bg-gradient-to-r from-purple-500 to-fuchsia-600 hover:from-purple-600 hover:to-fuchsia-700 text-white font-semibold px-4 py-2 rounded-lg transition-all shadow-lg shadow-purple-500/20">
                         <Plus className="w-4 h-4" />
                         Prompt Paylaş
                     </Link>
@@ -97,7 +97,7 @@ function LibraryContent() {
                             <div className="space-y-2">
                                 <button
                                     onClick={() => router.push('/library')}
-                                    className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors ${!categoryId ? 'bg-orange-500/20 text-orange-400 border border-orange-500/20' : 'text-zinc-400 hover:bg-zinc-800'}`}
+                                    className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors ${!categoryId ? 'bg-purple-500/20 text-purple-400 border border-purple-500/20' : 'text-zinc-400 hover:bg-zinc-800'}`}
                                 >
                                     Tümü
                                 </button>
@@ -109,7 +109,7 @@ function LibraryContent() {
                                             params.set('category_id', cat.id)
                                             router.push(`/library?${params.toString()}`)
                                         }}
-                                        className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors ${categoryId === cat.id ? 'bg-orange-500/20 text-orange-400 border border-orange-500/20' : 'text-zinc-400 hover:bg-zinc-800'}`}
+                                        className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors ${categoryId === cat.id ? 'bg-purple-500/20 text-purple-400 border border-purple-500/20' : 'text-zinc-400 hover:bg-zinc-800'}`}
                                     >
                                         {cat.name}
                                     </button>
@@ -127,14 +127,14 @@ function LibraryContent() {
                                 name="search"
                                 defaultValue={search}
                                 placeholder="Prompt ara..."
-                                className="w-full bg-zinc-900 border border-zinc-800 rounded-xl pl-10 pr-4 py-3 focus:outline-none focus:border-orange-500/50 transition-colors"
+                                className="w-full bg-zinc-900 border border-zinc-800 rounded-xl pl-10 pr-4 py-3 focus:outline-none focus:border-purple-500/50 transition-colors"
                             />
                         </form>
 
                         {/* Loading State */}
                         {loading ? (
                             <div className="flex justify-center py-12">
-                                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500"></div>
+                                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-500"></div>
                             </div>
                         ) : (
                             <>
@@ -162,7 +162,7 @@ export default function LibraryPage() {
     return (
         <Suspense fallback={
             <div className="min-h-screen bg-black flex items-center justify-center">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500"></div>
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-500"></div>
             </div>
         }>
             <LibraryContent />

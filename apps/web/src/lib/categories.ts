@@ -81,7 +81,7 @@ export const CATEGORIES: Category[] = [
         icon: ChartBar,
         description: "Data interpretation, research, and insights",
         content: "Data interpretation, research, and insights. Turn raw data into actionable intelligence.",
-        gradient: "from-orange-500 to-yellow-500",
+        gradient: "from-purple-600 to-pink-600",
         categoryType: "Business",
         date: "2024",
         relatedIds: ["coding", "marketing"],

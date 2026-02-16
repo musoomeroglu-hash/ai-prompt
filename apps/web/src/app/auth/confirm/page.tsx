@@ -7,12 +7,12 @@ export default function ConfirmPage() {
     return (
         <div className="flex min-h-screen items-center justify-center bg-black relative overflow-hidden">
             {/* Background Elements */}
-            <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 via-black to-blue-500/10" />
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-orange-500/20 rounded-full blur-[100px]" />
+            <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 via-black to-blue-500/10" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-purple-500/20 rounded-full blur-[100px]" />
 
             <div className="relative z-10 max-w-md w-full bg-neutral-900/50 backdrop-blur-xl border border-white/10 rounded-2xl p-8 text-center shadow-2xl">
                 <div className="mb-6">
-                    <div className="w-20 h-20 bg-gradient-to-br from-orange-500 to-yellow-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg shadow-orange-500/20">
+                    <div className="w-20 h-20 bg-gradient-to-br from-purple-500 to-fuchsia-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg shadow-purple-500/20">
                         <Mail className="w-10 h-10 text-white" />
                     </div>
 

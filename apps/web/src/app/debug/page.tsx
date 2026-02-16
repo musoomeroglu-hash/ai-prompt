@@ -46,7 +46,7 @@ export default function DebugPage() {
         <div className="min-h-screen bg-black text-white p-8 font-mono">
             <div className="max-w-2xl mx-auto space-y-8">
                 <div className="flex justify-between items-center border-b border-white/20 pb-4">
-                    <h1 className="text-2xl font-bold text-orange-500">System Diagnostics</h1>
+                    <h1 className="text-2xl font-bold text-purple-500">System Diagnostics</h1>
                     <ThemeToggle />
                 </div>
 
@@ -78,7 +78,7 @@ export default function DebugPage() {
                                     </pre>
                                 )}
                                 {status.session && (
-                                    <div>Session Status: <span className="text-orange-400">{status.session}</span></div>
+                                    <div>Session Status: <span className="text-purple-400">{status.session}</span></div>
                                 )}
                             </div>
                         )}

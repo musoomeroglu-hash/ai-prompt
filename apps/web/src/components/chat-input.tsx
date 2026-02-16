@@ -238,7 +238,7 @@ export function ChatInput({ onSubmit, isGenerating, defaultCategory }: ChatInput
                                                 >
                                                     <span className="flex-shrink-0">{aiLogos[ai.id]}</span>
                                                     <span className="font-medium">{ai.label}</span>
-                                                    {selectedAI === ai.id && <span className="ml-auto text-orange-400">✓</span>}
+                                                    {selectedAI === ai.id && <span className="ml-auto text-purple-400">✓</span>}
                                                 </button>
                                             ))}
                                         </div>
@@ -247,7 +247,7 @@ export function ChatInput({ onSubmit, isGenerating, defaultCategory }: ChatInput
                             </div>
 
                             {/* Category Badge */}
-                            <span className="hidden sm:inline-flex text-xs text-orange-400 font-medium bg-orange-500/10 px-2 py-0.5 rounded-full border border-orange-500/20">
+                            <span className="hidden sm:inline-flex text-xs text-purple-400 font-medium bg-purple-500/10 px-2 py-0.5 rounded-full border border-purple-500/20">
                                 {t.categories[categories.find(c => c.id === selectedCategory)?.id || ''] || categories.find(c => c.id === selectedCategory)?.label}
                             </span>
                         </div>
