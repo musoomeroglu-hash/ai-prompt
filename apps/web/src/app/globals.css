@@ -1,13 +1,41 @@
 @import "tailwindcss";
 
 :root {
-  --background: #020617;
-  /* Slate 950 */
-  --foreground: #f8fafc;
-  /* Slate 50 */
+  /* Ana Renkler */
+  --background-primary: #0a0a0f;
+  --background-secondary: #141420;
+  --background-tertiary: #1a1a2e;
+
+  /* Accent Renkler */
+  --accent-primary: #6366f1;
+  --accent-secondary: #8b5cf6;
+  --accent-pink: #ec4899;
+
+  /* Metin Renkleri */
+  --text-primary: #ffffff;
+  --text-secondary: #9ca3af;
+  --text-muted: #6b7280;
+
+  /* Border */
+  --border-color: rgba(99, 102, 241, 0.2);
+
+  --background: var(--background-primary);
+  --foreground: var(--text-primary);
 }
 
 @theme inline {
+  --color-background-primary: var(--background-primary);
+  --color-background-secondary: var(--background-secondary);
+  --color-background-tertiary: var(--background-tertiary);
+
+  --color-accent-primary: var(--accent-primary);
+  --color-accent-secondary: var(--accent-secondary);
+  --color-accent-pink: var(--accent-pink);
+
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
@@ -78,31 +106,36 @@ body {
 
 @property --color-1 {
   syntax: '<color>';
-  initial-value: #b34700;
+  initial-value: #1e1b4b;
+  /* indigo-950 */
   inherits: false;
 }
 
 @property --color-2 {
   syntax: '<color>';
-  initial-value: #cc5500;
+  initial-value: #4338ca;
+  /* indigo-700 */
   inherits: false;
 }
 
 @property --color-3 {
   syntax: '<color>';
-  initial-value: #e8720a;
+  initial-value: #6366f1;
+  /* indigo-500 (accent-primary) */
   inherits: false;
 }
 
 @property --color-4 {
   syntax: '<color>';
-  initial-value: #d4630e;
+  initial-value: #8b5cf6;
+  /* violet-500 (accent-secondary) */
   inherits: false;
 }
 
 @property --color-5 {
   syntax: '<color>';
-  initial-value: #a04000;
+  initial-value: #ec4899;
+  /* pink-500 */
   inherits: false;
 }
 
@@ -114,13 +147,13 @@ body {
 
 @property --border-color-1 {
   syntax: '<color>';
-  initial-value: hsla(30, 95%, 65%, 0.4);
+  initial-value: hsla(250, 95%, 65%, 0.4);
   inherits: true;
 }
 
 @property --border-color-2 {
   syntax: '<color>';
-  initial-value: hsla(25, 90%, 50%, 0.8);
+  initial-value: hsla(270, 90%, 50%, 0.8);
   inherits: true;
 }
 
@@ -204,14 +237,19 @@ body {
   --pos-y: 50%;
   --spread-x: 140%;
   --spread-y: 140%;
-  --color-1: #f59e0b;
-  --color-2: #ea7e0a;
-  --color-3: #f5a623;
-  --color-4: #cc5500;
-  --color-5: #b34700;
+  --color-1: #312e81;
+  /* indigo-900 */
+  --color-2: #ec4899;
+  /* pink-500 */
+  --color-3: #8b5cf6;
+  /* violet-500 */
+  --color-4: #6366f1;
+  /* indigo-500 */
+  --color-5: #4338ca;
+  /* indigo-700 */
   --border-angle: 190deg;
-  --border-color-1: hsla(40, 95%, 75%, 0.3);
-  --border-color-2: hsla(30, 90%, 60%, 0.9);
+  --border-color-1: hsla(280, 95%, 75%, 0.3);
+  --border-color-2: hsla(260, 90%, 60%, 0.9);
   --stop-1: 0%;
   --stop-2: 20%;
   --stop-3: 45%;

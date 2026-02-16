@@ -15,7 +15,7 @@ import { InteractiveLogin } from '@/components/auth/interactive-login'
 import { HeroGeometric } from '@/components/ui/hero-geometric'
 import { cn } from '@/lib/utils'
 import { useLanguage } from '@/lib/i18n'
-import { Clock, LogOut, Puzzle, Crown, Zap, User, ArrowRight, BookOpen, MessageSquare, Save } from 'lucide-react'
+import { Clock, LogOut, Puzzle, Crown, Zap, User, ArrowRight, BookOpen, MessageSquare, Save, Sparkles } from 'lucide-react'
 import Link from 'next/link'
 import { Sidebar, SidebarBody, SidebarLink, useSidebar } from '@/components/ui/sidebar'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -88,6 +88,14 @@ export default function Home() {
 
     return () => authSub.unsubscribe()
   }, [])
+
+  useEffect(() => {
+    // Check for selected category in localStorage on load
+    if (typeof window !== 'undefined') {
+      const cat = localStorage.getItem('selectedCategory');
+      if (cat) setLastCategory(cat);
+    }
+  }, []);
 
   const fetchSubscription = async () => {
     try {
@@ -170,7 +178,7 @@ export default function Home() {
   }
 
   if (loading) return (
-    <div className="min-h-screen bg-black dark:bg-black flex items-center justify-center relative overflow-hidden">
+    <div className="min-h-screen bg-background-primary flex items-center justify-center relative overflow-hidden">
       <ShaderBackground opacity={0.4} />
       <div className="relative z-10">
         <KineticDotsLoader size="lg" />
@@ -235,29 +243,29 @@ export default function Home() {
   const isPaid = subscription && subscription.plan !== 'free'
 
   return (
-    <div className="min-h-screen relative w-full bg-black dark:bg-black flex overflow-hidden text-neutral-200">
+    <div className="min-h-screen relative w-full bg-background-primary flex overflow-hidden text-text-primary">
       <ShaderBackground opacity={0.6} />
 
       {/* ═══ Top-Right Corner: Quota + Upgrade + Language ═══ */}
       <div className="fixed top-4 right-4 z-50 flex items-center gap-3">
         {/* Quota bar — always visible */}
         {subscription && subscription.monthlyPromptLimit > 0 && (
-          <div className="flex items-center gap-2 px-3 py-1.5 bg-black/40 backdrop-blur-sm border border-white/10 rounded-full">
-            <div className="w-20 bg-neutral-800 rounded-full h-1.5">
+          <div className="flex items-center gap-2 px-3 py-1.5 bg-background-secondary/40 backdrop-blur-sm border border-white/10 rounded-full">
+            <div className="w-20 bg-background-tertiary rounded-full h-1.5">
               <div className={cn("h-1.5 rounded-full transition-all",
                 subscription.quotaWarning === 'exceeded' ? 'bg-red-500' :
                   subscription.quotaWarning === 'warning_90' ? 'bg-red-500' :
-                    subscription.quotaWarning === 'warning_80' ? 'bg-amber-500' : 'bg-orange-500'
+                    subscription.quotaWarning === 'warning_80' ? 'bg-amber-500' : 'bg-accent-primary'
               )} style={{ width: `${Math.min(100, subscription.monthlyUsagePercent)}%` }} />
             </div>
-            <span className="text-[10px] text-neutral-400 whitespace-nowrap">
+            <span className="text-[10px] text-text-muted whitespace-nowrap">
               {subscription.monthlyPromptsUsed}/{subscription.monthlyPromptLimit}
             </span>
           </div>
         )}
 
         {subscription && subscription.isTrialActive && (
-          <span className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-orange-400 bg-orange-500/10 border border-orange-500/20 rounded-full backdrop-blur-sm">
+          <span className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-accent-secondary bg-accent-secondary/10 border border-accent-secondary/20 rounded-full backdrop-blur-sm">
             <Zap className="w-3.5 h-3.5" />
             {t.trialDays(subscription.trialDaysRemaining)}
           </span>
@@ -265,7 +273,7 @@ export default function Home() {
 
         {!isPaid && (
           <Link href="/pricing"
-            className="group relative overflow-hidden flex items-center gap-1.5 px-4 py-1.5 text-xs font-semibold text-black bg-gradient-to-r from-orange-500 to-yellow-500 rounded-full hover:shadow-lg hover:shadow-orange-500/20 transition-all">
+            className="group relative overflow-hidden flex items-center gap-1.5 px-4 py-1.5 text-xs font-semibold text-white bg-gradient-to-r from-accent-primary to-accent-secondary rounded-full hover:shadow-lg hover:shadow-accent-primary/20 transition-all">
             <Crown className="w-3.5 h-3.5" />
             {t.upgrade}
             <ArrowRight className="w-3 h-3 transition-transform group-hover:translate-x-0.5" />
@@ -273,7 +281,7 @@ export default function Home() {
         )}
 
         {isPaid && (
-          <span className="flex items-center gap-1 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-gradient-to-r from-orange-500/20 to-yellow-500/20 border border-orange-500/30 text-orange-400 rounded-full backdrop-blur-sm">
+          <span className="flex items-center gap-1 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-gradient-to-r from-accent-primary/20 to-accent-secondary/20 border border-accent-primary/30 text-accent-secondary rounded-full backdrop-blur-sm">
             <Crown className="w-3 h-3" /> {t.planNames[subscription?.plan || 'free']}
           </span>
         )}
@@ -283,7 +291,7 @@ export default function Home() {
 
       {/* ═══ Sidebar Navigation ═══ */}
       <Sidebar open={sidebarOpen} setOpen={setSidebarOpen}>
-        <SidebarBody className="relative z-30 justify-between gap-6">
+        <SidebarBody className="relative z-30 justify-between gap-6 bg-background-secondary border-r border-white/5">
           {/* Top */}
           <div className="flex flex-col gap-2 overflow-y-auto overflow-x-hidden flex-1">
             <SidebarLogo open={sidebarOpen} onReset={() => setCurrentView('chat')} />
@@ -295,9 +303,9 @@ export default function Home() {
               link={{
                 label: "Sohbet",
                 href: "#",
-                icon: <MessageSquare className="w-5 h-5 text-neutral-400 flex-shrink-0" />,
+                icon: <MessageSquare className="w-5 h-5 text-text-muted flex-shrink-0" />,
               }}
-              className={cn("text-neutral-300 hover:text-white transition-colors", currentView === 'chat' && "text-white bg-white/5 rounded-lg")}
+              className={cn("text-text-secondary hover:text-white transition-colors", currentView === 'chat' && "text-white bg-white/5 rounded-lg")}
               onClick={(e) => {
                 e.preventDefault()
                 setCurrentView('chat')
@@ -309,9 +317,9 @@ export default function Home() {
               link={{
                 label: "Kütüphane",
                 href: "#",
-                icon: <BookOpen className="w-5 h-5 text-neutral-400 flex-shrink-0" />,
+                icon: <BookOpen className="w-5 h-5 text-text-muted flex-shrink-0" />,
               }}
-              className={cn("text-neutral-300 hover:text-white transition-colors", currentView === 'library' && "text-white bg-white/5 rounded-lg")}
+              className={cn("text-text-secondary hover:text-white transition-colors", currentView === 'library' && "text-white bg-white/5 rounded-lg")}
               onClick={(e) => {
                 e.preventDefault()
                 setCurrentView('library')
@@ -322,9 +330,9 @@ export default function Home() {
               link={{
                 label: "Favorilerim",
                 href: "#",
-                icon: <Save className="w-5 h-5 text-neutral-400 flex-shrink-0" />,
+                icon: <Save className="w-5 h-5 text-text-muted flex-shrink-0" />,
               }}
-              className={cn("text-neutral-300 hover:text-white transition-colors", currentView === 'favorites' && "text-white bg-white/5 rounded-lg")}
+              className={cn("text-text-secondary hover:text-white transition-colors", currentView === 'favorites' && "text-white bg-white/5 rounded-lg")}
               onClick={(e) => {
                 e.preventDefault()
                 setCurrentView('favorites')
@@ -335,9 +343,9 @@ export default function Home() {
               link={{
                 label: t.account,
                 href: "/account",
-                icon: <User className="w-5 h-5 text-neutral-400 flex-shrink-0" />,
+                icon: <User className="w-5 h-5 text-text-muted flex-shrink-0" />,
               }}
-              className="text-neutral-300 hover:text-white transition-colors"
+              className="text-text-secondary hover:text-white transition-colors"
             />
 
 
@@ -346,9 +354,9 @@ export default function Home() {
               link={{
                 label: "Extension",
                 href: "/extension",
-                icon: <Puzzle className="w-5 h-5 text-neutral-400 flex-shrink-0" />,
+                icon: <Puzzle className="w-5 h-5 text-text-muted flex-shrink-0" />,
               }}
-              className="text-neutral-300 hover:text-white transition-colors"
+              className="text-text-secondary hover:text-white transition-colors"
             />
 
 
@@ -358,7 +366,7 @@ export default function Home() {
               <>
                 <div className="h-px bg-white/5 my-1" />
                 <div className="flex flex-col min-h-0 flex-1">
-                  <h4 className="text-[11px] font-semibold text-neutral-500 uppercase tracking-wider px-1 mb-2">{t.recentHistory}</h4>
+                  <h4 className="text-[11px] font-semibold text-text-muted uppercase tracking-wider px-1 mb-2">{t.recentHistory}</h4>
                   <div className="flex-1 overflow-y-auto space-y-1.5 pr-1 custom-scrollbar">
                     {history.length > 0 ? history.map((item) => (
                       <div
@@ -372,13 +380,13 @@ export default function Home() {
                         className="group p-2.5 bg-white/5 border border-white/5 rounded-lg hover:bg-white/10 transition-colors cursor-pointer"
                       >
                         <div className="flex justify-between items-start mb-1">
-                          <span className="text-[9px] font-medium px-1.5 py-0.5 rounded bg-orange-500/20 text-orange-300 border border-orange-500/20 uppercase">{item.category}</span>
-                          <span className="text-[9px] text-neutral-600">{new Date(item.created_at).toLocaleDateString()}</span>
+                          <span className="text-[9px] font-medium px-1.5 py-0.5 rounded bg-accent-primary/20 text-accent-primary border border-accent-primary/20 uppercase">{item.category}</span>
+                          <span className="text-[9px] text-text-muted">{new Date(item.created_at).toLocaleDateString()}</span>
                         </div>
-                        <p className="text-[11px] text-neutral-400 line-clamp-2 group-hover:text-neutral-300 transition-colors">{item.user_request}</p>
+                        <p className="text-[11px] text-text-secondary line-clamp-2 group-hover:text-text-primary transition-colors">{item.user_request}</p>
                       </div>
                     )) : (
-                      <div className="flex flex-col items-center justify-center h-24 text-neutral-600 text-xs">
+                      <div className="flex flex-col items-center justify-center h-24 text-text-muted text-xs">
                         <Clock className="w-6 h-6 mb-1.5 opacity-30" /> {t.noHistory}
                       </div>
                     )}
@@ -423,10 +431,10 @@ export default function Home() {
             )}>
               {!result && !generating && (
                 <div className="mb-8">
-                  <h2 className="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-b from-orange-200 via-yellow-300 to-amber-400 mb-3">
+                  <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-accent-primary via-accent-secondary to-accent-pink bg-clip-text text-transparent mb-3">
                     {t.heroTitle}
                   </h2>
-                  <p className="text-neutral-500 text-sm max-w-md mx-auto">
+                  <p className="text-text-muted text-sm max-w-md mx-auto">
                     {t.heroSubtitle}
                   </p>
                 </div>
@@ -457,9 +465,9 @@ export default function Home() {
 
         {/* Fixed Bottom Input Area - Only for Chat View */}
         {currentView === 'chat' && (
-          <div className="w-full p-2 sm:p-4 z-40 shrink-0 bg-gradient-to-t from-black via-black/90 to-transparent pb-safe-area-inset-bottom">
+          <div className="w-full p-2 sm:p-4 z-40 shrink-0 bg-gradient-to-t from-background-primary via-background-primary/90 to-transparent pb-safe-area-inset-bottom">
             <div className="max-w-3xl mx-auto">
-              <ChatInput onSubmit={handleGenerate} isGenerating={generating} />
+              <ChatInput onSubmit={handleGenerate} isGenerating={generating} defaultCategory={lastCategory} />
             </div>
           </div>
         )}
@@ -472,13 +480,13 @@ export default function Home() {
 function SidebarLogo({ open, onReset }: { open: boolean; onReset: () => void }) {
   return (
     <div className="flex items-center gap-2 py-2 cursor-pointer" onClick={onReset}>
-      <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-orange-500 to-yellow-500 flex items-center justify-center flex-shrink-0">
-        <Zap className="w-4 h-4 text-black" />
+      <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-accent-primary to-accent-secondary flex items-center justify-center flex-shrink-0">
+        <Sparkles className="w-4 h-4 text-white" />
       </div>
       {open && (
         <motion.span
           animate={{ opacity: open ? 1 : 0, display: open ? "inline-block" : "none" }}
-          className="text-lg font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-300 via-yellow-400 to-amber-300 whitespace-nowrap"
+          className="text-lg font-bold bg-gradient-to-r from-accent-primary to-accent-secondary bg-clip-text text-transparent whitespace-nowrap"
         >
           AI Prompt App
         </motion.span>

@@ -51,6 +51,7 @@ function LoginForm() {
             if (activeTab === 'login') {
                 const { error } = await supabase.auth.signInWithPassword({ email, password })
                 if (error) throw error
+                // Redirect is handled by auth state change or callback usually, but manual push here
                 router.push('/')
             } else if (activeTab === 'register') {
                 const confirmPassword = formData.get('confirmPassword') as string
@@ -78,11 +79,11 @@ function LoginForm() {
     }
 
     return (
-        <div className="relative z-20 w-full max-w-md bg-black/40 backdrop-blur-xl border border-white/10 rounded-3xl shadow-2xl overflow-hidden">
+        <div className="relative z-20 w-full max-w-md bg-background-secondary/80 backdrop-blur-xl border border-white/5 rounded-3xl shadow-2xl overflow-hidden">
             {/* Header */}
             <div className="p-8 pb-0 text-center">
                 <Link href="/" className="inline-block mb-6">
-                    <h1 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-300 via-yellow-400 to-amber-300">
+                    <h1 className="text-3xl font-bold bg-gradient-to-r from-accent-primary to-accent-secondary bg-clip-text text-transparent">
                         Antigravity
                     </h1>
                 </Link>
@@ -91,7 +92,7 @@ function LoginForm() {
                     {activeTab === 'register' && 'Create an account'}
                     {activeTab === 'forgot' && 'Reset password'}
                 </h2>
-                <p className="text-neutral-400 text-sm">
+                <p className="text-text-secondary text-sm">
                     {activeTab === 'login' && 'Enter your details to access your workspace'}
                     {activeTab === 'register' && 'Start your journey with AI-powered prompts'}
                     {activeTab === 'forgot' && 'Enter your email to receive reset instructions'}
@@ -100,12 +101,12 @@ function LoginForm() {
 
             {/* Tabs */}
             {activeTab !== 'forgot' && (
-                <div className="flex p-2 gap-1 mt-6 mx-8 bg-white/5 rounded-xl border border-white/5">
+                <div className="flex p-2 gap-1 mt-6 mx-8 bg-background-tertiary rounded-xl border border-white/5">
                     <button
                         onClick={() => setActiveTab('login')}
                         className={cn(
                             "flex-1 py-2 text-sm font-medium rounded-lg transition-all",
-                            activeTab === 'login' ? "bg-white/10 text-white shadow-sm" : "text-neutral-400 hover:text-white hover:bg-white/5"
+                            activeTab === 'login' ? "bg-accent-primary/20 text-accent-primary shadow-sm" : "text-text-muted hover:text-white hover:bg-white/5"
                         )}
                     >
                         Log In
@@ -114,7 +115,7 @@ function LoginForm() {
                         onClick={() => setActiveTab('register')}
                         className={cn(
                             "flex-1 py-2 text-sm font-medium rounded-lg transition-all",
-                            activeTab === 'register' ? "bg-white/10 text-white shadow-sm" : "text-neutral-400 hover:text-white hover:bg-white/5"
+                            activeTab === 'register' ? "bg-accent-primary/20 text-accent-primary shadow-sm" : "text-text-muted hover:text-white hover:bg-white/5"
                         )}
                     >
                         Sign Up
@@ -140,7 +141,7 @@ function LoginForm() {
                             <div className="absolute inset-0 flex items-center">
                                 <div className="w-full border-t border-white/10"></div>
                             </div>
-                            <span className="relative z-10 px-4 bg-black/40 text-xs text-neutral-500 uppercase tracking-widest backdrop-blur-xl">Or</span>
+                            <span className="relative z-10 px-4 bg-background-secondary text-xs text-text-muted uppercase tracking-widest">Or</span>
                         </div>
                     </div>
                 )}
@@ -151,7 +152,7 @@ function LoginForm() {
                             onClick={() => router.push('/')}
                             className="w-full flex items-center justify-center gap-2 py-2.5 px-4 bg-white/5 border border-white/10 text-neutral-300 font-medium rounded-xl hover:bg-white/10 hover:text-white transition-colors"
                         >
-                            <Zap className="w-4 h-4 text-orange-400" />
+                            <Zap className="w-4 h-4 text-accent-secondary" />
                             Skip Login (Dev Only)
                         </button>
                     </div>
@@ -161,40 +162,40 @@ function LoginForm() {
                 <form onSubmit={handleEmailAuth} className="space-y-4">
                     <div className="space-y-4">
                         <div className="relative group">
-                            <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-500 group-focus-within:text-orange-400 transition-colors" />
+                            <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted group-focus-within:text-accent-primary transition-colors" />
                             <input
                                 type="email"
                                 name="email"
                                 placeholder="Email address"
                                 required
-                                className="w-full pl-10 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder:text-neutral-600 focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500/50 transition-all"
+                                className="w-full pl-10 pr-4 py-3 bg-background-tertiary border border-white/10 rounded-xl text-white placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-accent-primary/50 focus:border-accent-primary/50 transition-all"
                             />
                         </div>
 
                         {activeTab !== 'forgot' && (
                             <div className="relative group">
-                                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-500 group-focus-within:text-orange-400 transition-colors" />
+                                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted group-focus-within:text-accent-primary transition-colors" />
                                 <input
                                     type="password"
                                     name="password"
                                     placeholder="Password"
                                     required
                                     minLength={6}
-                                    className="w-full pl-10 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder:text-neutral-600 focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500/50 transition-all"
+                                    className="w-full pl-10 pr-4 py-3 bg-background-tertiary border border-white/10 rounded-xl text-white placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-accent-primary/50 focus:border-accent-primary/50 transition-all"
                                 />
                             </div>
                         )}
 
                         {activeTab === 'register' && (
                             <div className="relative group">
-                                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-500 group-focus-within:text-orange-400 transition-colors" />
+                                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted group-focus-within:text-accent-primary transition-colors" />
                                 <input
                                     type="password"
                                     name="confirmPassword"
                                     placeholder="Confirm Password"
                                     required
                                     minLength={6}
-                                    className="w-full pl-10 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder:text-neutral-600 focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500/50 transition-all"
+                                    className="w-full pl-10 pr-4 py-3 bg-background-tertiary border border-white/10 rounded-xl text-white placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-accent-primary/50 focus:border-accent-primary/50 transition-all"
                                 />
                             </div>
                         )}
@@ -205,7 +206,7 @@ function LoginForm() {
                             <button
                                 type="button"
                                 onClick={() => setActiveTab('forgot')}
-                                className="text-xs text-neutral-400 hover:text-white transition-colors"
+                                className="text-xs text-text-muted hover:text-white transition-colors"
                             >
                                 Forgot password?
                             </button>
@@ -225,7 +226,7 @@ function LoginForm() {
                     <button
                         type="submit"
                         disabled={loading}
-                        className="group relative w-full flex items-center justify-center gap-2 py-3 bg-gradient-to-r from-orange-500 to-amber-500 text-black font-semibold rounded-xl hover:shadow-lg hover:shadow-orange-500/20 hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                        className="group relative w-full flex items-center justify-center gap-2 py-3 bg-gradient-to-r from-accent-primary to-accent-secondary text-white font-semibold rounded-xl hover:shadow-lg hover:shadow-accent-primary/20 hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                     >
                         {loading ? (
                             <KineticDotsLoader size="sm" />
@@ -243,7 +244,7 @@ function LoginForm() {
                         <button
                             type="button"
                             onClick={() => setActiveTab('login')}
-                            className="w-full py-2 text-sm text-neutral-400 hover:text-white transition-colors"
+                            className="w-full py-2 text-sm text-text-muted hover:text-white transition-colors"
                         >
                             Back to Login
                         </button>
@@ -254,24 +255,3 @@ function LoginForm() {
     )
 }
 
-export default function LoginPage() {
-    return (
-        <div className="min-h-screen relative w-full bg-black flex flex-col items-center justify-center overflow-hidden p-4">
-            <ShaderBackground opacity={0.5} />
-
-            <div className="absolute top-4 right-4 z-30">
-                <ThemeToggle />
-            </div>
-
-            <Suspense fallback={<KineticDotsLoader size="lg" />}>
-                <LoginForm />
-            </Suspense>
-
-            <div className="relative z-20 mt-8 text-center">
-                <p className="text-xs text-neutral-600">
-                    By continuing, you agree to our Terms of Service and Privacy Policy.
-                </p>
-            </div>
-        </div>
-    )
-}
