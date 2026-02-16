@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { DivideIcon as LucideIcon } from "lucide-react";
+import { type LucideIcon } from "lucide-react";
 
 interface CategoryCardProps {
   id: string;
@@ -28,16 +28,15 @@ export function CategoryCard({
       onClick={onClick}
       className={`
         relative group cursor-pointer rounded-2xl border-2 p-6 transition-all duration-300
-        ${
-          isSelected
-            ? "border-accent-primary bg-background-secondary shadow-[0_0_30px_rgba(99,102,241,0.3)]"
-            : "border-white/5 bg-background-tertiary hover:border-accent-primary/50 hover:bg-background-secondary hover:shadow-[0_0_20px_rgba(99,102,241,0.15)]"
+        ${isSelected
+          ? "border-accent-primary bg-background-secondary shadow-[0_0_30px_rgba(99,102,241,0.3)]"
+          : "border-white/5 bg-background-tertiary hover:border-accent-primary/50 hover:bg-background-secondary hover:shadow-[0_0_20px_rgba(99,102,241,0.15)]"
         }
       `}
     >
       {/* Glow Effect */}
-      <div 
-        className={`absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-10 transition-opacity duration-300 bg-gradient-to-br ${gradient}`} 
+      <div
+        className={`absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-10 transition-opacity duration-300 bg-gradient-to-br ${gradient}`}
       />
 
       <div className="relative z-10 flex flex-col h-full">
@@ -61,22 +60,22 @@ export function CategoryCard({
           ${isSelected ? "text-accent-primary" : "text-text-muted group-hover:text-white"}
         `}>
           <span>Select Category</span>
-          <svg 
-            className={`w-4 h-4 transition-transform duration-300 ${isSelected || "group-hover:translate-x-1"}`} 
-            fill="none" 
-            viewBox="0 0 24 24" 
+          <svg
+            className={`w-4 h-4 transition-transform duration-300 ${isSelected || "group-hover:translate-x-1"}`}
+            fill="none"
+            viewBox="0 0 24 24"
             stroke="currentColor"
           >
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
           </svg>
         </div>
       </div>
-      
+
       {/* Selected Stripe */}
       {isSelected && (
-        <motion.div 
+        <motion.div
           layoutId="selectedStripe"
-          className="absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-accent-primary to-accent-secondary rounded-b-2xl" 
+          className="absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-accent-primary to-accent-secondary rounded-b-2xl"
         />
       )}
     </motion.div>
