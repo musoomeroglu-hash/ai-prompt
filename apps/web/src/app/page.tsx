@@ -163,7 +163,8 @@ export default function Home() {
             return
           }
         }
-        throw new Error(data.error || 'Failed')
+        // Show detailed error if available
+        throw new Error(data.details || data.error || 'Bir hata oluştu')
       }
 
       setResult(data.result)
