@@ -3,7 +3,7 @@
 import { createClient } from '@/lib/supabaseClient'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { ShadowOverlay } from '@/components/ui/shadow-overlay'
+import ShaderBackground from '@/components/ui/shader-background'
 import { TextShimmer } from '@/components/ui/text-shimmer'
 import { ThemeToggle } from '@/components/ui/theme-toggle'
 import KineticDotsLoader from '@/components/ui/kinetic-dots-loader'
@@ -179,11 +179,7 @@ export default function Home() {
 
   if (loading) return (
     <div className="min-h-screen bg-background-primary flex items-center justify-center relative overflow-hidden">
-      <ShadowOverlay
-        color="rgba(180, 180, 180, 1)"
-        animation={{ scale: 30, speed: 40 }}
-        style={{ opacity: 0.5, zIndex: 0 }}
-      />
+      <ShaderBackground />
       <div className="relative z-10">
         <KineticDotsLoader size="lg" />
       </div>
@@ -248,12 +244,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen relative w-full bg-background-primary flex overflow-hidden text-text-primary">
-      <ShadowOverlay
-        color="rgba(180, 180, 180, 1)"
-        animation={{ scale: 50, speed: 50 }}
-        noise={{ opacity: 0.2, scale: 1 }}
-        style={{ opacity: 0.8, zIndex: 0 }}
-      />
+      <ShaderBackground />
 
       {/* ═══ Top-Right Corner: Quota + Upgrade + Language ═══ */}
       <div className="fixed top-4 right-4 z-50 flex items-center gap-3">
