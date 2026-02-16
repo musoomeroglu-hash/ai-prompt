@@ -179,7 +179,11 @@ export default function Home() {
 
   if (loading) return (
     <div className="min-h-screen bg-background-primary flex items-center justify-center relative overflow-hidden">
-      <ShaderBackground opacity={0.4} />
+      <ShadowOverlay
+        color="#0a0a0f"
+        animation={{ scale: 30, speed: 40 }}
+        style={{ opacity: 0.4 }}
+      />
       <div className="relative z-10">
         <KineticDotsLoader size="lg" />
       </div>
