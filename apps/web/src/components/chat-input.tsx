@@ -137,16 +137,24 @@ const aiTargets = [
 interface ChatInputProps {
     onSubmit: (value: string, category: string, targetAI: string) => void;
     isGenerating: boolean;
+    defaultCategory?: string;
 }
 
-export function ChatInput({ onSubmit, isGenerating }: ChatInputProps) {
+export function ChatInput({ onSubmit, isGenerating, defaultCategory }: ChatInputProps) {
     const { t } = useLanguage();
     const [value, setValue] = useState("");
-    const [selectedCategory, setSelectedCategory] = useState("marketing");
+    const [selectedCategory, setSelectedCategory] = useState(defaultCategory || "marketing");
     const [selectedAI, setSelectedAI] = useState("chatgpt");
     const [showAIDropdown, setShowAIDropdown] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
     const { textareaRef, adjustHeight } = useAutoResizeTextarea({ minHeight: 60, maxHeight: 200 });
+
+    // Update selected category when defaultCategory changes
+    useEffect(() => {
+        if (defaultCategory) {
+            setSelectedCategory(defaultCategory);
+        }
+    }, [defaultCategory]);
 
     // Close dropdown on outside click
     useEffect(() => {
