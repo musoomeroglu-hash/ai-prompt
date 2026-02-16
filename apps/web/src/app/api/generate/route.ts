@@ -149,8 +149,28 @@ export async function POST(req: Request) {
             ? buildAdvancedPrompt(userRequest, category, targetAI)
             : buildBasicPrompt(userRequest, category, targetAI)
 
-        const resultGen = await model.generateContent(prompt)
-        const responseText = resultGen.response.text()
+        // Retry logic for 503 errors
+        let resultGen;
+        let responseText;
+        let attempts = 0;
+        const maxAttempts = 3;
+
+        while (attempts < maxAttempts) {
+            try {
+                resultGen = await model.generateContent(prompt)
+                responseText = resultGen.response.text()
+                break; // Success
+            } catch (error: any) {
+                attempts++;
+                console.warn(`Gemini generation attempt ${attempts} failed:`, error.message);
+
+                if (attempts >= maxAttempts) throw error; // Rethrow if max attempts reached
+
+                // Wait before retrying (exponential backoff: 1s, 2s, 4s)
+                const delay = Math.pow(2, attempts - 1) * 1000;
+                await new Promise(resolve => setTimeout(resolve, delay));
+            }
+        }
         console.log('Gemini Raw Response:', responseText);
 
         // Parse response
