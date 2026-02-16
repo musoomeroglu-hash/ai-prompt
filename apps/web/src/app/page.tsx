@@ -205,10 +205,10 @@ export default function Home() {
     if (!loading) {
       // Show landing page with 2-Column Layout
       return (
-        <main className="min-h-screen relative bg-black overflow-hidden flex flex-col pb-safe-area-inset-bottom">
-          <ShaderBackground opacity={0.7} className="opacity-70 sm:opacity-80 lg:opacity-100" />
+        <main className="min-h-screen relative bg-black overflow-y-auto overflow-x-hidden flex flex-col pb-safe-area-inset-bottom">
+          <ShaderBackground opacity={0.7} className="opacity-70 sm:opacity-80 lg:opacity-100 fixed inset-0 pointer-events-none" />
 
-          <div className="relative z-10 container mx-auto px-4 flex-1 flex flex-col justify-center min-h-[calc(100vh-4rem)]">
+          <div className="relative z-10 container mx-auto px-4 flex-1 flex flex-col justify-center min-h-[calc(100vh-4rem)] py-10 lg:py-0">
             <div className="flex flex-col lg:grid lg:grid-cols-2 lg:gap-16 lg:items-center pt-16 sm:pt-20 lg:pt-0">
 
               {/* ═══ Left Column: Content ═══ */}
