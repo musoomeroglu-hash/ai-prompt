@@ -79,11 +79,11 @@ export function EmailAuthForm({ onSuccess, onGoogleSignIn }: EmailAuthFormProps)
         <div className="w-full">
             {/* Mode Switcher */}
             {mode !== 'forgot' && (
-                <div className="flex gap-2 mb-6 bg-white/5 p-1 rounded-lg border border-white/5">
+                <div className="flex gap-1 sm:gap-2 mb-5 sm:mb-6 bg-white/5 p-1 rounded-lg border border-white/5">
                     <button
                         onClick={() => { setMode('signin'); setError(''); setSuccess('') }}
                         className={cn(
-                            "flex-1 py-2.5 rounded-md text-sm font-semibold transition-all duration-200",
+                            "flex-1 py-2 sm:py-2.5 rounded-md text-xs sm:text-sm font-semibold transition-all duration-200",
                             mode === 'signin'
                                 ? "bg-gradient-to-r from-orange-500 to-yellow-500 text-black shadow-lg shadow-orange-500/20"
                                 : "text-neutral-400 hover:text-white hover:bg-white/5"
@@ -94,7 +94,7 @@ export function EmailAuthForm({ onSuccess, onGoogleSignIn }: EmailAuthFormProps)
                     <button
                         onClick={() => { setMode('signup'); setError(''); setSuccess('') }}
                         className={cn(
-                            "flex-1 py-2.5 rounded-md text-sm font-semibold transition-all duration-200",
+                            "flex-1 py-2 sm:py-2.5 rounded-md text-xs sm:text-sm font-semibold transition-all duration-200",
                             mode === 'signup'
                                 ? "bg-gradient-to-r from-orange-500 to-yellow-500 text-black shadow-lg shadow-orange-500/20"
                                 : "text-neutral-400 hover:text-white hover:bg-white/5"
@@ -110,24 +110,24 @@ export function EmailAuthForm({ onSuccess, onGoogleSignIn }: EmailAuthFormProps)
                 <div className="mb-6 flex items-center gap-2">
                     <button
                         onClick={() => setMode('signin')}
-                        className="text-neutral-400 hover:text-white transition-colors text-sm"
+                        className="text-neutral-400 hover:text-white transition-colors text-xs sm:text-sm"
                     >
                         ← Geri
                     </button>
-                    <span className="text-white font-medium ml-1">Şifremi Unuttum</span>
+                    <span className="text-white font-medium ml-1 text-sm sm:text-base">Şifremi Unuttum</span>
                 </div>
             )}
 
             <form onSubmit={handleSubmit} className="space-y-4">
                 {/* Email Input */}
                 <div>
-                    <label className="block text-xs text-neutral-400 font-medium mb-1.5 ml-1">Email</label>
+                    <label className="block text-xs sm:text-sm text-neutral-400 font-medium mb-1.5 sm:mb-2 ml-1">Email</label>
                     <input
                         type="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder="ornek@email.com"
-                        className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder:text-neutral-600 focus:border-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-500/20 transition-all text-sm"
+                        className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder:text-neutral-600 focus:border-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-500/20 transition-all text-sm sm:text-base"
                         required
                     />
                 </div>
@@ -135,13 +135,13 @@ export function EmailAuthForm({ onSuccess, onGoogleSignIn }: EmailAuthFormProps)
                 {/* Password Input */}
                 {mode !== 'forgot' && (
                     <div>
-                        <div className="flex justify-between items-center mb-1.5 px-1">
-                            <label className="text-xs text-neutral-400 font-medium">Şifre</label>
+                        <div className="flex justify-between items-center mb-1.5 sm:mb-2 px-1">
+                            <label className="text-xs sm:text-sm text-neutral-400 font-medium">Şifre</label>
                             {mode === 'signin' && (
                                 <button
                                     type="button"
                                     onClick={() => setMode('forgot')}
-                                    className="text-[10px] text-orange-500 hover:text-orange-400 transition-colors"
+                                    className="text-xs sm:text-sm text-orange-500 hover:text-orange-400 transition-colors"
                                 >
                                     Şifremi Unuttum?
                                 </button>
@@ -153,15 +153,15 @@ export function EmailAuthForm({ onSuccess, onGoogleSignIn }: EmailAuthFormProps)
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 placeholder="••••••••"
-                                className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder:text-neutral-600 focus:border-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-500/20 transition-all text-sm pr-10"
+                                className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder:text-neutral-600 focus:border-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-500/20 transition-all text-sm sm:text-base pr-10"
                                 required
                             />
                             <button
                                 type="button"
                                 onClick={() => setShowPassword(!showPassword)}
-                                className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-white transition-colors"
+                                className="absolute right-2.5 sm:right-3 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-white transition-colors p-1.5 sm:p-2"
                             >
-                                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                                {showPassword ? <EyeOff className="w-4 h-4 sm:w-5 sm:h-5" /> : <Eye className="w-4 h-4 sm:w-5 sm:h-5" />}
                             </button>
                         </div>
                         {mode === 'signup' && (
@@ -189,7 +189,7 @@ export function EmailAuthForm({ onSuccess, onGoogleSignIn }: EmailAuthFormProps)
                 <button
                     type="submit"
                     disabled={loading}
-                    className="w-full py-3 bg-gradient-to-r from-orange-500 to-yellow-500 text-black font-bold rounded-lg hover:from-orange-600 hover:to-yellow-600 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 group shadow-lg shadow-orange-500/10"
+                    className="w-full py-2.5 sm:py-3 bg-gradient-to-r from-orange-500 to-yellow-500 text-black font-bold rounded-lg hover:from-orange-600 hover:to-yellow-600 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 group shadow-lg shadow-orange-500/10 active:scale-[0.98] text-sm sm:text-base"
                 >
                     {loading ? (
                         <Loader2 className="w-5 h-5 animate-spin" />
@@ -205,17 +205,17 @@ export function EmailAuthForm({ onSuccess, onGoogleSignIn }: EmailAuthFormProps)
             {/* Google Divider & Button */}
             {mode !== 'forgot' && onGoogleSignIn && (
                 <>
-                    <div className="my-6 flex items-center gap-4">
+                    <div className="my-4 sm:my-6 flex items-center gap-3 sm:gap-4">
                         <div className="flex-1 h-px bg-white/10"></div>
-                        <span className="text-[10px] font-medium text-neutral-500 uppercase tracking-wider">VEYA</span>
+                        <span className="text-[10px] sm:text-xs font-medium text-neutral-500 uppercase tracking-wider">VEYA</span>
                         <div className="flex-1 h-px bg-white/10"></div>
                     </div>
 
                     <button
                         onClick={onGoogleSignIn}
-                        className="w-full py-3 bg-white text-neutral-900 rounded-lg font-medium flex items-center justify-center gap-2 hover:bg-neutral-100 transition-colors text-sm"
+                        className="w-full py-2.5 sm:py-3 bg-white text-neutral-900 rounded-lg font-medium flex items-center justify-center gap-2 hover:bg-neutral-100 transition-colors text-sm sm:text-base active:scale-[0.98]"
                     >
-                        <svg className="w-5 h-5" viewBox="0 0 24 24">
+                        <svg className="w-4 h-4 sm:w-5 sm:h-5" viewBox="0 0 24 24">
                             <path
                                 fill="currentColor"
                                 d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"

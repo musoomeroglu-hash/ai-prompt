@@ -205,37 +205,37 @@ export default function Home() {
     if (!loading) {
       // Show landing page with 2-Column Layout
       return (
-        <main className="min-h-screen relative bg-black overflow-hidden flex flex-col">
-          <ShaderBackground opacity={0.6} />
+        <main className="min-h-screen relative bg-black overflow-hidden flex flex-col pb-safe-area-inset-bottom">
+          <ShaderBackground opacity={0.7} className="opacity-70 sm:opacity-80 lg:opacity-100" />
 
           <div className="relative z-10 container mx-auto px-4 flex-1 flex flex-col justify-center min-h-[calc(100vh-4rem)]">
-            <div className="lg:grid lg:grid-cols-2 lg:gap-16 lg:items-center py-12 lg:py-0">
+            <div className="flex flex-col lg:grid lg:grid-cols-2 lg:gap-16 lg:items-center pt-16 sm:pt-20 lg:pt-0">
 
               {/* ═══ Left Column: Content ═══ */}
-              <div className="flex flex-col justify-center lg:pr-8 mb-16 lg:mb-0 text-center">
+              <div className="flex flex-col justify-center items-center lg:items-start text-center lg:text-left px-4 sm:px-6 lg:px-0 lg:pr-8 py-8 sm:py-12 lg:py-0">
                 {/* Logo */}
-                <div className="mb-8 flex justify-center">
-                  <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-yellow-500 rounded-2xl flex items-center justify-center shadow-lg shadow-orange-500/20">
-                    <Zap className="w-8 h-8 text-black" />
+                <div className="mb-6 sm:mb-8 lg:mb-8 flex justify-center lg:justify-start">
+                  <div className="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-gradient-to-br from-orange-500 to-yellow-500 rounded-xl lg:rounded-2xl flex items-center justify-center shadow-lg shadow-orange-500/20 mx-auto lg:mx-0">
+                    <Zap className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8 text-black" />
                   </div>
                 </div>
 
                 {/* Title */}
-                <h1 className="text-5xl lg:text-7xl font-bold mb-6 tracking-tight text-white leading-[1.1]">
+                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold mb-4 sm:mb-6 tracking-tight text-white leading-tight">
                   Master the Art of <br />
-                  <span className="bg-gradient-to-r from-orange-500 to-yellow-500 bg-clip-text text-transparent">
+                  <span className="block mt-1 lg:mt-0 bg-gradient-to-r from-orange-500 to-yellow-500 bg-clip-text text-transparent">
                     AI Prompting
                   </span>
                 </h1>
 
                 {/* Subtitle */}
-                <p className="text-xl text-neutral-400 mb-8 max-w-xl mx-auto leading-relaxed">
+                <p className="text-sm sm:text-base lg:text-xl text-neutral-400 mb-6 sm:mb-8 max-w-md lg:max-w-xl mx-auto lg:mx-0 px-2 sm:px-0 leading-relaxed">
                   Create, refine, and organize your prompts with advanced AI tools.
                   Join thousands of creators building better with AI.
                 </p>
 
                 {/* Features */}
-                <div className="flex flex-wrap justify-center gap-6 text-sm text-neutral-500 font-medium">
+                <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 sm:gap-6 text-xs sm:text-sm text-neutral-500 font-medium mb-8 sm:mb-12 lg:mb-0">
                   <div className="flex items-center gap-2 bg-white/5 px-4 py-2 rounded-full border border-white/5">
                     <Crown className="w-4 h-4 text-orange-400" />
                     <span>Premium Features</span>
@@ -248,13 +248,13 @@ export default function Home() {
               </div>
 
               {/* ═══ Right Column: Auth Card ═══ */}
-              <div className="flex items-center justify-center">
-                <div className="w-full max-w-md relative group">
+              <div className="w-full px-4 sm:px-6 lg:px-0 pb-8 sm:pb-12 lg:pb-0 flex items-center justify-center">
+                <div className="w-full max-w-sm sm:max-w-md mx-auto relative group">
                   {/* Glow Effect */}
-                  <div className="absolute -inset-1 bg-gradient-to-r from-orange-500 via-yellow-400 to-orange-500 rounded-2xl blur-xl opacity-30 animate-pulse transition-opacity duration-1000 group-hover:opacity-50"></div>
+                  <div className="absolute -inset-1 bg-gradient-to-r from-orange-500 via-yellow-400 to-orange-500 rounded-xl lg:rounded-2xl blur-lg lg:blur-xl opacity-20 lg:opacity-30 animate-pulse transition-opacity duration-1000 group-hover:opacity-50"></div>
 
                   {/* Main Card */}
-                  <div className="relative bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl p-8 shadow-2xl">
+                  <div className="relative bg-black/40 backdrop-blur-xl border border-white/10 rounded-xl lg:rounded-2xl p-6 sm:p-8 shadow-2xl">
                     <EmailAuthForm
                       onSuccess={() => window.location.reload()}
                       onGoogleSignIn={handleGoogleSignIn}
