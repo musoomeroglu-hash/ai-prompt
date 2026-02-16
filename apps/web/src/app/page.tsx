@@ -7,6 +7,7 @@ import { ShaderBackground } from '@/components/ui/shader-background'
 import { TextShimmer } from '@/components/ui/text-shimmer'
 import { ThemeToggle } from '@/components/ui/theme-toggle'
 import KineticDotsLoader from '@/components/ui/kinetic-dots-loader'
+import { GradientSpinner } from '@/components/ui/gradient-spinner'
 import { ChatInput } from '@/components/chat-input'
 import { ResultsPanel } from '@/components/results-panel'
 import { LibraryView } from '@/components/library-view'
@@ -422,10 +423,7 @@ export default function Home() {
 
               {generating && (
                 <div className="mt-10 flex flex-col items-center gap-2">
-                  <KineticDotsLoader size="sm" />
-                  <TextShimmer className="text-sm font-medium" duration={1.5}>
-                    {t.generating}
-                  </TextShimmer>
+                  <GradientSpinner size={120} text="GENERATING" />
                 </div>
               )}
             </div>
