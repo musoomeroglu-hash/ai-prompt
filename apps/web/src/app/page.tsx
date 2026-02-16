@@ -506,7 +506,7 @@ export default function Home() {
 
         {/* Fixed Bottom Input Area - Only for Chat View */}
         {currentView === 'chat' && (
-          <div className="w-full p-4 z-40 shrink-0">
+          <div className="w-full p-2 sm:p-4 z-40 shrink-0 bg-gradient-to-t from-black via-black/90 to-transparent pb-safe-area-inset-bottom">
             <div className="max-w-3xl mx-auto">
               <ChatInput onSubmit={handleGenerate} isGenerating={generating} />
             </div>

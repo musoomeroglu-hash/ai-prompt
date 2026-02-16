@@ -193,9 +193,9 @@ export function ChatInput({ onSubmit, isGenerating }: ChatInputProps) {
                             onKeyDown={handleKeyDown}
                             placeholder={t.placeholder(currentAI.label)}
                             className={cn(
-                                "w-full px-5 py-4 resize-none bg-transparent border-none text-white text-sm",
+                                "w-full px-4 py-3 sm:px-5 sm:py-4 resize-none bg-transparent border-none text-white text-sm sm:text-base",
                                 "focus:outline-none focus-visible:ring-0 focus-visible:ring-offset-0",
-                                "placeholder:text-neutral-500 placeholder:text-sm min-h-[60px]"
+                                "placeholder:text-neutral-500 placeholder:text-sm min-h-[50px] sm:min-h-[60px]"
                             )}
                             style={{ overflow: "hidden" }}
                         />
@@ -208,10 +208,10 @@ export function ChatInput({ onSubmit, isGenerating }: ChatInputProps) {
                                 <button
                                     type="button"
                                     onClick={() => setShowAIDropdown(!showAIDropdown)}
-                                    className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-neutral-800/50 border border-neutral-700/50 hover:border-neutral-600 transition-all text-xs"
+                                    className="flex items-center gap-1.5 px-2 py-1.5 sm:px-2.5 sm:py-1.5 rounded-lg bg-neutral-800/50 border border-neutral-700/50 hover:border-neutral-600 transition-all text-[10px] sm:text-xs"
                                 >
                                     <span>{aiLogos[currentAI.id]}</span>
-                                    <span className="text-white font-medium">{currentAI.label}</span>
+                                    <span className="text-white font-medium truncate max-w-[60px] sm:max-w-none">{currentAI.label}</span>
                                     <ChevronDown className={cn("w-3 h-3 text-neutral-400 transition-transform", showAIDropdown && "rotate-180")} />
                                 </button>
 
@@ -244,7 +244,7 @@ export function ChatInput({ onSubmit, isGenerating }: ChatInputProps) {
                             </div>
 
                             {/* Category Badge */}
-                            <span className="text-xs text-orange-400 font-medium bg-orange-500/10 px-2 py-0.5 rounded-full border border-orange-500/20">
+                            <span className="hidden sm:inline-flex text-xs text-orange-400 font-medium bg-orange-500/10 px-2 py-0.5 rounded-full border border-orange-500/20">
                                 {t.categories[categories.find(c => c.id === selectedCategory)?.id || ''] || categories.find(c => c.id === selectedCategory)?.label}
                             </span>
                         </div>
@@ -254,7 +254,7 @@ export function ChatInput({ onSubmit, isGenerating }: ChatInputProps) {
                             type="button"
                             onClick={handleSend}
                             disabled={!value.trim() || isGenerating}
-                            className="!min-w-0 !px-5 !py-2.5 !rounded-xl"
+                            className="!min-w-0 !px-4 !py-2 sm:!px-5 sm:!py-2.5 !rounded-xl"
                         >
                             {isGenerating ? (
                                 <svg className="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -269,7 +269,7 @@ export function ChatInput({ onSubmit, isGenerating }: ChatInputProps) {
                 </div>
 
                 {/* Category Buttons */}
-                <div className="flex items-center justify-center gap-2 mt-5 flex-wrap">
+                <div className="flex items-center gap-2 mt-3 sm:mt-5 overflow-x-auto pb-2 sm:pb-0 sm:flex-wrap sm:justify-center scrollbar-none mask-fade-sides">
                     {categories.map(cat => {
                         const Icon = cat.icon;
                         const isActive = selectedCategory === cat.id;
@@ -279,13 +279,13 @@ export function ChatInput({ onSubmit, isGenerating }: ChatInputProps) {
                                 type="button"
                                 onClick={() => setSelectedCategory(cat.id)}
                                 className={cn(
-                                    "flex items-center gap-2 px-4 py-2 rounded-full border text-xs font-medium transition-all",
+                                    "flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full border text-[10px] sm:text-xs font-medium transition-all whitespace-nowrap flex-shrink-0",
                                     isActive
                                         ? "bg-white/10 border-white/30 text-white shadow-lg shadow-white/5"
                                         : "bg-neutral-900/50 hover:bg-neutral-800 border-neutral-800 text-neutral-400 hover:text-white"
                                 )}
                             >
-                                <Icon className="w-3.5 h-3.5" />
+                                <Icon className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
                                 <span>{t.categories[cat.id] || cat.label}</span>
                             </button>
                         );
