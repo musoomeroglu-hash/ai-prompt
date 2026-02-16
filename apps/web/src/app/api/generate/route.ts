@@ -154,23 +154,57 @@ export async function POST(req: Request) {
             };
             responseText = JSON.stringify(mockResponse);
         } else {
+        } else {
             const prompt = subscription.planConfig.aiModelTier !== 'basic'
                 ? buildAdvancedPrompt(userRequest, category, targetAI)
                 : buildBasicPrompt(userRequest, category, targetAI)
 
             // 5. AI Execution with Retry
             const maxAttempts = 3;
+            let success = false;
+
             for (let attempt = 1; attempt <= maxAttempts; attempt++) {
                 try {
+                    console.log(`[AI] Generating content with model... Attempt ${attempt}`);
                     const resultGen = await model.generateContent(prompt)
-                    responseText = resultGen.response.text()
-                    break;
+                    const text = resultGen.response.text();
+                    if (text) {
+                        responseText = text;
+                        success = true;
+                        break;
+                    }
                 } catch (error: any) {
-                    console.warn(`[AI] Attempt ${attempt} failed:`, error.message);
-                    if (attempt === maxAttempts) throw error;
+                    console.error(`[AI] Attempt ${attempt} failed:`, error.message);
+                    if (attempt === maxAttempts) {
+                        console.warn('[AI] All attempts failed. Falling back to mock response.');
+                    }
                     const delay = Math.pow(2, attempt - 1) * 1000;
                     await new Promise(resolve => setTimeout(resolve, delay));
                 }
+            }
+
+            if (!success) {
+                // Fallback to mock if API fails even with key
+                const mockResponse = {
+                    short: `[SIMULATION] Optimized ${category} prompt for ${targetAI}.`,
+                    detailed: `[SIMULATION] The AI service is currently unavailable or the API key is invalid. This is a simulated response to demonstrate the UI flow. optimization for ${targetAI} in ${category}.`,
+                    creative: `[SIMULATION] Creative angle for ${userRequest} (System in fallback mode).`
+                };
+                responseText = JSON.stringify(mockResponse);
+            }
+        }
+
+        if (isDev) console.log('[AI] Raw Response:', responseText);
+
+        let result;
+        try {
+            result = extractJSON(responseText);
+        } catch (e) {
+            // If JSON parse fails (even from mock strings if manually messed up?), fallback safe
+            result = {
+                short: "Error parsing AI response",
+                detailed: responseText,
+                creative: "..."
             }
         }
 
