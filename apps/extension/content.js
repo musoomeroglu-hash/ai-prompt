@@ -364,3 +364,72 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     await initSidebar();
   }
 })();
+// ── Text Selection Floating Button ────────────────────────
+let selectionBtn = null;
+
+document.addEventListener("mouseup", async (e) => {
+  // If clicking inside sidebar or toggle button, ignore
+  if (sidebar && sidebar.contains(e.target)) return;
+  if (toggleBtn && toggleBtn.contains(e.target)) return;
+  if (selectionBtn && selectionBtn.contains(e.target)) return;
+
+  const selection = window.getSelection();
+  const text = selection?.toString().trim();
+
+  // Hide button if no text or text too short
+  if (!text || text.length < 3) {
+    hideSelectionButton();
+    return;
+  }
+
+  // Check settings
+  const { settings } = await chrome.storage.local.get("settings");
+  if (settings?.showFloatingButton === false) return;
+
+  // Show button near selection
+  const range = selection.getRangeAt(0);
+  const rect = range.getBoundingClientRect();
+  showSelectionButton(rect, text);
+});
+
+document.addEventListener("mousedown", (e) => {
+  // Hide on click outside
+  if (selectionBtn && !selectionBtn.contains(e.target)) {
+    hideSelectionButton();
+  }
+});
+
+function showSelectionButton(rect, text) {
+  if (!selectionBtn) {
+    selectionBtn = document.createElement("div");
+    selectionBtn.className = "ag-selection-btn";
+    selectionBtn.innerHTML = `
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="ag-icon">
+                <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="currentColor"/>
+            </svg>
+            <span>Prompt Üret</span>
+        `;
+    document.body.appendChild(selectionBtn);
+
+    selectionBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      openSidebarWithText(text);
+      hideSelectionButton();
+      window.getSelection().removeAllRanges();
+    });
+  }
+
+  const x = rect.left + window.scrollX + rect.width / 2 - 60; // Center button
+  const y = rect.top + window.scrollY - 48; // Position above
+
+  selectionBtn.style.left = `${Math.max(8, x)}px`;
+  selectionBtn.style.top = `${Math.max(8, y)}px`;
+  selectionBtn.classList.add("ag-visible");
+}
+
+function hideSelectionButton() {
+  if (selectionBtn) {
+    selectionBtn.classList.remove("ag-visible");
+  }
+}
