@@ -36,6 +36,18 @@ chrome.runtime.onInstalled.addListener(() => {
     });
 });
 
+// ── Toolbar Icon Click Handler ─────────────────────────────
+chrome.action.onClicked.addListener(async (tab) => {
+    if (!tab?.id) return;
+
+    // Content script'in yüklendiğinden emin ol
+    await ensureContentScriptInjected(tab.id);
+
+    chrome.tabs.sendMessage(tab.id, {
+        type: "TOGGLE_SIDEBAR"
+    }).catch(err => console.error("Failed to toggle sidebar:", err));
+});
+
 // ── Context Menu Click Handler ─────────────────────────────
 chrome.contextMenus.onClicked.addListener(async (info, tab) => {
     if (!info.selectionText || !tab?.id) return;
@@ -64,8 +76,6 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
         settings,
     }).catch(err => {
         console.error("Failed to send message to content script:", err);
-        // Fallback: Popup'ı aç
-        chrome.action.openPopup();
     });
 });
 

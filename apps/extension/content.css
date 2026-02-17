@@ -459,45 +459,69 @@
     }
 }
 
-/* ═══ SELECTION FLOATING BUTTON ═══ */
-.ag-selection-btn {
+/* ═══ SELECTION FLOATING BUTTONS ═══ */
+.ag-selection-panel {
     position: absolute;
     z-index: 2147483645;
     background: var(--ag-bg-secondary);
     border: 1px solid var(--ag-border);
-    border-radius: 8px;
-    padding: 8px 12px;
+    border-radius: 10px;
+    padding: 6px;
     display: flex;
     align-items: center;
-    gap: 8px;
-    cursor: pointer;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    gap: 6px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
     opacity: 0;
     pointer-events: none;
     transform: translateY(10px);
     transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.ag-selection-btn.ag-visible {
+.ag-selection-panel.ag-visible {
     opacity: 1;
     pointer-events: auto;
     transform: translateY(0);
 }
 
-.ag-selection-btn:hover {
-    background: var(--ag-bg-tertiary);
-    border-color: var(--ag-border-hover);
-    transform: translateY(-2px);
-}
-
-.ag-selection-btn svg {
-    width: 16px;
-    height: 16px;
-    color: var(--ag-accent-primary);
-}
-
-.ag-selection-btn span {
+.ag-action-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    background: transparent;
+    color: var(--ag-text-secondary);
     font-size: 13px;
     font-weight: 600;
+    cursor: pointer;
+    transition: all 150ms ease;
+    white-space: nowrap;
+}
+
+.ag-action-btn:hover {
+    background: var(--ag-bg-tertiary);
     color: var(--ag-text-primary);
+}
+
+.ag-action-btn.primary {
+    background: linear-gradient(135deg, var(--ag-accent-primary), var(--ag-accent-secondary));
+    color: white;
+    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.2);
+}
+
+.ag-action-btn.primary:hover {
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+    transform: translateY(-1px);
+}
+
+.ag-action-btn svg {
+    width: 16px;
+    height: 16px;
+}
+
+.ag-divider {
+    width: 1px;
+    height: 20px;
+    background: var(--ag-border);
 }

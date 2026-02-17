@@ -152,18 +152,29 @@ function toggleSidebar(expand = null) {
 }
 
 // ── Open Sidebar with Text ─────────────────────────────────
-async function openSidebarWithText(text) {
+async function openSidebarWithText(text, action = "generate") {
   await initSidebar();
 
   selectedText = text;
   const textSection = document.getElementById("ag-text-section");
   const textDisplay = document.getElementById("ag-selected-text");
+  const categorySelect = document.getElementById("ag-category-select");
+  const generateBtnText = document.querySelector("#ag-generate-btn .ag-btn-text");
 
   if (text && text.trim()) {
     textDisplay.textContent = text.slice(0, 200) + (text.length > 200 ? "..." : "");
     textSection.style.display = "flex";
   } else {
     textSection.style.display = "none";
+  }
+
+  // Handle action specific logic
+  if (action === "improve") {
+    categorySelect.value = "writing";
+    generateBtnText.textContent = "⚡ Metni İyileştir";
+  } else {
+    // Reset to default if needed, or keep previous
+    generateBtnText.textContent = "✨ Prompt Üret";
   }
 
   toggleSidebar(true);
@@ -349,8 +360,11 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     sendResponse({ pong: true });
     return true;
   }
+  if (message.type === "TOGGLE_SIDEBAR") {
+    toggleSidebar();
+  }
   if (message.type === "GENERATE_FROM_SELECTION") {
-    openSidebarWithText(message.text);
+    openSidebarWithText(message.text, message.action);
   }
   if (message.type === "SHOW_CONSENT_DIALOG") {
     window.open(chrome.runtime.getURL("options/options.html#consent"), "_blank");
@@ -364,21 +378,22 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     await initSidebar();
   }
 })();
-// ── Text Selection Floating Button ────────────────────────
-let selectionBtn = null;
+
+// ── Text Selection Floating UI ─────────────────────────────
+let selectionPanel = null;
 
 document.addEventListener("mouseup", async (e) => {
   // If clicking inside sidebar or toggle button, ignore
   if (sidebar && sidebar.contains(e.target)) return;
   if (toggleBtn && toggleBtn.contains(e.target)) return;
-  if (selectionBtn && selectionBtn.contains(e.target)) return;
+  if (selectionPanel && selectionPanel.contains(e.target)) return;
 
   const selection = window.getSelection();
   const text = selection?.toString().trim();
 
-  // Hide button if no text or text too short
+  // Hide panel if no text or text too short
   if (!text || text.length < 3) {
-    hideSelectionButton();
+    hideSelectionPanel();
     return;
   }
 
@@ -386,50 +401,68 @@ document.addEventListener("mouseup", async (e) => {
   const { settings } = await chrome.storage.local.get("settings");
   if (settings?.showFloatingButton === false) return;
 
-  // Show button near selection
+  // Show panel near selection
   const range = selection.getRangeAt(0);
   const rect = range.getBoundingClientRect();
-  showSelectionButton(rect, text);
+  showSelectionPanel(rect, text);
 });
 
 document.addEventListener("mousedown", (e) => {
   // Hide on click outside
-  if (selectionBtn && !selectionBtn.contains(e.target)) {
-    hideSelectionButton();
+  if (selectionPanel && !selectionPanel.contains(e.target)) {
+    hideSelectionPanel();
   }
 });
 
-function showSelectionButton(rect, text) {
-  if (!selectionBtn) {
-    selectionBtn = document.createElement("div");
-    selectionBtn.className = "ag-selection-btn";
-    selectionBtn.innerHTML = `
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="ag-icon">
-                <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="currentColor"/>
-            </svg>
-            <span>Prompt Üret</span>
-        `;
-    document.body.appendChild(selectionBtn);
+function showSelectionPanel(rect, text) {
+  if (!selectionPanel) {
+    selectionPanel = document.createElement("div");
+    selectionPanel.className = "ag-selection-panel";
+    selectionPanel.innerHTML = `
+        <button class="ag-action-btn primary" id="ag-btn-generate">
+          <svg viewBox="0 0 24 24" fill="none" class="ag-icon">
+            <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="currentColor"/>
+          </svg>
+          Prompt Üret
+        </button>
+        <div class="ag-divider"></div>
+        <button class="ag-action-btn" id="ag-btn-improve">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M13 10V3L4 14h7v7l9-11h-7z" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          İyileştir
+        </button>
+    `;
+    document.body.appendChild(selectionPanel);
 
-    selectionBtn.addEventListener("click", (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      openSidebarWithText(text);
-      hideSelectionButton();
-      window.getSelection().removeAllRanges();
+    document.getElementById("ag-btn-generate").addEventListener("click", (e) => {
+      handleAction(e, text, "generate");
+    });
+
+    document.getElementById("ag-btn-improve").addEventListener("click", (e) => {
+      handleAction(e, text, "improve");
     });
   }
 
-  const x = rect.left + window.scrollX + rect.width / 2 - 60; // Center button
-  const y = rect.top + window.scrollY - 48; // Position above
+  // Position calculation
+  const x = rect.left + window.scrollX + rect.width / 2 - 100; // Center roughly
+  const y = rect.top + window.scrollY - 54; // Above selection
 
-  selectionBtn.style.left = `${Math.max(8, x)}px`;
-  selectionBtn.style.top = `${Math.max(8, y)}px`;
-  selectionBtn.classList.add("ag-visible");
+  selectionPanel.style.left = `${Math.max(8, x)}px`;
+  selectionPanel.style.top = `${Math.max(8, y)}px`;
+  selectionPanel.classList.add("ag-visible");
 }
 
-function hideSelectionButton() {
-  if (selectionBtn) {
-    selectionBtn.classList.remove("ag-visible");
+function handleAction(e, text, action) {
+  e.preventDefault();
+  e.stopPropagation();
+  openSidebarWithText(text, action);
+  hideSelectionPanel();
+  window.getSelection().removeAllRanges();
+}
+
+function hideSelectionPanel() {
+  if (selectionPanel) {
+    selectionPanel.classList.remove("ag-visible");
   }
 }
