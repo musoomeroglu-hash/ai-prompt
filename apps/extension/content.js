@@ -136,8 +136,10 @@ async function initSidebar() {
 }
 
 // ── Toggle Sidebar ─────────────────────────────────────────
-function toggleSidebar(expand = null) {
-  if (!sidebar) return;
+async function toggleSidebar(expand = null) {
+  if (!sidebar) {
+    await initSidebar();
+  }
 
   sidebarExpanded = expand !== null ? expand : !sidebarExpanded;
 
@@ -371,13 +373,13 @@ function escapeAttr(str) {
 }
 
 // ── Message Listener ───────────────────────────────────────
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
   if (message.type === "PING") {
     sendResponse({ pong: true });
     return true;
   }
   if (message.type === "TOGGLE_SIDEBAR") {
-    toggleSidebar();
+    await toggleSidebar();
   }
   if (message.type === "GENERATE_FROM_SELECTION") {
     openSidebarWithText(message.text, message.action);
