@@ -75,6 +75,12 @@
   "content_security_policy": {
     "extension_pages": "script-src 'self'; object-src 'self'; connect-src 'self' https://ai-prompt-livid.vercel.app https://*.supabase.co;"
   },
+  "externally_connectable": {
+    "matches": [
+      "https://ai-prompt-livid.vercel.app/*",
+      "http://localhost:3000/*"
+    ]
+  },
   "update_url": "https://clients2.google.com/service/update2/crx",
   "minimum_chrome_version": "116"
 }

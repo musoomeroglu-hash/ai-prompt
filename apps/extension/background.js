@@ -129,6 +129,23 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         sendResponse({ success: true });
         return true;
     }
+
+    if (message.type === "SET_AUTH_TOKEN") {
+        chrome.storage.local.set({ authToken: message.token }, () => {
+            sendResponse({ success: true });
+        });
+        return true;
+    }
+});
+
+// ── Harici Mesaj Dinleyici (Web Sitesinden Gelen) ──────────
+chrome.runtime.onMessageExternal.addListener((message, sender, sendResponse) => {
+    if (message.type === "SET_AUTH_TOKEN") {
+        chrome.storage.local.set({ authToken: message.token }, () => {
+            sendResponse({ success: true, from: "external" });
+        });
+        return true;
+    }
 });
 
 // ── Prompt Üretim API Çağrısı ──────────────────────────────

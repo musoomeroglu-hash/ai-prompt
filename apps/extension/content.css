@@ -88,6 +88,33 @@
     gap: 8px;
 }
 
+.ag-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.ag-usage-info {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 6px;
+    border: 1px solid var(--ag-border);
+}
+
+.ag-usage-label {
+    font-size: 11px;
+    color: var(--ag-text-secondary);
+}
+
+.ag-usage-value {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--ag-accent-primary);
+}
+
 .ag-icon-btn {
     width: 32px;
     height: 32px;

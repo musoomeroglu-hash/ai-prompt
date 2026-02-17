@@ -45,6 +45,10 @@ async function initSidebar() {
                     <span>Antigravity</span>
                 </div>
                 <div class="ag-header-actions">
+                    <div class="ag-usage-info" id="ag-usage-info" style="display:none">
+                        <span class="ag-usage-label">Kullanım:</span>
+                        <span class="ag-usage-value" id="ag-usage-value">0/0</span>
+                    </div>
                     <button class="ag-icon-btn" id="ag-collapse-btn" title="Daralt">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
                             <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -187,16 +191,21 @@ async function generatePrompt() {
   const spinner = btn.querySelector(".ag-spinner");
   const results = document.getElementById("ag-results");
   const promptList = document.getElementById("ag-prompt-list");
+  const usageInfo = document.getElementById("ag-usage-info");
+  const usageValue = document.getElementById("ag-usage-value");
 
   btn.disabled = true;
   btnText.style.display = "none";
   spinner.style.display = "block";
 
   try {
-    const text = selectedText || "Generate a creative prompt";
+    let text = selectedText || "Generate a creative prompt";
     const model = document.getElementById("ag-model-select").value;
     const category = document.getElementById("ag-category-select").value;
     const { authToken } = await chrome.storage.local.get("authToken");
+
+    // If it's an improvement action, slightly modify the message if needed
+    // but the API handles category=writing well.
 
     const response = await chrome.runtime.sendMessage({
       type: "GENERATE_PROMPT",
@@ -204,6 +213,13 @@ async function generatePrompt() {
     });
 
     if (!response.success) throw new Error(response.error);
+
+    // Update Usage Info
+    if (response.subscription) {
+      const sub = response.subscription;
+      usageValue.textContent = `${sub.dailyPromptsUsed}/${sub.dailyPromptLimit}`;
+      usageInfo.style.display = "flex";
+    }
 
     const prompts = response.data?.prompts || response.data?.variations || [];
     promptList.innerHTML = "";
