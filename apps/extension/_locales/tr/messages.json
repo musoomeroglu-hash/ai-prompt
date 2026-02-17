@@ -1,0 +1,10 @@
+{
+    "appName": {
+        "message": "Antigravity — AI Prompt Generator",
+        "description": "Uzantı adı"
+    },
+    "appDescription": {
+        "message": "Web sayfalarından metin seçerek anında optimize edilmiş AI promptları üretin. ChatGPT, Claude, Gemini ve daha fazlası için.",
+        "description": "Uzantı açıklaması"
+    }
+}

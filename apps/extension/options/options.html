@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Antigravity — Ayarlar</title>
+    <style>
+        /* 21st.dev minimalist options page */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg: #09090f;
+            --surface: #111118;
+            --surface-2: #18181f;
+            --border: rgba(255, 255, 255, 0.08);
+            --text: #f1f1f5;
+            --text-muted: #8b8ba7;
+            --primary: #6366f1;
+            --purple: #8b5cf6;
+            --success: #22c55e;
+            --font: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", sans-serif;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--font);
+            min-height: 100vh;
+            padding: 40px 20px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+        }
+
+        .page-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .page-title {
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: -0.04em;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .card-title {
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--text-muted);
+        }
+
+        .setting-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .setting-label {
+            font-size: 14px;
+            color: var(--text);
+        }
+
+        .setting-desc {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .toggle {
+            position: relative;
+            width: 40px;
+            height: 22px;
+        }
+
+        .toggle input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            inset: 0;
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            border-radius: 22px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .toggle-slider::before {
+            content: "";
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            left: 2px;
+            bottom: 2px;
+            background: var(--text-muted);
+            border-radius: 50%;
+            transition: transform 0.2s, background 0.2s;
+        }
+
+        .toggle input:checked+.toggle-slider {
+            background: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .toggle input:checked+.toggle-slider::before {
+            transform: translateX(18px);
+            background: white;
+        }
+
+        select.settings-select {
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            font-family: var(--font);
+            font-size: 13px;
+            padding: 7px 10px;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-family: var(--font);
+            font-size: 13px;
+            font-weight: 600;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: opacity 0.15s, transform 0.15s;
+        }
+
+        .btn-primary:hover {
+            opacity: 0.88;
+            transform: translateY(-1px);
+        }
+
+        .consent-box {
+            background: rgba(99, 102, 241, 0.06);
+            border: 1px solid rgba(99, 102, 241, 0.25);
+            border-radius: 10px;
+            padding: 16px;
+            font-size: 13px;
+            line-height: 1.6;
+            color: var(--text-muted);
+        }
+
+        .consent-box h3 {
+            color: var(--text);
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .consent-box ul {
+            padding-left: 16px;
+            margin-top: 6px;
+        }
+
+        .consent-box li {
+            margin-bottom: 4px;
+        }
+
+        .consent-accepted {
+            color: var(--success);
+            font-size: 12px;
+            font-weight: 600;
+            display: none;
+        }
+
+        .save-status {
+            text-align: center;
+            color: var(--success);
+            font-size: 13px;
+            font-weight: 600;
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header class="page-header">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+                <path
+                    d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"
+                    fill="url(#hg)" />
+                <defs>
+                    <linearGradient id="hg" x1="2" y1="2" x2="22" y2="22">
+                        <stop offset="0%" stop-color="#6366f1" />
+                        <stop offset="100%" stop-color="#8b5cf6" />
+                    </linearGradient>
+                </defs>
+            </svg>
+            <h1 class="page-title">Antigravity Ayarları</h1>
+        </header>
+
+        <!-- KVKK Consent Card -->
+        <div class="card" id="consent-section">
+            <div class="card-title">🔒 KVKK & Gizlilik Onayı</div>
+            <div class="consent-box">
+                <h3>Kişisel Verilerin Korunması</h3>
+                <p>Antigravity uzantısı aşağıdaki verileri işlemektedir:</p>
+                <ul>
+                    <li>Web sitelerinde seçtiğiniz metinler (yalnızca siz tıkladığında, otomatik olarak değil)</li>
+                    <li>Üretilen promptlar (yerel depolama — sunucuya gönderilmez)</li>
+                    <li>Oturum token'ı (şifreli, yalnızca api.antigravity.app ile paylaşılır)</li>
+                </ul>
+                <p style="margin-top:8px"><strong>Üçüncü taraflarla veri paylaşımı yapılmamaktadır.</strong> Reklam veya
+                    izleme teknolojisi kullanılmamaktadır.</p>
+            </div>
+            <div style="display:flex; align-items:center; gap:12px">
+                <label class="toggle">
+                    <input type="checkbox" id="consent-checkbox" />
+                    <span class="toggle-slider"></span>
+                </label>
+                <span style="font-size:13px">KVKK kapsamında veri işlenmesini kabul ediyorum</span>
+            </div>
+            <div class="consent-accepted" id="consent-accepted">✓ Onay kaydedildi — <span id="consent-date"></span>
+            </div>
+        </div>
+
+        <!-- Genel Ayarlar -->
+        <div class="card">
+            <div class="card-title">⚙️ Genel Ayarlar</div>
+
+            <div class="setting-row">
+                <div>
+                    <div class="setting-label">Floating Buton</div>
+                    <div class="setting-desc">Metin seçince prompt butonu göster</div>
+                </div>
+                <label class="toggle">
+                    <input type="checkbox" id="floating-btn-toggle" checked />
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+
+            <div class="setting-row">
+                <div>
+                    <div class="setting-label">AI Platformlarında Otomatik Algıla</div>
+                    <div class="setting-desc">ChatGPT, Claude, Gemini sayfalarında akıllı entegrasyon</div>
+                </div>
+                <label class="toggle">
+                    <input type="checkbox" id="auto-detect-toggle" checked />
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+
+            <div class="setting-row">
+                <div>
+                    <div class="setting-label">Varsayılan AI Modeli</div>
+                </div>
+                <select class="settings-select" id="default-model">
+                    <option value="gpt-4o-mini">GPT-4o Mini</option>
+                    <option value="gpt-4o">GPT-4o</option>
+                    <option value="claude">Claude</option>
+                    <option value="gemini">Gemini</option>
+                </select>
+            </div>
+
+            <div class="setting-row">
+                <div>
+                    <div class="setting-label">Varsayılan Kategori</div>
+                </div>
+                <select class="settings-select" id="default-category">
+                    <option value="general">Genel</option>
+                    <option value="coding">Kodlama</option>
+                    <option value="writing">Yazı</option>
+                    <option value="marketing">Pazarlama</option>
+                    <option value="analysis">Analiz</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Kaydet -->
+        <button class="btn-primary" id="save-btn">Ayarları Kaydet</button>
+        <div class="save-status" id="save-status">✓ Ayarlar kaydedildi!</div>
+    </div>
+
+    <script src="options.js"></script>
+</body>
+
+</html>

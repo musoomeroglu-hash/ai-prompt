@@ -1,0 +1,10 @@
+{
+    "appName": {
+        "message": "Antigravity — AI Prompt Generator",
+        "description": "Extension name"
+    },
+    "appDescription": {
+        "message": "Select text on any webpage to instantly generate optimized AI prompts for ChatGPT, Claude, Gemini, and more.",
+        "description": "Extension description"
+    }
+}

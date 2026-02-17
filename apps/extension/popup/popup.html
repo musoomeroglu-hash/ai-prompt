@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="tr" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Antigravity</title>
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <div class="popup-container">
+
+    <!-- Header -->
+    <header class="popup-header">
+      <div class="popup-logo">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+          <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"
+                fill="url(#popup-gradient)"/>
+          <defs>
+            <linearGradient id="popup-gradient" x1="2" y1="2" x2="22" y2="22">
+              <stop offset="0%" stop-color="#6366f1"/>
+              <stop offset="100%" stop-color="#8b5cf6"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <span class="popup-logo-text">Antigravity</span>
+      </div>
+      <div class="popup-header-actions">
+        <button class="icon-btn" id="settings-btn" title="Ayarlar">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+            <path d="M12 15a3 3 0 100-6 3 3 0 000 6z" stroke="currentColor" stroke-width="1.8"/>
+            <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z" stroke="currentColor" stroke-width="1.8"/>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Auth Section -->
+    <div id="auth-section" class="section">
+      <div class="plan-badge" id="plan-badge">Ücretsiz Plan</div>
+      <div class="usage-bar-container">
+        <div class="usage-info">
+          <span class="usage-label">Bugünkü kullanım</span>
+          <span class="usage-count" id="usage-count">0 / 2</span>
+        </div>
+        <div class="usage-bar">
+          <div class="usage-bar-fill" id="usage-bar-fill" style="width: 0%"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Prompt Generator -->
+    <div class="section">
+      <div class="field-group">
+        <label class="field-label">Ne hakkında prompt üreteyim?</label>
+        <textarea
+          id="prompt-input"
+          class="popup-textarea"
+          placeholder="Bir konu, görev veya fikir yazın..."
+          rows="3"
+        ></textarea>
+      </div>
+
+      <div class="field-row">
+        <div class="field-group">
+          <label class="field-label">AI Modeli</label>
+          <select class="popup-select" id="model-select">
+            <option value="gpt-4o-mini">GPT-4o Mini</option>
+            <option value="gpt-4o">GPT-4o</option>
+            <option value="claude">Claude</option>
+            <option value="gemini">Gemini</option>
+          </select>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Kategori</label>
+          <select class="popup-select" id="category-select">
+            <option value="general">Genel</option>
+            <option value="coding">Kodlama</option>
+            <option value="writing">Yazı</option>
+            <option value="marketing">Pazarlama</option>
+            <option value="analysis">Analiz</option>
+          </select>
+        </div>
+      </div>
+
+      <button class="generate-btn" id="generate-btn">
+        <span id="generate-btn-text">✨ Prompt Üret</span>
+        <div class="btn-spinner" id="btn-spinner" style="display:none"></div>
+      </button>
+    </div>
+
+    <!-- Results -->
+    <div id="results-section" class="section results-section" style="display:none">
+      <div class="results-header">
+        <span class="results-title">Üretilen Promptlar</span>
+        <button class="text-btn" id="copy-all-btn">Tümünü Kopyala</button>
+      </div>
+      <div id="prompts-container" class="prompts-container"></div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="popup-footer">
+      <a href="https://ai-prompt-livid.vercel.app" target="_blank" class="footer-link">
+        Uygulamayı Aç ↗
+      </a>
+      <div class="footer-divider"></div>
+      <a href="#" id="kvkk-link" class="footer-link">KVKK</a>
+    </footer>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
