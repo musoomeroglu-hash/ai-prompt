@@ -1,172 +1,176 @@
-// content.js — Antigravity Content Script
+// content.js —  Antigravity Sidebar UI
 // ============================================================
 
-let floatingBtn = null;
-let overlayPanel = null;
+let sidebar = null;
+let toggleBtn = null;
 let selectedText = "";
+let isDragging = false;
+let dragStartY = 0;
+let btnStartY = 0;
+let sidebarExpanded = false;
 
-// ── Floating Buton Oluştur ────────────────────────────────
-function createFloatingButton() {
-  if (floatingBtn) return;
+// ── Initialize Sidebar ────────────────────────────────────
+async function initSidebar() {
+  if (sidebar) return;
 
-  floatingBtn = document.createElement("div");
-  floatingBtn.id = "antigravity-floating-btn";
-  floatingBtn.innerHTML = `
-    <div class="ag-btn-inner">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" 
-              fill="currentColor"/>
-      </svg>
-      <span>Prompt Üret</span>
-    </div>
-  `;
-  document.body.appendChild(floatingBtn);
+  // Load preferences
+  const { sidebarPreferences } = await chrome.storage.local.get("sidebarPreferences");
+  const prefs = sidebarPreferences || {
+    isExpanded: false,
+    buttonPosition: { side: "right", yPosition: 50 }
+  };
 
-  floatingBtn.addEventListener("click", (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    openOverlay(selectedText);
+  sidebarExpanded = prefs.isExpanded;
+
+  // Create sidebar container
+  sidebar = document.createElement("div");
+  sidebar.id = "antigravity-sidebar";
+  sidebar.className = sidebarExpanded ? "" : "ag-collapsed";
+
+  sidebar.innerHTML = `
+        <!-- Sidebar Panel -->
+        <div class="ag-sidebar-panel">
+            <!-- Header -->
+            <div class="ag-sidebar-header">
+                <div class="ag-logo">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="url(#ag-gradient)"/>
+                        <defs>
+                            <linearGradient id="ag-gradient" x1="2" y1="2" x2="22" y2="22">
+                                <stop offset="0%" stop-color="#6366f1"/>
+                                <stop offset="100%" stop-color="#8b5cf6"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                    <span>Antigravity</span>
+                </div>
+                <div class="ag-header-actions">
+                    <button class="ag-icon-btn" id="ag-collapse-btn" title="Daralt">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                            <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                    <button class="ag-icon-btn" id="ag-close-btn" title="Kapat">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                            <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Body -->
+            <div class="ag-sidebar-body">
+                <!-- Selected Text Section -->
+                <div class="ag-section" id="ag-text-section" style="display:none">
+                    <div class="ag-section-label">Seçilen Metin</div>
+                    <div class="ag-selected-text" id="ag-selected-text"></div>
+                </div>
+
+                <!-- Controls Section -->
+                <div class="ag-section">
+                    <div class="ag-section-label">Model</div>
+                    <select class="ag-select" id="ag-model-select">
+                        <option value="gpt-4o-mini">GPT-4o Mini</option>
+                        <option value="gpt-4o">GPT-4o</option>
+                        <option value="claude">Claude</option>
+                        <option value="gemini">Gemini</option>
+                    </select>
+                </div>
+
+                <div class="ag-section">
+                    <div class="ag-section-label">Kategori</div>
+                    <select class="ag-select" id="ag-category-select">
+                        <option value="general">Genel</option>
+                        <option value="coding">Kodlama</option>
+                        <option value="writing">Yazı</option>
+                        <option value="marketing">Pazarlama</option>
+                        <option value="analysis">Analiz</option>
+                    </select>
+                </div>
+
+                <!-- Generate Button -->
+                <button class="ag-generate-btn" id="ag-generate-btn">
+                    <span class="ag-btn-text">✨ Prompt Üret</span>
+                    <div class="ag-spinner" style="display:none"></div>
+                </button>
+
+                <!-- Results Section -->
+                <div class="ag-results" id="ag-results" style="display:none">
+                    <div class="ag-results-header">
+                        <span>Üretilen Promptlar</span>
+                        <button class="ag-copy-all-btn" id="ag-copy-all">Tümünü Kopyala</button>
+                    </div>
+                    <div class="ag-prompt-list" id="ag-prompt-list"></div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="ag-sidebar-footer">
+                <a href="https://ai-prompt-livid.vercel.app" target="_blank" class="ag-footer-link">antigravity.app</a>
+                <span class="ag-footer-separator">·</span>
+                <a href="#" class="ag-footer-link" id="ag-privacy-link">KVKK</a>
+            </div>
+        </div>
+
+        <!-- Toggle Button -->
+        <button class="ag-toggle-btn ${prefs.buttonPosition.side === 'left' ? 'ag-left' : ''}" id="ag-toggle-btn">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+                <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="currentColor"/>
+            </svg>
+        </button>
+    `;
+
+  document.body.appendChild(sidebar);
+  toggleBtn = document.getElementById("ag-toggle-btn");
+
+  // Set initial button position
+  setToggleButtonPosition(prefs.buttonPosition.yPosition);
+
+  // Attach event listeners
+  attachSidebarListeners();
+  initDraggableButton();
+}
+
+// ── Toggle Sidebar ─────────────────────────────────────────
+function toggleSidebar(expand = null) {
+  if (!sidebar) return;
+
+  sidebarExpanded = expand !== null ? expand : !sidebarExpanded;
+
+  if (sidebarExpanded) {
+    sidebar.classList.remove("ag-collapsed");
+  } else {
+    sidebar.classList.add("ag-collapsed");
+  }
+
+  // Save preference
+  chrome.storage.local.get("sidebarPreferences", (data) => {
+    const prefs = data.sidebarPreferences || {};
+    prefs.isExpanded = sidebarExpanded;
+    chrome.storage.local.set({ sidebarPreferences: prefs });
   });
 }
 
-// ── Metin Seçimi Dinle ────────────────────────────────────
-document.addEventListener("mouseup", async (e) => {
-  const selection = window.getSelection();
-  const text = selection?.toString().trim();
-
-  if (!text || text.length < 3) {
-    hideFloatingButton();
-    return;
-  }
-
-  const { settings } = await chrome.storage.local.get("settings");
-  if (!settings?.showFloatingButton) return;
+// ── Open Sidebar with Text ─────────────────────────────────
+async function openSidebarWithText(text) {
+  await initSidebar();
 
   selectedText = text;
-  const range = selection.getRangeAt(0);
-  const rect = range.getBoundingClientRect();
+  const textSection = document.getElementById("ag-text-section");
+  const textDisplay = document.getElementById("ag-selected-text");
 
-  showFloatingButton(rect);
-});
-
-document.addEventListener("mousedown", (e) => {
-  if (
-    floatingBtn &&
-    !floatingBtn.contains(e.target) &&
-    overlayPanel &&
-    !overlayPanel.contains(e.target)
-  ) {
-    hideFloatingButton();
+  if (text && text.trim()) {
+    textDisplay.textContent = text.slice(0, 200) + (text.length > 200 ? "..." : "");
+    textSection.style.display = "flex";
+  } else {
+    textSection.style.display = "none";
   }
-});
 
-function showFloatingButton(rect) {
-  createFloatingButton();
-  const x = rect.left + window.scrollX + rect.width / 2 - 60;
-  const y = rect.top + window.scrollY - 48;
-  floatingBtn.style.left = `${Math.max(8, x)}px`;
-  floatingBtn.style.top = `${Math.max(8, y)}px`;
-  floatingBtn.classList.add("ag-visible");
+  toggleSidebar(true);
 }
 
-function hideFloatingButton() {
-  if (floatingBtn) floatingBtn.classList.remove("ag-visible");
-}
-
-// ── Overlay Panel ─────────────────────────────────────────
-function openOverlay(text) {
-  if (overlayPanel) overlayPanel.remove();
-
-  overlayPanel = document.createElement("div");
-  overlayPanel.id = "antigravity-overlay";
-  overlayPanel.innerHTML = `
-    <div class="ag-overlay-backdrop"></div>
-    <div class="ag-overlay-panel">
-      <div class="ag-overlay-header">
-        <div class="ag-logo">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-            <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="url(#ag-gradient)"/>
-            <defs>
-              <linearGradient id="ag-gradient" x1="2" y1="2" x2="22" y2="22">
-                <stop offset="0%" stop-color="#6366f1"/>
-                <stop offset="100%" stop-color="#8b5cf6"/>
-              </linearGradient>
-            </defs>
-          </svg>
-          <span>Antigravity</span>
-        </div>
-        <button class="ag-close-btn" id="ag-close">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-            <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-          </svg>
-        </button>
-      </div>
-
-      <div class="ag-input-section">
-        <div class="ag-input-label">Seçilen metin</div>
-        <div class="ag-selected-text">${escapeHtml(text.slice(0, 120))}${text.length > 120 ? "..." : ""}</div>
-      </div>
-
-      <div class="ag-controls">
-        <select class="ag-select" id="ag-model-select">
-          <option value="gpt-4o-mini">GPT-4o Mini</option>
-          <option value="gpt-4o">GPT-4o</option>
-          <option value="claude">Claude</option>
-          <option value="gemini">Gemini</option>
-        </select>
-        <select class="ag-select" id="ag-category-select">
-          <option value="general">Genel</option>
-          <option value="coding">Kodlama</option>
-          <option value="writing">Yazı</option>
-          <option value="marketing">Pazarlama</option>
-          <option value="analysis">Analiz</option>
-        </select>
-      </div>
-
-      <button class="ag-generate-btn" id="ag-generate-btn">
-        <span class="ag-btn-text">✨ Prompt Üret</span>
-        <div class="ag-spinner" style="display:none"></div>
-      </button>
-
-      <div class="ag-results" id="ag-results" style="display:none">
-        <div class="ag-results-header">
-          <span>Üretilen Promptlar</span>
-          <button class="ag-copy-all-btn" id="ag-copy-all">Tümünü Kopyala</button>
-        </div>
-        <div id="ag-prompt-list" class="ag-prompt-list"></div>
-      </div>
-
-      <div class="ag-footer">
-        <a href="https://ai-prompt-livid.vercel.app" target="_blank" class="ag-footer-link">
-          antigravity.app
-        </a>
-        <span class="ag-footer-separator">·</span>
-        <a href="#" class="ag-footer-link" id="ag-privacy-link">KVKK</a>
-      </div>
-    </div>
-  `;
-
-  document.body.appendChild(overlayPanel);
-  setTimeout(() => overlayPanel.classList.add("ag-overlay-visible"), 10);
-
-  // Event listeners
-  document.getElementById("ag-close").addEventListener("click", () => {
-    overlayPanel.classList.remove("ag-overlay-visible");
-    setTimeout(() => overlayPanel.remove(), 300);
-    overlayPanel = null;
-  });
-
-  document.getElementById("ag-generate-btn").addEventListener("click", async () => {
-    await generatePromptFromOverlay(text);
-  });
-
-  document.getElementById("ag-privacy-link").addEventListener("click", (e) => {
-    e.preventDefault();
-    window.open(chrome.runtime.getURL("privacy/privacy-policy.html"), "_blank");
-  });
-}
-
-async function generatePromptFromOverlay(text) {
+// ── Generate Prompt ────────────────────────────────────────
+async function generatePrompt() {
   const btn = document.getElementById("ag-generate-btn");
   const btnText = btn.querySelector(".ag-btn-text");
   const spinner = btn.querySelector(".ag-spinner");
@@ -178,6 +182,7 @@ async function generatePromptFromOverlay(text) {
   spinner.style.display = "block";
 
   try {
+    const text = selectedText || "Generate a creative prompt";
     const model = document.getElementById("ag-model-select").value;
     const category = document.getElementById("ag-category-select").value;
     const { authToken } = await chrome.storage.local.get("authToken");
@@ -196,16 +201,17 @@ async function generatePromptFromOverlay(text) {
       const labels = ["🎯 Kısa & Etkili", "📝 Detaylı", "🎨 Yaratıcı", "💼 Profesyonel", "⚙️ Teknik"];
       const div = document.createElement("div");
       div.className = "ag-prompt-item";
+      const promptText = typeof prompt === "string" ? prompt : prompt.content || prompt.text || "";
+
       div.innerHTML = `
-        <div class="ag-prompt-label">${labels[i] || `Varyasyon ${i + 1}`}</div>
-        <div class="ag-prompt-text">${escapeHtml(typeof prompt === "string" ? prompt : prompt.content || prompt.text || "")}</div>
-        <button class="ag-copy-btn" data-text="${escapeAttr(typeof prompt === "string" ? prompt : prompt.content || "")}">
-          Kopyala
-        </button>
-      `;
+                <div class="ag-prompt-label">${labels[i] || `Varyasyon ${i + 1}`}</div>
+                <div class="ag-prompt-text">${escapeHtml(promptText)}</div>
+                <button class="ag-copy-btn" data-text="${escapeAttr(promptText)}">Kopyala</button>
+            `;
       promptList.appendChild(div);
     });
 
+    // Attach copy handlers
     promptList.querySelectorAll(".ag-copy-btn").forEach((btn) => {
       btn.addEventListener("click", () => {
         navigator.clipboard.writeText(btn.dataset.text);
@@ -218,10 +224,10 @@ async function generatePromptFromOverlay(text) {
       });
     });
 
-    results.style.display = "block";
+    results.style.display = "flex";
   } catch (err) {
     promptList.innerHTML = `<div class="ag-error">Hata: ${err.message}</div>`;
-    results.style.display = "block";
+    results.style.display = "flex";
   } finally {
     btn.disabled = false;
     btnText.style.display = "block";
@@ -229,6 +235,106 @@ async function generatePromptFromOverlay(text) {
   }
 }
 
+// ── Attach Event Listeners ─────────────────────────────────
+function attachSidebarListeners() {
+  document.getElementById("ag-close-btn").addEventListener("click", () => {
+    sidebar.remove();
+    sidebar = null;
+    toggleBtn = null;
+  });
+
+  document.getElementById("ag-collapse-btn").addEventListener("click", () => {
+    toggleSidebar(false);
+  });
+
+  document.getElementById("ag-toggle-btn").addEventListener("click", () => {
+    toggleSidebar(true);
+  });
+
+  document.getElementById("ag-generate-btn").addEventListener("click", generatePrompt);
+
+  document.getElementById("ag-privacy-link").addEventListener("click", (e) => {
+    e.preventDefault();
+    window.open(chrome.runtime.getURL("privacy/privacy-policy.html"), "_blank");
+  });
+
+  // Keyboard shortcut: Esc to collapse
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && sidebar && !sidebar.classList.contains("ag-collapsed")) {
+      toggleSidebar(false);
+    }
+  });
+}
+
+// ── Draggable Toggle Button ────────────────────────────────
+function initDraggableButton() {
+  toggleBtn.addEventListener("mousedown", startDrag);
+  document.addEventListener("mousemove", onDrag);
+  document.addEventListener("mouseup", endDrag);
+}
+
+function startDrag(e) {
+  if (sidebar && !sidebar.classList.contains("ag-collapsed")) return;
+
+  isDragging = true;
+  dragStartY = e.clientY;
+  btnStartY = toggleBtn.getBoundingClientRect().top;
+  toggleBtn.classList.add("ag-dragging");
+  e.preventDefault();
+}
+
+function onDrag(e) {
+  if (!isDragging) return;
+
+  const deltaY = e.clientY - dragStartY;
+  const newY = btnStartY + deltaY;
+  const maxY = window.innerHeight - 56;
+  const clampedY = Math.max(28, Math.min(newY, maxY));
+
+  toggleBtn.style.top = `${clampedY}px`;
+  toggleBtn.style.transform = "translateY(0)";
+
+  // Check if should snap to other side
+  const distanceToLeft = e.clientX;
+  const distanceToRight = window.innerWidth - e.clientX;
+
+  if (distanceToLeft < 100 && !toggleBtn.classList.contains("ag-left")) {
+    toggleBtn.classList.add("ag-left");
+  } else if (distanceToRight < 100 && toggleBtn.classList.contains("ag-left")) {
+    toggleBtn.classList.remove("ag-left");
+  }
+}
+
+function endDrag(e) {
+  if (!isDragging) return;
+
+  isDragging = false;
+  toggleBtn.classList.remove("ag-dragging");
+
+  // Calculate final position
+  const btnRect = toggleBtn.getBoundingClientRect();
+  const yPercent = (btnRect.top / window.innerHeight) * 100;
+  const side = toggleBtn.classList.contains("ag-left") ? "left" : "right";
+
+  // Save position
+  chrome.storage.local.get("sidebarPreferences", (data) => {
+    const prefs = data.sidebarPreferences || {};
+    prefs.buttonPosition = { side, yPosition: yPercent };
+    chrome.storage.local.set({ sidebarPreferences: prefs });
+  });
+
+  // Reset transform for future animations
+  setTimeout(() => {
+    toggleBtn.style.transform = "";
+  }, 100);
+}
+
+function setToggleButtonPosition(yPercent) {
+  if (!toggleBtn) return;
+  toggleBtn.style.top = `${yPercent}%`;
+}
+
+// ── Utility Functions ──────────────────────────────────────
 function escapeHtml(str) {
   return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 }
@@ -237,20 +343,24 @@ function escapeAttr(str) {
   return str.replace(/"/g, "&quot;").replace(/'/g, "&#39;");
 }
 
-// ── Mesaj Dinleyici ────────────────────────────────────────
+// ── Message Listener ───────────────────────────────────────
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === "PING") {
     sendResponse({ pong: true });
     return true;
   }
   if (message.type === "GENERATE_FROM_SELECTION") {
-    openOverlay(message.text);
+    openSidebarWithText(message.text);
   }
   if (message.type === "SHOW_CONSENT_DIALOG") {
-    showConsentDialog();
+    window.open(chrome.runtime.getURL("options/options.html#consent"), "_blank");
   }
 });
 
-function showConsentDialog() {
-  window.open(chrome.runtime.getURL("options/options.html#consent"), "_blank");
-}
+// ── Auto-init on page load ─────────────────────────────────
+(async () => {
+  const { sidebarPreferences } = await chrome.storage.local.get("sidebarPreferences");
+  if (sidebarPreferences?.isExpanded) {
+    await initSidebar();
+  }
+})();
