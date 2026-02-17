@@ -8,25 +8,20 @@ import { createClient } from '@/lib/supabaseClient';
 // chrome://extensions sayfasından ID'yi alıp buraya yazması gerekebilir.
 const EXTENSION_ID = "mboaeojocbgiggegjmjofpbegeccjmbl"; // Örnek ID
 
-declare global {
-    interface Window {
-        chrome: any;
-    }
-}
-
 export function ExtensionSync() {
     const supabase = createClient();
 
     useEffect(() => {
         const syncToken = async () => {
             const { data: { session } } = await supabase.auth.getSession();
+            const chrome = (window as any).chrome;
 
             if (session?.access_token && typeof chrome !== 'undefined' && chrome.runtime) {
                 try {
                     chrome.runtime.sendMessage(
                         EXTENSION_ID,
                         { type: "SET_AUTH_TOKEN", token: session.access_token },
-                        (response) => {
+                        (response: any) => {
                             if (chrome.runtime.lastError) {
                                 console.warn('Extension not found or not connectable:', chrome.runtime.lastError.message);
                             } else {
@@ -44,6 +39,7 @@ export function ExtensionSync() {
         syncToken();
 
         const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+            const chrome = (window as any).chrome;
             if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
                 syncToken();
             } else if (event === 'SIGNED_OUT') {
