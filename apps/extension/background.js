@@ -38,28 +38,59 @@ chrome.runtime.onInstalled.addListener(() => {
 
 // ── Context Menu Click Handler ─────────────────────────────
 chrome.contextMenus.onClicked.addListener(async (info, tab) => {
-    if (!info.selectionText) return;
+    if (!info.selectionText || !tab?.id) return;
 
     const { settings } = await chrome.storage.local.get("settings");
 
     // KVKK: İzin kontrolü
     if (!settings?.consentGiven) {
+        await ensureContentScriptInjected(tab.id);
         chrome.tabs.sendMessage(tab.id, {
             type: "SHOW_CONSENT_DIALOG",
-        });
+        }).catch(err => console.error("Failed to show consent dialog:", err));
         return;
     }
 
     const action =
         info.menuItemId === "antigravity-improve" ? "improve" : "generate";
 
+    // Content script'in yüklendiğinden emin ol
+    await ensureContentScriptInjected(tab.id);
+
     chrome.tabs.sendMessage(tab.id, {
         type: "GENERATE_FROM_SELECTION",
         text: info.selectionText,
         action,
         settings,
+    }).catch(err => {
+        console.error("Failed to send message to content script:", err);
+        // Fallback: Popup'ı aç
+        chrome.action.openPopup();
     });
 });
+
+// ── Content Script Injection Kontrolü ──────────────────────
+async function ensureContentScriptInjected(tabId) {
+    try {
+        // Ping gönder, cevap gelmezse inject et
+        await chrome.tabs.sendMessage(tabId, { type: "PING" });
+    } catch (err) {
+        // Content script yüklü değil, inject et
+        try {
+            await chrome.scripting.executeScript({
+                target: { tabId },
+                files: ["content.js"],
+            });
+            await chrome.scripting.insertCSS({
+                target: { tabId },
+                files: ["content.css"],
+            });
+        } catch (injectErr) {
+            console.error("Failed to inject content script:", injectErr);
+            throw injectErr;
+        }
+    }
+}
 
 // ── Mesaj Dinleyici ────────────────────────────────────────
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
