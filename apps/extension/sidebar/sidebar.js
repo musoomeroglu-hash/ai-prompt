@@ -113,7 +113,9 @@ async function handleGenerate() {
             payload: { text: input, model, category, mode: currentMode, token: authToken },
         });
         if (!res.success) throw new Error(res.error);
-        renderPrompts(res.data?.prompts || res.data?.variations || []);
+        const result = res.data?.result || res.data || {};
+        const prompts = Array.isArray(result) ? result : Object.values(result).filter(v => typeof v === "string");
+        renderPrompts(prompts);
         saveHistory({ text: input, mode: currentMode });
         await bumpUsage();
     } catch (err) {

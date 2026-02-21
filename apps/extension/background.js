@@ -87,7 +87,7 @@ async function handleGenerate({ text, model, category, mode, token }) {
             "Content-Type": "application/json",
             ...(token && { Authorization: `Bearer ${token}` }),
         },
-        body: JSON.stringify({ userMessage: text, selectedModel: model || "gpt-4o-mini", category: category || "general", mode: mode || "write" }),
+        body: JSON.stringify({ userRequest: text, targetModel: model || "chatgpt", category: category || "general" }),
     });
     if (!response.ok) {
         const err = await response.json().catch(() => ({}));
