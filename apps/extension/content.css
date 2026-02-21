@@ -1,0 +1,110 @@
+/* content.css — Antigravity v2 */
+
+/* 1. INLINE BADGE */
+#ag-inline-badge {
+  position: absolute;
+  z-index: 2147483646;
+  pointer-events: auto;
+  opacity: 0;
+  transform: scale(0.7);
+  transition: opacity 0.15s ease, transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+#ag-inline-badge.ag-badge-visible { opacity: 1; transform: scale(1); }
+
+.ag-badge-inner {
+  width: 32px; height: 32px;
+  display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(135deg, #1a1a2e 0%, #13131f 100%);
+  border: 1.5px solid rgba(99, 102, 241, 0.5);
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 2px 12px rgba(99, 102, 241, 0.35), 0 0 0 3px rgba(99, 102, 241, 0.08);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+  user-select: none;
+}
+.ag-badge-inner:hover {
+  transform: scale(1.12);
+  border-color: rgba(99, 102, 241, 0.9);
+  box-shadow: 0 4px 20px rgba(99, 102, 241, 0.55), 0 0 0 4px rgba(99, 102, 241, 0.15);
+}
+.ag-badge-inner:active { transform: scale(0.95); }
+
+/* 2. ACTION MENU */
+#ag-action-menu {
+  position: absolute;
+  z-index: 2147483647;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.18s ease, transform 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateX(-50%) translateY(calc(-100% + 6px));
+  font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", sans-serif;
+}
+#ag-action-menu.ag-action-menu-visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(-100%);
+}
+
+.ag-action-menu-inner {
+  position: relative;
+  display: flex; align-items: center; gap: 1px;
+  background: #13131f;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 4px;
+  box-shadow: 0 16px 40px rgba(0,0,0,0.6), 0 4px 12px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.04);
+  white-space: nowrap;
+}
+
+/* Aşağıya bakan ok */
+.ag-action-arrow {
+  position: absolute; bottom: -6px; left: 50%;
+  transform: translateX(-50%); width: 10px; height: 6px; overflow: hidden;
+}
+.ag-action-arrow::before {
+  content: ""; position: absolute; width: 10px; height: 10px;
+  background: #13131f; border: 1px solid rgba(255,255,255,0.1);
+  transform: rotate(45deg) translateY(-7px); left: 0;
+}
+
+.ag-action-divider {
+  width: 1px; height: 22px;
+  background: rgba(255, 255, 255, 0.08);
+  flex-shrink: 0; margin: 0 2px;
+}
+
+.ag-action-btn {
+  display: flex; align-items: center; gap: 6px;
+  padding: 7px 12px;
+  background: transparent; border: none; border-radius: 7px;
+  color: #c4c4d4; font-family: inherit; font-size: 12px; font-weight: 500;
+  cursor: pointer; transition: background 0.13s ease, color 0.13s ease; white-space: nowrap;
+}
+.ag-action-btn svg { flex-shrink: 0; opacity: 0.7; transition: opacity 0.13s; }
+.ag-action-btn:hover svg { opacity: 1; }
+.ag-action-btn:active { transform: scale(0.97); }
+
+.ag-action-improve:hover { background: rgba(251, 191, 36, 0.12); color: #fbbf24; }
+.ag-action-write:hover { background: rgba(99, 102, 241, 0.15); color: #818cf8; }
+
+/* 3. CONSENT TOAST */
+#ag-consent-toast {
+  position: fixed; bottom: 24px; left: 50%;
+  transform: translateX(-50%) translateY(12px);
+  z-index: 2147483647; opacity: 0;
+  transition: opacity 0.22s ease, transform 0.22s ease;
+  font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", sans-serif;
+}
+#ag-consent-toast.ag-toast-visible { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+.ag-toast-inner {
+  display: flex; align-items: center; gap: 10px;
+  background: #13131f; border: 1px solid rgba(99,102,241,0.3); border-radius: 10px;
+  padding: 10px 14px; box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+  font-size: 13px; color: #c4c4d4; white-space: nowrap;
+}
+#ag-consent-toast button {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6); border: none; border-radius: 6px;
+  color: white; font-family: inherit; font-size: 12px; font-weight: 600;
+  padding: 5px 12px; cursor: pointer; flex-shrink: 0;
+}

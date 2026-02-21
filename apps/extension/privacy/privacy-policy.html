@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Antigravity — Gizlilik Politikası</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0
+        }
+
+        body {
+            background: #09090f;
+            color: #f0f0f4;
+            font-family: -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            padding: 40px 20px
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%
+        }
+
+        h1 {
+            font-size: 22px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #818cf8, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text
+        }
+
+        .updated {
+            font-size: 12px;
+            color: #8b8ba7;
+            margin-bottom: 24px
+        }
+
+        h2 {
+            font-size: 15px;
+            font-weight: 700;
+            color: #818cf8;
+            margin: 20px 0 8px
+        }
+
+        p,
+        li {
+            font-size: 13px;
+            color: #c4c4d4;
+            line-height: 1.7
+        }
+
+        ul {
+            padding-left: 20px;
+            margin: 8px 0
+        }
+
+        .section {
+            background: #111119;
+            border: 1px solid rgba(255, 255, 255, .07);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 16px
+        }
+
+        a {
+            color: #818cf8;
+            text-decoration: none
+        }
+
+        a:hover {
+            text-decoration: underline
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 32px;
+            font-size: 11px;
+            color: #8b8ba7
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🔒 Gizlilik Politikası</h1>
+        <p class="updated">Son güncelleme: Şubat 2026</p>
+
+        <div class="section">
+            <h2>1. Toplanan Veriler</h2>
+            <p>Antigravity uzantısı aşağıdaki verileri işler:</p>
+            <ul>
+                <li><strong>Seçili metin:</strong> Kullanıcının web sayfasında seçtiği ve "Prompt İyileştir" veya
+                    "Prompt Yaz" komutu ile gönderdiği metin.</li>
+                <li><strong>Ayarlar:</strong> Tercih edilen AI modeli, kategori ve inline ikon tercihi (yalnızca yerel
+                    cihazda saklanır).</li>
+                <li><strong>Kullanım bilgisi:</strong> Günlük prompt üretim sayısı (yalnızca yerel cihazda saklanır).
+                </li>
+            </ul>
+
+            <h2>2. Verilerin Kullanımı</h2>
+            <p>Seçili metin yalnızca AI prompt üretimi amacıyla Antigravity API sunucusuna (OpenAI aracılığıyla)
+                gönderilir. Bu veri:</p>
+            <ul>
+                <li>Sunucuda kalıcı olarak <strong>saklanmaz</strong>.</li>
+                <li>Üçüncü taraflarla <strong>paylaşılmaz</strong>.</li>
+                <li>Reklam veya profilleme amacıyla <strong>kullanılmaz</strong>.</li>
+            </ul>
+
+            <h2>3. Veri Saklama</h2>
+            <p>Tüm ayarlar ve geçmiş bilgileri <code>chrome.storage.local</code> kullanılarak yalnızca kullanıcının
+                cihazında saklanır. Uzantı kaldırıldığında bu veriler silinir.</p>
+
+            <h2>4. KVKK / GDPR Uyumu</h2>
+            <p>Uzantı, KVKK (6698 sayılı Kanun) ve GDPR gerekliliklerine uygun olarak:</p>
+            <ul>
+                <li>Kullanıcıdan açık onay alır (Ayarlar sayfasında).</li>
+                <li>Onay vermeden veri gönderimi yapılmaz.</li>
+                <li>Kullanıcı istediği zaman onayını geri çekebilir.</li>
+            </ul>
+
+            <h2>5. İletişim</h2>
+            <p>Gizlilik ile ilgili sorularınız için: <a href="https://ai-prompt-livid.vercel.app"
+                    target="_blank">antigravity.app</a></p>
+        </div>
+
+        <div class="footer">
+            Antigravity v2.0.0 · <a href="https://ai-prompt-livid.vercel.app" target="_blank">antigravity.app</a>
+        </div>
+    </div>
+</body>
+
+</html>

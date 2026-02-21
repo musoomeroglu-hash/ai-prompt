@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Antigravity</title>
+  <link rel="stylesheet" href="sidebar.css"/>
+</head>
+<body>
+<div class="sidebar-root">
+
+  <header class="sidebar-header">
+    <div class="sidebar-logo">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+        <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="url(#sb-g)"/>
+        <defs><linearGradient id="sb-g" x1="2" y1="2" x2="22" y2="22"><stop offset="0%" stop-color="#6366f1"/><stop offset="100%" stop-color="#a78bfa"/></linearGradient></defs>
+      </svg>
+      <span class="sidebar-logo-text">Antigravity</span>
+    </div>
+    <div class="sidebar-header-right">
+      <div class="plan-chip" id="plan-chip">Ücretsiz</div>
+      <button class="icon-btn" id="settings-btn" title="Ayarlar">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+          <path d="M12 15a3 3 0 100-6 3 3 0 000 6z" stroke="currentColor" stroke-width="1.8"/>
+          <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z" stroke="currentColor" stroke-width="1.8"/>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="usage-strip">
+    <div class="usage-row">
+      <span class="usage-label">Günlük kullanım</span>
+      <span class="usage-count" id="usage-count">0 / 2</span>
+    </div>
+    <div class="usage-bar"><div class="usage-fill" id="usage-fill" style="width:0%"></div></div>
+  </div>
+
+  <div class="mode-tabs">
+    <button class="mode-tab active" data-mode="write" id="tab-write">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
+        <path d="M12 20h9M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Prompt Yaz
+    </button>
+    <button class="mode-tab" data-mode="improve" id="tab-improve">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
+        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+      </svg>
+      Prompt İyileştir
+    </button>
+  </div>
+
+  <div class="input-area">
+    <div class="selected-box" id="selected-box" style="display:none">
+      <div class="selected-box-label">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none">
+          <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke="#6366f1" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        Seçili metin
+        <button class="clear-btn" id="clear-btn">✕</button>
+      </div>
+      <div class="selected-preview" id="selected-preview"></div>
+    </div>
+
+    <div class="textarea-wrap">
+      <textarea id="main-input" class="main-textarea"
+        placeholder="Ne hakkında prompt üreteyim? Konu, amaç veya fikir yaz…"
+        rows="4"></textarea>
+      <span class="char-count" id="char-count">0 / 1000</span>
+    </div>
+
+    <div class="controls">
+      <div class="ctrl-group">
+        <label class="ctrl-label">Model</label>
+        <select class="ctrl-select" id="model-select">
+          <optgroup label="OpenAI">
+            <option value="gpt-4o-mini">GPT-4o Mini</option>
+            <option value="gpt-4o">GPT-4o</option>
+          </optgroup>
+          <optgroup label="Google"><option value="gemini">Gemini</option></optgroup>
+          <optgroup label="Anthropic"><option value="claude">Claude</option></optgroup>
+        </select>
+      </div>
+      <div class="ctrl-group">
+        <label class="ctrl-label">Kategori</label>
+        <select class="ctrl-select" id="category-select">
+          <option value="general">🌐 Genel</option>
+          <option value="coding">💻 Kodlama</option>
+          <option value="writing">✍️ Yazı</option>
+          <option value="marketing">📣 Pazarlama</option>
+          <option value="analysis">📊 Analiz</option>
+          <option value="education">🎓 Eğitim</option>
+        </select>
+      </div>
+    </div>
+
+    <button class="gen-btn" id="gen-btn">
+      <span id="gen-label">✨ Prompt Üret</span>
+      <div class="gen-spinner" id="gen-spinner" style="display:none"></div>
+    </button>
+  </div>
+
+  <div class="results" id="results" style="display:none">
+    <div class="results-head">
+      <span class="results-title">Üretilen Promptlar</span>
+      <button class="copy-all-btn" id="copy-all-btn">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none">
+          <rect x="9" y="9" width="13" height="13" rx="2" stroke="currentColor" stroke-width="2"/>
+          <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        Tümünü Kopyala
+      </button>
+    </div>
+    <div class="prompts-list" id="prompts-list"></div>
+  </div>
+
+  <div class="history-sec">
+    <button class="history-toggle" id="history-toggle">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
+        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.8"/>
+        <path d="M12 6v6l4 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>
+      Son Üretimler
+      <svg class="h-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none">
+        <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </button>
+    <div class="history-list" id="history-list" style="display:none"></div>
+  </div>
+
+  <footer class="sidebar-footer">
+    <a href="https://ai-prompt-livid.vercel.app" target="_blank" class="footer-link">antigravity.app ↗</a>
+    <span class="footer-dot"></span>
+    <a href="#" id="kvkk-link" class="footer-link">KVKK</a>
+  </footer>
+
+</div>
+<script src="sidebar.js"></script>
+</body>
+</html>

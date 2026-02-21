@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Antigravity — Ayarlar</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0
+        }
+
+        body {
+            background: #09090f;
+            color: #f0f0f4;
+            font-family: -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            padding: 40px 20px
+        }
+
+        .container {
+            max-width: 480px;
+            width: 100%
+        }
+
+        h1 {
+            font-size: 20px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #818cf8, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text
+        }
+
+        .subtitle {
+            font-size: 13px;
+            color: #8b8ba7;
+            margin-bottom: 24px
+        }
+
+        .section {
+            background: #111119;
+            border: 1px solid rgba(255, 255, 255, .07);
+            border-radius: 10px;
+            padding: 16px;
+            margin-bottom: 16px
+        }
+
+        .section-title {
+            font-size: 11px;
+            font-weight: 700;
+            color: #8b8ba7;
+            text-transform: uppercase;
+            letter-spacing: .07em;
+            margin-bottom: 12px
+        }
+
+        .field {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, .04)
+        }
+
+        .field:last-child {
+            border-bottom: none
+        }
+
+        .field-label {
+            font-size: 13px;
+            color: #c4c4d4
+        }
+
+        .field-desc {
+            font-size: 11px;
+            color: #8b8ba7;
+            margin-top: 2px
+        }
+
+        select {
+            background: #18181f;
+            border: 1px solid rgba(255, 255, 255, .07);
+            border-radius: 7px;
+            color: #c4c4d4;
+            font-family: inherit;
+            font-size: 12px;
+            padding: 6px 10px;
+            outline: none;
+            cursor: pointer
+        }
+
+        select:focus {
+            border-color: rgba(99, 102, 241, .45)
+        }
+
+        .toggle {
+            position: relative;
+            width: 40px;
+            height: 22px;
+            cursor: pointer
+        }
+
+        .toggle input {
+            opacity: 0;
+            width: 0;
+            height: 0
+        }
+
+        .toggle .slider {
+            position: absolute;
+            inset: 0;
+            background: #1f1f28;
+            border-radius: 11px;
+            transition: .2s
+        }
+
+        .toggle .slider::before {
+            content: "";
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            left: 3px;
+            bottom: 3px;
+            background: #8b8ba7;
+            border-radius: 50%;
+            transition: .2s
+        }
+
+        .toggle input:checked+.slider {
+            background: rgba(99, 102, 241, .3)
+        }
+
+        .toggle input:checked+.slider::before {
+            transform: translateX(18px);
+            background: #6366f1
+        }
+
+        .consent-box {
+            background: rgba(99, 102, 241, .06);
+            border: 1px solid rgba(99, 102, 241, .2);
+            border-radius: 10px;
+            padding: 14px;
+            margin-bottom: 16px
+        }
+
+        .consent-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: #818cf8;
+            margin-bottom: 8px
+        }
+
+        .consent-text {
+            font-size: 12px;
+            color: #c4c4d4;
+            line-height: 1.6;
+            margin-bottom: 12px
+        }
+
+        .consent-btn {
+            padding: 8px 16px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            border: none;
+            border-radius: 7px;
+            color: white;
+            font-family: inherit;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer
+        }
+
+        .consent-btn:hover {
+            opacity: .9
+        }
+
+        .consent-btn.accepted {
+            background: rgba(34, 197, 94, .15);
+            color: #22c55e;
+            cursor: default
+        }
+
+        .consent-date {
+            font-size: 11px;
+            color: #8b8ba7;
+            margin-top: 6px
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 24px;
+            font-size: 11px;
+            color: #8b8ba7
+        }
+
+        .footer a {
+            color: #818cf8;
+            text-decoration: none
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>⚙️ Antigravity Ayarlar</h1>
+        <p class="subtitle">Uzantınızın tercihlerini ve KVKK onayını yönetin.</p>
+
+        <div class="consent-box">
+            <div class="consent-title">🔒 KVKK / GDPR Onayı</div>
+            <div class="consent-text">
+                Antigravity, seçtiğiniz metni düzenlemenize yardımcı olmak için AI servislerine (OpenAI API) gönderir.
+                <strong>Kişisel verileriniz saklanmaz</strong>, yalnızca prompt üretimi için işlenir.
+                Detaylar için <a href="#" id="privacy-link" style="color:#818cf8">Gizlilik Politikası</a>'nı okuyun.
+            </div>
+            <button class="consent-btn" id="consent-btn">✓ Onaylıyorum</button>
+            <div class="consent-date" id="consent-date" style="display:none"></div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Genel Ayarlar</div>
+            <div class="field">
+                <div>
+                    <div class="field-label">Varsayılan Model</div>
+                    <div class="field-desc">Prompt üretiminde kullanılacak AI modeli</div>
+                </div>
+                <select id="opt-model">
+                    <option value="gpt-4o-mini">GPT-4o Mini</option>
+                    <option value="gpt-4o">GPT-4o</option>
+                    <option value="gemini">Gemini</option>
+                    <option value="claude">Claude</option>
+                </select>
+            </div>
+            <div class="field">
+                <div>
+                    <div class="field-label">Varsayılan Kategori</div>
+                    <div class="field-desc">Prompt üretim kategorisi</div>
+                </div>
+                <select id="opt-category">
+                    <option value="general">🌐 Genel</option>
+                    <option value="coding">💻 Kodlama</option>
+                    <option value="writing">✍️ Yazı</option>
+                    <option value="marketing">📣 Pazarlama</option>
+                    <option value="analysis">📊 Analiz</option>
+                    <option value="education">🎓 Eğitim</option>
+                </select>
+            </div>
+            <div class="field">
+                <div>
+                    <div class="field-label">Inline İkon</div>
+                    <div class="field-desc">Metin seçince sağ tarafta ikon göster</div>
+                </div>
+                <label class="toggle">
+                    <input type="checkbox" id="opt-inline" checked />
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+
+        <div class="footer">
+            Antigravity v2.0.0 · <a href="https://ai-prompt-livid.vercel.app" target="_blank">antigravity.app</a>
+        </div>
+    </div>
+    <script src="options.js"></script>
+</body>
+
+</html>

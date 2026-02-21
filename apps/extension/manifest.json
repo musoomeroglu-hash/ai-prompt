@@ -1,0 +1,78 @@
+{
+    "manifest_version": 3,
+    "name": "__MSG_appName__",
+    "short_name": "Antigravity",
+    "version": "2.0.0",
+    "description": "__MSG_appDescription__",
+    "default_locale": "tr",
+    "icons": {
+        "16": "icons/icon16.png",
+        "32": "icons/icon32.png",
+        "48": "icons/icon48.png",
+        "128": "icons/icon128.png"
+    },
+    "action": {
+        "default_popup": "popup/popup.html",
+        "default_icon": {
+            "16": "icons/icon16.png",
+            "48": "icons/icon48.png",
+            "128": "icons/icon128.png"
+        },
+        "default_title": "Antigravity — AI Prompt Generator"
+    },
+    "side_panel": {
+        "default_path": "sidebar/sidebar.html"
+    },
+    "background": {
+        "service_worker": "background.js",
+        "type": "module"
+    },
+    "content_scripts": [
+        {
+            "matches": [
+                "<all_urls>"
+            ],
+            "js": [
+                "content.js"
+            ],
+            "css": [
+                "content.css"
+            ],
+            "run_at": "document_idle"
+        }
+    ],
+    "permissions": [
+        "activeTab",
+        "contextMenus",
+        "storage",
+        "notifications",
+        "sidePanel"
+    ],
+    "host_permissions": [
+        "https://ai-prompt-livid.vercel.app/*",
+        "https://*.supabase.co/*"
+    ],
+    "options_ui": {
+        "page": "options/options.html",
+        "open_in_tab": true
+    },
+    "web_accessible_resources": [
+        {
+            "resources": [
+                "sidebar/*",
+                "popup/*",
+                "options/*",
+                "privacy/*",
+                "icons/*",
+                "content.css"
+            ],
+            "matches": [
+                "<all_urls>"
+            ]
+        }
+    ],
+    "content_security_policy": {
+        "extension_pages": "script-src 'self'; object-src 'self'; connect-src 'self' https://ai-prompt-livid.vercel.app https://*.supabase.co;"
+    },
+    "minimum_chrome_version": "116"
+}
