@@ -4,8 +4,8 @@ export const validateEmail = (email: string) => {
 }
 
 export const validatePassword = (password: string) => {
-    // Min 8 chars
-    return password.length >= 8
+    // Min 8 chars, at least one letter and one number
+    return password.length >= 8 && /[a-zA-Z]/.test(password) && /\d/.test(password)
 }
 
 export const getAuthErrorMessage = (error: string) => {

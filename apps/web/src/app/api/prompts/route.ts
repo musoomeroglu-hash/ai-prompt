@@ -45,7 +45,8 @@ export async function GET(req: Request) {
             query = query.eq('category_id', categoryId)
         }
         if (search) {
-            query = query.or(`title.ilike.%${search}%,description.ilike.%${search}%`)
+            const sanitized = search.slice(0, 100).replace(/[%_\\]/g, '\\$&')
+            query = query.or(`title.ilike.%${sanitized}%,description.ilike.%${sanitized}%`)
         }
 
         // Sorting
@@ -79,7 +80,7 @@ export async function GET(req: Request) {
 
     } catch (error: any) {
         console.error('Prompts GET Error:', error)
-        return NextResponse.json({ error: error.message }, { status: 500 })
+        console.error('API Error:', error); return NextResponse.json({ error: 'Bir hata oluþtu. Lütfen tekrar deneyin.' }, { status: 500 })
     }
 }
 
@@ -121,6 +122,6 @@ export async function POST(req: Request) {
 
     } catch (error: any) {
         console.error('Prompts POST Error:', error)
-        return NextResponse.json({ error: error.message }, { status: 500 })
+        console.error('API Error:', error); return NextResponse.json({ error: 'Bir hata oluþtu. Lütfen tekrar deneyin.' }, { status: 500 })
     }
 }

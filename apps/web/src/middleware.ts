@@ -102,6 +102,6 @@ export const config = {
          * - public files (images, etc.)
          * - API routes that don't need auth
          */
-        '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$|api/generate).*)',
+        '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$|api/generate|api/extension).*)',
     ],
 }

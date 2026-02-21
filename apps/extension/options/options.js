@@ -2,7 +2,7 @@
 document.addEventListener("DOMContentLoaded", async () => {
     const { settings } = await chrome.storage.local.get("settings");
     if (settings) {
-        document.getElementById("opt-model").value = settings.defaultModel || "gpt-4o-mini";
+        document.getElementById("opt-model").value = settings.defaultModel || "chatgpt";
         document.getElementById("opt-category").value = settings.defaultCategory || "general";
         document.getElementById("opt-inline").checked = settings.showInlineIcon !== false;
         if (settings.consentGiven) {

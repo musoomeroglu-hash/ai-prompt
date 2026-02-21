@@ -39,11 +39,7 @@ export async function POST(req: Request) {
 
         const { category, userRequest, tone, targetModel } = parseResult.data
 
-        const limitResult = await rateLimit({
-            id: userId,
-            limit: 10,
-            duration: 86400
-        })
+        const limitResult = await rateLimit(supabase, userId, 10)
 
         if (!limitResult.success) {
             return NextResponse.json({

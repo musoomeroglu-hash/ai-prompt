@@ -7,7 +7,9 @@ export async function GET(request: Request) {
     const code = requestUrl.searchParams.get('code')
     // Default to /categories if next not specified, or respect next if provided
     // Actually better to force /categories if we don't know the user preference
-    const next = requestUrl.searchParams.get('next') ?? '/categories'
+    const rawNext = requestUrl.searchParams.get('next') ?? '/categories'
+    // Prevent open redirect: only allow internal paths starting with /
+    const next = (rawNext.startsWith('/') && !rawNext.startsWith('//')) ? rawNext : '/categories'
 
     if (code) {
         const cookieStore = await cookies()

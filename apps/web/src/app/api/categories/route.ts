@@ -17,6 +17,6 @@ export async function GET() {
         return NextResponse.json({ data })
 
     } catch (error: any) {
-        return NextResponse.json({ error: error.message }, { status: 500 })
+        console.error('API Error:', error); return NextResponse.json({ error: 'Bir hata oluþtu. Lütfen tekrar deneyin.' }, { status: 500 })
     }
 }

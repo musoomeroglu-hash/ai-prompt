@@ -69,6 +69,6 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
 
     } catch (error: any) {
         console.error('Vote Error:', error)
-        return NextResponse.json({ error: error.message }, { status: 500 })
+        console.error('API Error:', error); return NextResponse.json({ error: 'Bir hata olustu. Lutfen tekrar deneyin.' }, { status: 500 })
     }
 }

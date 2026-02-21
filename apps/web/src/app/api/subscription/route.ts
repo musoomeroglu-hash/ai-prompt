@@ -50,7 +50,7 @@ export async function GET() {
 
         return NextResponse.json({ subscription })
     } catch (error: any) {
-        return NextResponse.json({ error: error.message }, { status: 500 })
+        console.error('API Error:', error); return NextResponse.json({ error: 'Bir hata olu�tu. L�tfen tekrar deneyin.' }, { status: 500 })
     }
 }
 
@@ -74,6 +74,18 @@ export async function POST(req: Request) {
         const { planType, billingCycle, action } = parseResult.data
 
         const now = new Date()
+
+        // Payment verification: prevent free upgrades to paid plans
+        // TODO: Replace with Stripe/Iyzico webhook verification in production
+        if ((action === 'create' || action === 'upgrade') && planType !== 'free') {
+            const currentSub = await checkSubscription(supabase, user.id)
+            if (!currentSub.isAdmin) {
+                return NextResponse.json(
+                    { error: 'Ödeme doğrulaması gerekli. Lütfen ödeme sayfasını kullanın.' },
+                    { status: 402 }
+                )
+            }
+        }
 
         if (action === 'cancel') {
             // Cancel at period end
@@ -180,6 +192,6 @@ export async function POST(req: Request) {
         })
 
     } catch (error: any) {
-        return NextResponse.json({ error: error.message }, { status: 500 })
+        console.error('API Error:', error); return NextResponse.json({ error: 'Bir hata olu�tu. L�tfen tekrar deneyin.' }, { status: 500 })
     }
 }

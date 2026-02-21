@@ -1,8 +1,4 @@
-type RateLimitContext = {
-    id: string;
-    limit: number;
-    duration: number; // in seconds
-};
+import { SupabaseClient } from '@supabase/supabase-js'
 
 interface RateLimitResult {
     success: boolean;
@@ -11,27 +7,52 @@ interface RateLimitResult {
     reset: number;
 }
 
-const store = new Map<string, { count: number; reset: number }>();
+/**
+ * Database-backed rate limiting that works with Vercel serverless.
+ * Uses daily_usage table instead of in-memory Map.
+ */
+export async function rateLimit(
+    supabase: SupabaseClient,
+    userId: string,
+    limit: number = 50,
+): Promise<RateLimitResult> {
+    const today = new Date().toISOString().split('T')[0]
 
-export async function rateLimit(context: RateLimitContext): Promise<RateLimitResult> {
-    const now = Date.now();
-    const windowStart = now - context.duration * 1000;
+    // Get or create today's usage record
+    const { data: existing } = await supabase
+        .from('daily_usage')
+        .select('count')
+        .eq('user_id', userId)
+        .eq('date', today)
+        .single()
 
-    const key = context.id;
-    let record = store.get(key);
+    const currentCount = existing?.count || 0
+    const success = currentCount < limit
 
-    if (!record || record.reset < now) {
-        record = { count: 0, reset: now + context.duration * 1000 };
-        store.set(key, record);
+    // Increment if under limit
+    if (success) {
+        if (existing) {
+            await supabase
+                .from('daily_usage')
+                .update({ count: currentCount + 1 })
+                .eq('user_id', userId)
+                .eq('date', today)
+        } else {
+            await supabase
+                .from('daily_usage')
+                .insert({ user_id: userId, date: today, count: 1 })
+        }
     }
 
-    record.count += 1;
-    const success = record.count <= context.limit;
+    // Reset at midnight UTC
+    const now = new Date()
+    const tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1)
+    const resetMs = tomorrow.getTime()
 
     return {
         success,
-        limit: context.limit,
-        remaining: Math.max(0, context.limit - record.count),
-        reset: record.reset,
-    };
+        limit,
+        remaining: Math.max(0, limit - (currentCount + (success ? 1 : 0))),
+        reset: resetMs,
+    }
 }

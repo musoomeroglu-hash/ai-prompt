@@ -32,7 +32,6 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
             .select(`
                 *,
                 categories (id, name, slug, icon)
-                // votes (vote_type, user_id)
             `)
             .eq('id', id)
             .single()
@@ -42,7 +41,7 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
         return NextResponse.json({ data })
 
     } catch (error: any) {
-        return NextResponse.json({ error: error.message }, { status: 500 })
+        console.error('API Error:', error); return NextResponse.json({ error: 'Bir hata olustu. Lutfen tekrar deneyin.' }, { status: 500 })
     }
 }
 
@@ -74,7 +73,7 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
         return NextResponse.json({ success: true })
 
     } catch (error: any) {
-        return NextResponse.json({ error: error.message }, { status: 500 })
+        console.error('API Error:', error); return NextResponse.json({ error: 'Bir hata olustu. Lutfen tekrar deneyin.' }, { status: 500 })
     }
 }
 
@@ -99,6 +98,6 @@ export async function DELETE(req: Request, { params }: { params: Promise<{ id: s
         return NextResponse.json({ success: true })
 
     } catch (error: any) {
-        return NextResponse.json({ error: error.message }, { status: 500 })
+        console.error('API Error:', error); return NextResponse.json({ error: 'Bir hata olustu. Lutfen tekrar deneyin.' }, { status: 500 })
     }
 }

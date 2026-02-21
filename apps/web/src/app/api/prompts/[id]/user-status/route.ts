@@ -24,6 +24,6 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
         })
 
     } catch (error: any) {
-        return NextResponse.json({ error: error.message }, { status: 500 })
+        console.error('API Error:', error); return NextResponse.json({ error: 'Bir hata olustu. Lutfen tekrar deneyin.' }, { status: 500 })
     }
 }
