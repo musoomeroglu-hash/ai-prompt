@@ -50,7 +50,7 @@ export async function GET() {
 
         return NextResponse.json({ subscription })
     } catch (error: any) {
-        console.error('API Error:', error); return NextResponse.json({ error: 'Bir hata oluþtu. Lütfen tekrar deneyin.' }, { status: 500 })
+        console.error('API Error:', error); return NextResponse.json({ error: 'Bir hata oluï¿½tu. Lï¿½tfen tekrar deneyin.' }, { status: 500 })
     }
 }
 
@@ -192,6 +192,6 @@ export async function POST(req: Request) {
         })
 
     } catch (error: any) {
-        console.error('API Error:', error); return NextResponse.json({ error: 'Bir hata oluþtu. Lütfen tekrar deneyin.' }, { status: 500 })
+        console.error('API Error:', error); return NextResponse.json({ error: 'Bir hata oluï¿½tu. Lï¿½tfen tekrar deneyin.' }, { status: 500 })
     }
 }

@@ -80,7 +80,7 @@ export async function GET(req: Request) {
 
     } catch (error: any) {
         console.error('Prompts GET Error:', error)
-        console.error('API Error:', error); return NextResponse.json({ error: 'Bir hata oluþtu. Lütfen tekrar deneyin.' }, { status: 500 })
+        console.error('API Error:', error); return NextResponse.json({ error: 'Bir hata oluï¿½tu. Lï¿½tfen tekrar deneyin.' }, { status: 500 })
     }
 }
 
@@ -122,6 +122,6 @@ export async function POST(req: Request) {
 
     } catch (error: any) {
         console.error('Prompts POST Error:', error)
-        console.error('API Error:', error); return NextResponse.json({ error: 'Bir hata oluþtu. Lütfen tekrar deneyin.' }, { status: 500 })
+        console.error('API Error:', error); return NextResponse.json({ error: 'Bir hata oluï¿½tu. Lï¿½tfen tekrar deneyin.' }, { status: 500 })
     }
 }
