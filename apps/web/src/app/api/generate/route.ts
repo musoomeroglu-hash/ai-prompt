@@ -1,4 +1,4 @@
-import { model } from '@/lib/gemini'
+import { generateContent } from '@/lib/anthropic'
 import { createClient } from '@/lib/supabaseServer'
 import { checkSubscription, incrementUsage } from '@/lib/subscription'
 import { NextResponse } from 'next/server'
@@ -151,9 +151,8 @@ export async function POST(req: Request) {
 
         for (let attempt = 1; attempt <= maxAttempts; attempt++) {
             try {
-                console.log(`[AI] Generating content with model... Attempt ${attempt}`);
-                const resultGen = await model.generateContent(prompt);
-                const text = resultGen.response.text();
+                console.log(`[AI] Generating content with Claude... Attempt ${attempt}`);
+                const text = await generateContent(prompt);
                 if (text) {
                     responseText = text;
                     break;

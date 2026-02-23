@@ -1,4 +1,4 @@
-import { model } from '@/lib/gemini'
+import { generateContent } from '@/lib/anthropic'
 import { createClient } from '@/lib/supabaseServer'
 import { rateLimit } from '@/lib/rateLimit'
 import { NextResponse } from 'next/server'
@@ -59,8 +59,7 @@ export async function POST(req: Request) {
       Clean JSON only.
     `
 
-        const resultGen = await model.generateContent(prompt);
-        const responseText = resultGen.response.text();
+        const responseText = await generateContent(prompt);
         const cleanedText = responseText.replace(/```json/g, '').replace(/```/g, '').trim();
         const result = JSON.parse(cleanedText);
 
